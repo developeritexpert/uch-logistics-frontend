@@ -71,7 +71,7 @@ function page() {
                     <Image alt="Total Jobs Listed" src="/icons/total-revenue.png" height={100} width={100} className="w-[60px]" />
                     <div className='text-right'>
                         <p className='text-[#515151]'>Total Revenue</p>
-                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px]font-bold'>$32,000</span>
+                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] font-bold'>$32,000</span>
                     </div>
                 </div>
             </div>
