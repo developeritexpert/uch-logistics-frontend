@@ -38,17 +38,53 @@ const CustomDropdown = ({ driverId, driverName, onView, onEdit, onDelete }) => {
 
     return (
         <div className="relative" ref={dropdownRef}>
+            {/* <button
+                onClick={toggleDropdown}
+                className="p-2 focus:outline-0"
+                aria-label="Actions">
+                <svg width="33" height="8" viewBox="0 0 33 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="29.3337" cy="3.66667" r="3.66667" transform="rotate(90 29.3337 3.66667)" fill="#223581" fill-opacity="0.08" />
+                    <circle cx="16.5007" cy="3.66667" r="3.66667" transform="rotate(90 16.5007 3.66667)" fill="#223581" fill-opacity="0.08" />
+                    <circle cx="3.66667" cy="3.66667" r="3.66667" transform="rotate(90 3.66667 3.66667)" fill="#223581" fill-opacity="0.08" />
+                </svg>
+
+
+            </button> */}
             <button
                 onClick={toggleDropdown}
                 className="p-2 focus:outline-0"
-                aria-label="Actions"
-            >
-                <svg className="w-5 h-5" width="33" height="8" viewBox="0 0 33 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="29.3334" cy="3.66667" r="3.66667" transform="rotate(90 29.3334 3.66667)" fill="#223581" fillOpacity="0.08" />
-                    <circle cx="16.5002" cy="3.66667" r="3.66667" transform="rotate(90 16.5002 3.66667)" fill="#223581" fillOpacity="0.08" />
-                    <circle cx="3.66667" cy="3.66667" r="3.66667" transform="rotate(90 3.66667 3.66667)" fill="#223581" fillOpacity="0.08" />
+                aria-label="Actions">
+                <svg
+                    width="33"
+                    height="8"
+                    viewBox="0 0 33 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <circle
+                        cx="29.3337"
+                        cy="3.66667"
+                        r="3.66667"
+                        transform="rotate(90 29.3337 3.66667)"
+                        fill="#223581"
+                        fillOpacity={isOpen ? "1" : "0.08"}/>
+                    <circle
+                        cx="16.5007"
+                        cy="3.66667"
+                        r="3.66667"
+                        transform="rotate(90 16.5007 3.66667)"
+                        fill="#223581"
+                        fillOpacity={isOpen ? "1" : "0.08"}/>
+                    <circle
+                        cx="3.66667"
+                        cy="3.66667"
+                        r="3.66667"
+                        transform="rotate(90 3.66667 3.66667)"
+                        fill="#223581"
+                        fillOpacity={isOpen ? "1" : "0.08"}/>
                 </svg>
             </button>
+
+
 
             {isOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">

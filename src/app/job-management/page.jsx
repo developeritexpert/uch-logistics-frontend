@@ -1,8 +1,11 @@
+import JobManagemant from '@/components/dashboard/JobManagemant'
 import React from 'react'
 
 function page() {
   return (
-    <div>Job Managment</div>
+    <div>
+      <JobManagemant />
+    </div>
   )
 }
 

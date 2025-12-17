@@ -1,8 +1,11 @@
+import Invoices from '@/components/dashboard/Invoices'
 import React from 'react'
 
 function page() {
   return (
-    <div>Invoices</div>
+    <div>
+      <Invoices/>
+    </div>
   )
 }
 
