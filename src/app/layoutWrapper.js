@@ -1,16 +1,34 @@
 "use client"
 
 import React, {useState} from 'react'
+import { usePathname } from 'next/navigation'
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 function LayoutWrapper({children}) {
     const [collapsed, setcollapsed] = useState(false);
+    const pathname = usePathname();
+    
+    const hideHeaderFooter = pathname === '/login' || pathname === '/signup';
+    
+    if (hideHeaderFooter) {
+        return (
+            <div className="h-screen w-full bg-[#FAFBFC] overflow-hidden">
+                <main className="h-[calc(100vh-80px)] flex justify-center items-center relative bg-cover bg-[url(/img/login-bg.png)]"
+                    // style={{ backgroundImage: "url(img/login-bg.png)" }}
+                >
+                    {children}
+                    <div className='h-[50vh] w-[200%] bg-[#FAFBFC] absolute -bottom-[200px] right-0 -left-[200px] rotate-z-[5deg] pointer-none:'> </div>
+                </main>
+                <Footer/>
+            </div>
+        );
+    }
     return (
-        <div className="h-screen flex w-full">
+        <div className="h-screen flex w-full bg-[#FAFBFC]">
             <Sidebar collapsed={collapsed} setcollapsed={setcollapsed} />
-            <div className="flex flex-col w-full">
+            <div className={`${collapsed ? 'w-[calc(100%-80px)]' : 'w-[calc(100%-250px)]'} flex flex-col`}>
                 <Header collapsed={collapsed} setcollapsed={setcollapsed} />
                 <main className="h-[calc(100vh-160px)] p-[30px] bg-[#FAFBFC] overflow-auto">
                     {children}

@@ -4,7 +4,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <footer className='h-[80px] p-[20px] flex items-center justify-center'>
+    <footer className='h-[80px] p-[20px] flex items-center justify-center relative z-[2]'>
       <p className='text-[#515151] text-center'>Copyright © 2025 all rights reserved by UCH Logistics.</p>
     </footer>
   )
