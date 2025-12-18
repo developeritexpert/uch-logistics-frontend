@@ -1,8 +1,12 @@
+import AddNewDriver from '@/components/dashboard/AddNewDriver'
 import React from 'react'
+
 
 function page() {
   return (
-    <div>page</div>
+    <div>
+     <AddNewDriver/>
+    </div>
   )
 }
 
