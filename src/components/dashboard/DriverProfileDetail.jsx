@@ -1,7 +1,9 @@
 "use client";
-
-import React, { useState } from 'react';
+import React from "react";
+import Breadcrumb from "./Breadcrumb";
+import Image from 'next/image';
 import CustomDropdown from '@/components/layout/CustomDropdown';
+
 
 const drivers = [
     {
@@ -98,28 +100,7 @@ const drivers = [
 ];
 
 
-function JobManagemant() {
-    const [selectedDrivers, setSelectedDrivers] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const activeDrivers = drivers.filter(driver => driver.status === "Active");
-    const inactiveDrivers = drivers.filter(driver => driver.status === "Inactive");
-
-    const handleSelectAll = (e) => {
-        if (e.target.checked) {
-            setSelectedDrivers(drivers.map(driver => driver.id));
-        } else {
-            setSelectedDrivers([]);
-        }
-    };
-
-    const handleSelectDriver = (driverId) => {
-        if (selectedDrivers.includes(driverId)) {
-            setSelectedDrivers(selectedDrivers.filter(id => id !== driverId));
-        } else {
-            setSelectedDrivers([...selectedDrivers, driverId]);
-        }
-    };
+function DriverProfileDetail() {
 
     const handleView = (driverId, driverName) => {
         console.log(`View driver: ${driverName} (ID: ${driverId})`);
@@ -138,11 +119,108 @@ function JobManagemant() {
         }
     };
 
-
-
     return (
         <div>
-            <section className="p-0 sm:p-6">
+            <Breadcrumb
+                items={[
+                    { label: "Home", href: "/dashboard", isHome: true },
+                    { label: "Driver Profiles", href: "/driver-profiles" },
+                    { label: "Vikas Sabharwal" },
+                ]}
+            />
+
+
+            <div className=" w-full flex flex-col lg:flex-row gap-[30px] mt-[30px] ">
+
+                <div className="bg-white rounded-[15px] border border-[#22358114] py-[22px]  px-[20px] xl:basis-[312px] xl:shrink-0 ">
+                    <div className="flex flex-col items-center text-center">
+
+                        <div className="w-[53px] h-[53px] rounded-full ">
+                            <Image src="/img/user-img.png" alt="" width={200} height={200}
+                                className="object-cover" />
+                        </div>
+
+                        <h3 className="mt-3 text-[18px] md:text-[20px] xl:text-[22px] font-black text-primary ">
+                            Vikas Sabharwal
+                        </h3>
+                        <p className="text-sm text-[#515151]">10848299</p>
+                    </div>
+                    <div className="border-b border-[#22358114] mt-[20px] mb-[25px]"></div>
+                    <div className="space-y-3 text-sm text-[#515151]">
+                        <div className="flex justify-between">
+                            <span className="font-bold">Callsign:</span>
+                            <span className="font-normal">Vikas</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="font-bold">Position:</span>
+                            <span className="font-normal">Van Driver</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="font-bold">Account:</span>
+                            <span className="font-normal">5002</span>
+                        </div>
+                    </div>
+
+                    <div className="mt-[25px] flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
+                        <button className="flex-1 bg-primary text-white text-sm rounded-lg px-[20px] py-[10px]">
+                            Edit Info
+                        </button>
+                        <button className="flex-1 bg-secondary text-white text-sm rounded-lg px-[20px] py-[10px]">
+                            Delete Profile
+                        </button>
+                    </div>
+                </div>
+
+
+                <div className="flex-1  bg-white  rounded-xl border border-[#22358114] grid grid-cols-1 md:grid-cols-2  xl:grid-cols-3">
+
+                    <div className=" py-[20px] px-[10px]  md:py-[30px]  md:pl-[30px] 2xl:pl-[41px] md:pr-[30px] border-b md:border-b-0 md:border-r border-[#22358114]">
+                        <h4 className="font-bold text-primary text-[17px] sm:text-[19px] mb-[15px]">
+                            Contact Information
+                        </h4>
+
+                        <div className="space-y-3 text-sm text-[#515151]">
+                            <p><span className="font-bold ">Address:</span><br />4941 Hott Street<br />Oklahoma City, OK 73109</p>
+                            <p><span className="font-bold ">Email:</span><br />vikassabharwal@gmail.com</p>
+                            <p><span className="font-bold ">Phone:</span><br />+1 405 636 2685</p>
+                        </div>
+                    </div>
+
+
+                    <div className="px-[10px] py-[20px] md:py-[30px] md:pl-[30px] md:pr-[30px]  2xl:pl-[59px] border-b md:border-b-0 md:border-r border-[#22358114]">
+                        <h4 className="font-bold text-primary text-[17px] sm:text-[19px] mb-[15px]">
+                            Payment Details
+                        </h4>
+
+                        <div className="space-y-3 text-sm text-[#515151]">
+                            <p><span className="font-bold">Rate:</span><br />$21.02/hour</p>
+                            <p><span className="font-bold">Bank Account Number:</span><br />5450 3205 7611 0692</p>
+                            <p><span className="font-bold">Sort Code / IBAN:</span><br />IT 243 0E7 93 9138 871 1</p>
+                            <p><span className="font-bold">Payroll ID:</span><br />2295072524</p>
+                        </div>
+                    </div>
+
+
+                    <div className="px-[10px] py-[20px] md:py-[30px] md:pl-[30px] md:pr-[30px] 2xl:pl-[59px] ">
+                        <h4 className="font-bold text-primary text-[17px] sm:text-[19px] mb-[15px]">
+                            Operational Details
+                        </h4>
+
+                        <div className="space-y-3 text-sm text-[#515151]">
+                            <p><span className="font-bold">Working as:</span><br />Per Hours</p>
+                            <p>
+                                <span className="font-bold">Status:</span><br />
+                                <span className="text-green-600 font-normal">Active</span>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <h2 className="text-[20px] md:text-[24px] lg:text-[34px] font-bold text-primary mt-[30px]">Journey Completed</h2>
+
+            <section className="mt-[30px]">
 
                 <div className="flex flex-wrap  xl:flex-nowrap items-center justify-between  gap-[40px] mb-6">
 
@@ -211,7 +289,6 @@ function JobManagemant() {
                         </button>
                     </div>
                 </div>
-
                 <div className='w-full overflow-x-scroll'>
                     <table className='w-full border-separate border-spacing-y-3 '>
                         <thead className=' text-[16px] sm:text-[18px] lg:text-[20px] font-bold'>
@@ -229,7 +306,7 @@ function JobManagemant() {
                             {drivers.map((driver) => (
                                 <tr key={driver.id} className='bg-white'>
                                     <td className=" px-[20px] py-[20px] border-y border-[#22358114] border-l rounded-l-[15px]">
-                                        <label className="group flex items-center  gap-[15px] cursor-pointer select-none">                                          
+                                        <label className="group flex items-center  gap-[15px] cursor-pointer select-none">
                                             <input
                                                 type="checkbox"
                                                 className="hidden"
@@ -274,7 +351,7 @@ function JobManagemant() {
 
                                     <td className='px-[20px] py-[20px] border-y border-[#22358114] border-r rounded-r-[15px] whitespace-nowrap'>
                                         <div className='flex justify-center'>
-                                            {driver.actions}
+
                                             <CustomDropdown
                                                 driverId={driver.id}
                                                 driverName={driver.driver}
@@ -317,8 +394,9 @@ function JobManagemant() {
                 </div>
             </section>
 
+
         </div>
-    )
+    );
 }
 
-export default JobManagemant
+export default DriverProfileDetail;

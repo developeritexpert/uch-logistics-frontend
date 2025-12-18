@@ -156,7 +156,7 @@ function Invoices() {
                             <div className="relative w-full ]">
                                 <input
                                     type="date"
-                                    className="h-[48px] lg:h-[53px] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal "
+                                    className="px-[16px] py-[10] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal "
                                 />
                             </div>
 
@@ -166,7 +166,7 @@ function Invoices() {
                             <div className="relative  w-full sm:w-[155px]">
                                 <input
                                     type="date"
-                                    className="h-[48px] lg:h-[53px] w-full  px-[13px] text-[#B4B4B4] rounded-[6px] text-[16px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
+                                    className="px-[16px] py-[10] w-full  px-[13px] text-[#B4B4B4] rounded-[6px] text-[16px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
                                 />
                             </div>
                         </div>
@@ -175,7 +175,7 @@ function Invoices() {
                             <input
                                 type="text"
                                 placeholder="Search with name, callsign, Journey etc..."
-                                className="h-[48px] lg:h-[53px] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal   "
+                                className="pl-[16px] pr-[60px] py-[10] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal   "
                             />
                             <svg
                                 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -194,8 +194,7 @@ function Invoices() {
 
 
                     <div className="flex items-center gap-3">
-                        <button className=" gap-2 rounded-md bg-[#C00000] py-[10px] px-[21px] h-[48px] lg:h-[53px] leading-normal text-sm font-bold text-white hover:bg-opacity-90 transition">
-
+                        <button className=" gap-2 rounded-md bg-secondary py-[12px] px-[20px] leading-normal text-sm font-bold text-white hover:bg-opacity-90 transition">
                             Generate Invoice
                         </button>
 
