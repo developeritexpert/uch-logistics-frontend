@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import CustomDropdown from '@/components/layout/CustomDropdown';
+import Link from 'next/link';
 
 const drivers = [
   {
@@ -89,12 +90,12 @@ function DriverProfilesPage() {
 
   const handleView = (driverId, driverName) => {
     console.log(`View driver: ${driverName} (ID: ${driverId})`);
-    alert(`Viewing details for ${driverName}`);
+    window.location.href = `/driver-profile-detail`;
   };
 
   const handleEdit = (driverId, driverName) => {
     console.log(`Edit driver: ${driverName} (ID: ${driverId})`);
-    alert(`Editing driver: ${driverName}`);
+    window.location.href = `/driver-profile-edit`;
   };
 
   const handleDelete = (driverId, driverName) => {
@@ -126,9 +127,15 @@ function DriverProfilesPage() {
           </svg>
         </div>
         <div className="flex gap-4">
-          <button className='bg-secondary rounded-[7px] px-[20px] py-[10px] text-sm text-white hover:bg-opacity-90 transition-colors'>
-            Add New Driver
-          </button>
+          <Link href="/add-new-driver" className='group flex items-center gap-[5px] bg-secondary border border-secondary hover:bg-secondary/20 min-w-[100px] hover:text-secondary duration-300 cursor-pointer rounded-[7px] px-[25px] py-[10px] text-sm text-white hover:bg-opacity-90 transition-colors'>
+            <svg className='w-[15px] h-[15px]' width="24" height="27" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.375701 23.9555C0.718703 24.6317 1.27388 25.1769 1.95623 25.5076C2.00456 25.5332 2.05857 25.5559 2.10974 25.5787C4.01149 26.4315 7.2891 27 11.013 27C12.4513 26.9986 13.888 26.9036 15.314 26.7157C14.5295 26.0635 13.935 25.2123 13.5928 24.2513C13.2506 23.2902 13.1732 22.2548 13.3689 21.2536C13.5645 20.2524 14.026 19.3223 14.7048 18.5608C15.3836 17.7993 16.2548 17.2345 17.2271 16.9255C16.4283 16.5588 15.621 16.2063 14.8165 15.851C14.5816 15.7639 14.3774 15.6097 14.2293 15.4075C14.0813 15.2054 13.9958 14.9642 13.9836 14.7139C13.8926 13.9095 14.1911 13.2926 14.6857 12.6672C16.1953 10.8231 17.0181 8.51224 17.0139 6.12905C17.0281 2.4961 14.5294 -0.141903 10.8339 0.00591648C8.11347 0.10541 5.8308 1.93894 5.37029 4.62527C4.82449 7.73232 5.71709 10.4698 7.65012 12.8946C8.69622 14.2051 8.40911 15.3422 6.86554 16.0216C5.59496 16.5481 4.36046 17.1577 3.17005 17.8466C2.26835 18.3915 1.453 19.0679 0.750935 19.8535C0.353563 20.2932 0.0996987 20.8435 0.0232091 21.4312C-0.00390139 21.6245 -0.00390139 21.8206 0.0232091 22.0139C0.0055599 22.143 -0.00204341 22.2732 0.000467709 22.4034C4.39388e-06 22.9433 0.12866 23.4754 0.375701 23.9555Z" 
+                className='fill-white group-hover:fill-secondary duration-300'/>
+              <path d="M14.7083 23.6826C14.7935 23.9583 14.9059 24.225 15.0437 24.4785C15.1119 24.6036 15.1859 24.7258 15.2654 24.8424C15.5846 25.3146 15.9908 25.7217 16.4622 26.042C17.3151 26.6186 18.3423 26.8798 19.3671 26.7807C20.3918 26.6816 21.3499 26.2284 22.0765 25.4991C22.2779 25.2986 22.4588 25.0786 22.6166 24.8424C22.6962 24.7258 22.773 24.6036 22.8412 24.4785C22.9778 24.2244 23.0902 23.9579 23.1766 23.6826C23.3672 23.0726 23.4237 22.4286 23.3423 21.7948C23.2608 21.1609 23.0434 20.5522 22.7047 20.0102C22.3661 19.4682 21.9143 19.0058 21.3804 18.6547C20.8464 18.3036 20.2428 18.072 19.6111 17.9759C18.9793 17.8797 18.3341 17.9213 17.7199 18.0976C17.1057 18.274 16.5368 18.5811 16.0523 18.9978C15.5678 19.4145 15.179 19.931 14.9127 20.5119C14.6464 21.0929 14.5088 21.7245 14.5093 22.3636C14.5079 22.8108 14.5751 23.2556 14.7083 23.6826ZM16.2973 21.8434H18.4208V19.7227H19.4641V21.8434H21.5847V22.8838H19.4641V25.0044H18.4208V22.8838H16.2973V21.8434Z" 
+                className='fill-white group-hover:fill-secondary duration-300'/>
+            </svg>
+            Add Driver
+          </Link>
         </div>
       </div>
 

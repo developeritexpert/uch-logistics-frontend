@@ -5,7 +5,6 @@ export default function PaidCustomDropdown() {
   const [status, setStatus] = useState("Paid");
   const ref = useRef(null);
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -18,8 +17,7 @@ export default function PaidCustomDropdown() {
 
   return (
     <div ref={ref} className="relative">
-      {/* Three dots */}
-      <button onClick={() => setOpen(!open)}>
+      <button onClick={() => setOpen(!open)} className="p-1 cursor-pointer">
         <svg width="33" height="8" viewBox="0 0 33 8" fill="none">
           <circle
             cx="29.33"
@@ -45,16 +43,14 @@ export default function PaidCustomDropdown() {
         </svg>
       </button>
 
-      {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 top-10 w-[150px] rounded-[14px] border border-[#E5E7EB] bg-white shadow-xl z-50 px-4 py-4">
+        <div className="absolute right-0 top-10 w-[150px] rounded-[14px] border border-[#E5E7EB] bg-white shadow-[7px_11px_24px_#22358114] z-50 px-4 py-4">
 
-          {/* Status */}
           <p className="text-[14px] font-bold text-[#0F172A] mb-3">
             Status
           </p>
 
-          <div className="space-y-3 mb-4">
+          <div className="space-y-2 mb-4">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="radio"
@@ -82,18 +78,17 @@ export default function PaidCustomDropdown() {
             </label>
           </div>
 
-          {/* Primary action */}
           <button
             className="
               w-full
               bg-[#223581]
               text-white
-              text-[10px]
+              text-[12px]
               font-bold              
               rounded-[3px]
              px-[17px]
              py-[6px]
-             leading-normal
+             leading-[1.2]
               mb-2
               hover:bg-[#1B2F73]
               transition
@@ -102,13 +97,13 @@ export default function PaidCustomDropdown() {
             Generate Bank Remittance
           </button>
 
-          {/* Secondary action */}
           <button
             className="
               w-full
               border
               border-[#22358114]
-              text-[10px]
+              text-[12px]
+              text-[#000]
               font-bold
               rounded-[3px]
               py-[8px]

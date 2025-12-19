@@ -9,13 +9,13 @@ export default function Input({
     return (
 
         <div className={wrapperClassName}>
-            <label className="text-sm lg:text-[16px] font-bold block mb-1">
+            <label className="text-sm text-[16px] font-bold block mb-1">
                 {label}
             </label>
             <input
                 {...props}
-                className={` w-[100%] text-[#515151] w-full border border-[#22358114] rounded px-[20px] py-[12px] text-sm
-                       focus:outline-none focus:ring-1 focus:ring-[#515151] ${className}`}
+                className={` w-[100%] text-[#515151] w-full border border-[#22358114] rounded px-[20px] py-[10px] text-sm
+                       focus:outline-0 focus:border-[#515151] ${className}`}
             />
         </div>
 

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, version } from 'react';
-import CustomDropdown from '@/components/layout/CustomDropdown';
 import PaidCustomDropdown from '../layout/PaidCustomDropdown';
 
 const drivers = [
@@ -142,7 +141,7 @@ function Invoices() {
 
     return (
         <div>
-            <section className="p-0 sm:p-6">
+            <section className="">
 
                 <div className="flex flex-wrap  xl:flex-nowrap items-center justify-between  gap-[40px] mb-6">
 
@@ -152,7 +151,7 @@ function Invoices() {
                             Filter:
                         </span>
 
-                        <div className='flex w-full sm:w-[fit-content] flex-col sm:flex-row  items-center gap-[15px]'>
+                        <div className='flex w-full sm:w-[fit-content] flex-col flex-wrap md:flex-nowrap sm:flex-row  items-center gap-[15px]'>
                             <div className="relative w-full ]">
                                 <input
                                     type="date"
@@ -194,7 +193,7 @@ function Invoices() {
 
 
                     <div className="flex items-center gap-3">
-                        <button className=" gap-2 rounded-md bg-secondary py-[12px] px-[20px] leading-normal text-sm font-bold text-white hover:bg-opacity-90 transition">
+                        <button className=" gap-2 rounded-md bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary py-[10px] px-[25px] min-w-[100px] duration-300 leading-normal text-sm cursor-pointer font-semibold text-white transition">
                             Generate Invoice
                         </button>
                     </div>
@@ -205,13 +204,13 @@ function Invoices() {
                     <table className='w-full border-separate border-spacing-y-3'>
                         <thead className='text-[16px] md:text-[18px] lg:text-[20px] text-bold'>
                             <tr>
-                                <th className='text-center px-[20px] py-[10px] whitespace-nowrap'>#ID</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Drivers</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Callsign</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Date</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Driver Total</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Status</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Actions</th>
+                                <th className='text-center px-[20px] py-[5px] whitespace-nowrap'>#ID</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Drivers</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Callsign</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Date</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Driver Total</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Status</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Actions</th>
                             </tr>
                         </thead>
                         <tbody className='text-[16px] text-normal text-[#515151]'>

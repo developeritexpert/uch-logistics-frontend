@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Breadcrumb from "./Breadcrumb";
 import Image from 'next/image';
+import Link from "next/link";
 import CustomDropdown from '@/components/layout/CustomDropdown';
 
 
@@ -128,7 +129,7 @@ function DriverProfileDetail() {
         <div>
             <Breadcrumb
                 items={[
-                    { label: "Home", href: "/dashboard", isHome: true },
+                    { label: "", href: "/dashboard", isHome: true },
                     { label: "Driver Profiles", href: "/driver-profiles" },
                     { label: "Vikas Sabharwal" },
                 ]}
@@ -167,10 +168,10 @@ function DriverProfileDetail() {
                     </div>
 
                     <div className="mt-[25px] flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
-                        <button className="flex-1 bg-primary text-white text-sm rounded-lg px-[20px] py-[10px]">
+                        <Link href="/driver-profile-edit" className="block text-center flex-1 min-w-[80px] cursor-pointer rounded-[6px] bg-primary border border-primary px-[20px] py-[10px] text-sm font-semibold text-white hover:bg-primary/20 hover:text-primary duration-300 transition">
                             Edit Info
-                        </button>
-                        <button className="flex-1 bg-secondary text-white text-sm rounded-lg px-[20px] py-[10px]">
+                        </Link>
+                        <button className="flex-1 min-w-[80px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[20px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition">
                             Delete Profile
                         </button>
                     </div>
@@ -223,7 +224,7 @@ function DriverProfileDetail() {
                 </div>
 
             </div>
-            <h2 className="text-[20px] md:text-[24px] lg:text-[34px] font-bold text-primary mt-[30px]">Journey Completed</h2>
+            <h2 className="text-[18px] md:text-[22px] lg:text-[25px] font-bold text-primary mt-[30px]">Journey Completed</h2>
 
             <section className="mt-[30px]">
 
@@ -282,7 +283,7 @@ function DriverProfileDetail() {
 
                             <button
                                 onClick={() => setOpen(true)}
-                                className=" gap-2 rounded-md bg-secondary py-[12px] px-[20px] leading-normal text-sm font-bold text-white hover:bg-opacity-90 transition" >
+                                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition" >
                                 Generate Invoice
                             </button>
 
@@ -290,7 +291,7 @@ function DriverProfileDetail() {
                             {open && (
                                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-scroll  no-scrollbar">
 
-                                    <div className="relative w-full max-w-[580px] mx-[10px] my-[50px] rounded-xl bg-white p-[35px] pt-[60px]">
+                                    <div className="relative w-full max-w-[580px] mx-[10px] my-[50px] rounded-xl bg-white p-[35px] pt-[40px]">
 
 
                                         <div className="flex items-center justify-between mb-[30px] ">
@@ -336,11 +337,11 @@ function DriverProfileDetail() {
                                                 <span>Admin Fee</span>
                                                 <input
                                                     defaultValue="-9.00"
-                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                                 <input
                                                     defaultValue="+20.00%"
-                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                             </div>
 
@@ -349,11 +350,11 @@ function DriverProfileDetail() {
                                                 <span>Vehicle Hire charges</span>
                                                 <input
                                                     defaultValue="-"
-                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                                 <input
                                                     defaultValue="-"
-                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                             </div>
 
@@ -362,11 +363,11 @@ function DriverProfileDetail() {
                                                 <span>Insurance charge</span>
                                                 <input
                                                     defaultValue="-"
-                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                                 <input
                                                     defaultValue="-"
-                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                             </div>
 
@@ -375,11 +376,11 @@ function DriverProfileDetail() {
                                                 <span>Fuel charge</span>
                                                 <input
                                                     defaultValue="-330.26"
-                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                                 <input
                                                     defaultValue="-"
-                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                             </div>
 
@@ -389,7 +390,7 @@ function DriverProfileDetail() {
 
                                                 <input
                                                     defaultValue="-"
-                                                    className="col-span-2 border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                    className="col-span-2 border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
                                                 />
                                             </div>
 
@@ -415,7 +416,7 @@ function DriverProfileDetail() {
                                         </div>
 
                                         <div className="flex justify-center mt-[28px]">
-                                            <button className="bg-secondary text-white text-sm font-bold px-[20px] py-[12px] rounded-md">
+                                            <button className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition">
                                                 Generate Invoice
                                             </button>
                                         </div>
@@ -431,13 +432,13 @@ function DriverProfileDetail() {
                     <table className='w-full border-separate border-spacing-y-3 '>
                         <thead className=' text-[16px] sm:text-[18px] lg:text-[20px] font-bold'>
                             <tr>
-                                <th className='text-center px-[20px] py-[10px] whitespace-nowrap'>Docket</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap '>Drivers</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Callsign</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Date/Time</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Journey</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Driver Total</th>
-                                <th className='text-left px-[20px] py-[10px] whitespace-nowrap'>Actions</th>
+                                <th className='text-center px-[20px] py-[5px] whitespace-nowrap'>Docket</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap '>Drivers</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Callsign</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Date/Time</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Journey</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Driver Total</th>
+                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Actions</th>
                             </tr>
                         </thead>
                         <tbody className='text-[16px] text-normal text-[#515151]'>

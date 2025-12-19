@@ -97,7 +97,7 @@ function Setting() {
             <div className="flex gap-3">
               <button 
                 onClick={handleCancelEdit}
-                className="min-w-[100px] cursor-pointer rounded-[6px] border border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[10px] text-sm text-[#515151] font-semibold transition"
+                className="min-w-[100px] cursor-pointer rounded-[6px] hover:bg-[#515151]/20 border border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[10px] text-sm text-[#515151] font-semibold transition"
               >
                 Cancel
               </button>
@@ -194,7 +194,7 @@ function Setting() {
           </h2>
 
           <div className="flex gap-3 items-center">
-            <button className="min-w-[100px] cursor-pointer rounded-[6px] border border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[10px] text-sm text-[#515151] font-semibold transition">
+            <button className="min-w-[100px] cursor-pointer rounded-[6px] border hover:bg-[#515151]/20 border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[10px] text-sm text-[#515151] font-semibold transition">
               Cancel
             </button>
             <button className="min-w-[100px] cursor-pointer rounded-[6px] bg-primary border border-primary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-primary/20 hover:text-primary duration-300 transition">
