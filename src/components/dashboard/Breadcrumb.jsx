@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 
 export default function Breadcrumb({ items = [] }) {
   if (!items.length) return null;
@@ -10,12 +9,14 @@ export default function Breadcrumb({ items = [] }) {
       {items.map((item, index) => (
         <div key={index} className="flex items-center gap-[10px]">
           {index !== 0 && (
-            <ChevronRight className="h-4 w-4 text-[#9CA3AF]" />
+            <svg className="h-3 w-3 text-[#515151]" width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.600097 6.60001L3.6001 3.60001L0.600098 0.600006" stroke="#515151" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
           )}
           {item.href ? (
             <Link
               href={item.href}
-              className="flex items-center  hover:text-[#223581]">
+              className="flex items-center  hover:text-primary">
               {item.isHome && (
                 <div className="w-[29px] h-[29px] flex items-center justify-center rounded-full border border-[#515151]">
                   <svg
