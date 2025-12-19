@@ -117,7 +117,7 @@ function Page() {
                 <h2 className=' text-[22px] md:text-[24px] lg:text-[30px] text-primary font-bold'>Recent Active Drivers</h2>
                 <button className='bg-secondary hover:bg-secondary/20 cursor-pointer border border-secondary rounded-[7px] px-[25px] min-w-[100px] py-[10px] hover:text-secondary duration-300 font-semibold text-sm text-white'>View All Drivers</button>
             </div>
-            <div className='w-full overflow-x-scroll'>
+            <div className='w-full overflow-x-scroll scrollbar-thin scrollbar-thumb-[#75DA5B] scrollbar-track-[#E5E7EB]'>
                 <table className='w-full border-separate border-spacing-y-3'>
                     <thead>
                         <tr>
