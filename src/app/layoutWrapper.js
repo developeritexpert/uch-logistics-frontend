@@ -15,7 +15,7 @@ function LayoutWrapper({children}) {
     if (hideHeaderFooter) {
         return (
             <div className="min-h-screen flex flex-col gap-[50px] justify-between w-full bg-[#FAFBFC] overflow-hidden">
-                <main className="flex justify-center items-center relative bg-cover bg-[url(/img/login-bg.png)]">
+                <main className="flex justify-center items-center relative bg-cover bg-[url(/img/login-bg.png)] min-h-[calc(100vh-150px)]">
                     {children}
                     <div className='h-[40vh] w-[200%] bg-[#FAFBFC] absolute -bottom-[200px] right-0 -left-[200px] rotate-z-[5deg] pointer-none:'> </div>
                 </main>
