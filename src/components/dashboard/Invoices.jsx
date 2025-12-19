@@ -197,8 +197,6 @@ function Invoices() {
                         <button className=" gap-2 rounded-md bg-secondary py-[12px] px-[20px] leading-normal text-sm font-bold text-white hover:bg-opacity-90 transition">
                             Generate Invoice
                         </button>
-
-
                     </div>
                 </div>
 
