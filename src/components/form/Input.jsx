@@ -9,7 +9,7 @@ export default function Input({
     return (
 
         <div className={wrapperClassName}>
-            <label className="text-sm font-bold block mb-1">
+            <label className="text-sm lg:text-[16px] font-bold block mb-1">
                 {label}
             </label>
             <input

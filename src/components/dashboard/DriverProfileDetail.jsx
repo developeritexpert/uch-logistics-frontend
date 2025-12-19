@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import { useState } from "react";
 import Breadcrumb from "./Breadcrumb";
 import Image from 'next/image';
 import CustomDropdown from '@/components/layout/CustomDropdown';
@@ -100,7 +101,11 @@ const drivers = [
 ];
 
 
+
 function DriverProfileDetail() {
+
+
+    const [open, setOpen] = useState(false);
 
     const handleView = (driverId, driverName) => {
         console.log(`View driver: ${driverName} (ID: ${driverId})`);
@@ -271,23 +276,156 @@ function DriverProfileDetail() {
                     </div>
 
 
-                    <div className=" w-full flex flex-wrap 2xl:flex-nowrap items-center xl:justify-end gap-3 xl:w-[25%]">
+                    <div className="flex items-center gap-3">
+
+                        <div>
+
+                            <button
+                                onClick={() => setOpen(true)}
+                                className=" gap-2 rounded-md bg-secondary py-[12px] px-[20px] leading-normal text-sm font-bold text-white hover:bg-opacity-90 transition" >
+                                Generate Invoice
+                            </button>
 
 
-                        <button className="flex justify-center items-center gap-2 rounded-md bg-primary w-full sm:w-[fit-content]  px-[20px] py-[9px]  text-sm font-bold leading-normal text-white hover:bg-opacity-90 transition">
-                            <svg className='w-[15px]' width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M3.11538 12.963H2.33653C1.04614 12.963 0 14.0077 0 15.2963L0.000124547 15.3093L0 15.3151C0 15.3151 0 23.5026 0 26.4444C0 27.3036 0.697347 28 1.55769 28C5.73242 28 21.2675 28 25.4423 28C25.8554 28 26.2516 27.8361 26.5438 27.5444C26.8359 27.2527 27 26.857 27 26.4444C27 24.4576 27 20.1351 27 18.1482C27 17.7357 26.8359 17.34 26.5438 17.0483C26.2516 16.7566 25.8554 16.5927 25.4423 16.5927C21.4944 16.5927 7.38769 16.5927 2.33554 16.5927C1.99148 16.5927 1.66162 16.4562 1.41837 16.2132C1.17512 15.9703 1.03842 15.6409 1.03842 15.2973C1.03842 15.2971 1.03842 15.2967 1.03842 15.2963C1.03842 14.5804 1.61962 14 2.33653 14H3.11538V15.5556H24.4038V7.25934H20.25C19.8369 7.25934 19.4406 7.09545 19.1485 6.80363C18.8564 6.51193 18.6923 6.11632 18.6923 5.70379V0H4.67307C4.25997 0 3.86369 0.163893 3.5716 0.455591C3.2795 0.747413 3.11538 1.14302 3.11538 1.55556V12.963ZM16.3929 19.8963L18.4698 25.0815C18.5486 25.2784 18.7396 25.4074 18.9519 25.4074C19.1642 25.4074 19.3551 25.2784 19.434 25.0815L21.5109 19.8963C21.6174 19.6306 21.4878 19.3286 21.2216 19.2223C20.9555 19.116 20.6531 19.2455 20.5467 19.5111L18.9519 23.4927L17.357 19.5111C17.2506 19.2455 16.9482 19.116 16.6821 19.2223C16.4161 19.3286 16.2865 19.6306 16.3929 19.8963ZM8.34486 19.1852H8.04802C6.6142 19.1852 5.45191 20.3459 5.45191 21.7778C5.45191 22.1194 5.45191 22.4733 5.45191 22.8149C5.45191 24.2468 6.6142 25.4074 8.04802 25.4074H8.34486C9.271 25.4074 10.1121 24.8679 10.4972 24.0266C10.5509 23.9094 10.5615 23.8872 10.596 23.8108C10.732 23.5094 10.5679 23.2343 10.3731 23.1365C10.0475 22.9731 9.75226 23.1541 9.65157 23.3796C9.62104 23.4481 9.55275 23.5955 9.55275 23.5955C9.33667 24.0676 8.86462 24.3705 8.34486 24.3705H8.04802C7.1878 24.3705 6.49033 23.6739 6.49033 22.8149V21.7778C6.49033 20.9187 7.1878 20.2222 8.04802 20.2222H8.34486C8.86462 20.2222 9.33667 20.5251 9.55275 20.9971C9.55275 20.9971 9.61605 21.1388 9.65157 21.2131C9.80759 21.5396 10.1766 21.586 10.4097 21.4347C10.5736 21.3282 10.7284 21.0709 10.596 20.7819C10.4972 20.5661 10.4972 20.5661 10.4972 20.5661C10.1121 19.7248 9.271 19.1852 8.34486 19.1852ZM11.4231 23.5959V23.8529C11.4231 24.2652 11.5871 24.6607 11.8789 24.9521C12.1709 25.2437 12.5668 25.4074 12.9797 25.4074C13.3539 25.4074 13.776 25.4074 14.1501 25.4074C14.5629 25.4074 14.9588 25.2437 15.2508 24.9521C15.5428 24.6607 15.7067 24.2652 15.7067 23.8529C15.7067 23.7832 15.7067 23.714 15.7067 23.6466C15.7067 23.0105 15.3189 22.4386 14.7275 22.2023L12.8395 21.4481C12.6112 21.3569 12.4615 21.1361 12.4615 20.8906V20.7408C12.4615 20.6033 12.5162 20.4714 12.6135 20.3742C12.711 20.2769 12.843 20.2222 12.9807 20.2222C12.9808 20.2222 14.1491 20.2222 14.1491 20.2222C14.2868 20.2222 14.4188 20.2769 14.5162 20.3742C14.6135 20.4714 14.6682 20.6033 14.6682 20.7408C14.6682 20.7408 14.6682 20.9115 14.6682 20.9969C14.6682 21.1432 14.733 21.2756 14.7982 21.3428C14.8995 21.4577 15.045 21.5186 15.1875 21.5186C15.4402 21.5186 15.7067 21.3237 15.7067 20.9969V20.7408C15.7067 20.3282 15.5426 19.9325 15.2505 19.6408C14.9583 19.3491 14.5622 19.1852 14.1491 19.1852H12.9808C12.5676 19.1852 12.1714 19.3491 11.8793 19.6408C11.5872 19.9325 11.4231 20.3282 11.4231 20.7408C11.4231 20.7912 11.4231 20.8412 11.4231 20.8906C11.4231 21.5601 11.8313 22.1623 12.4538 22.411L14.3418 23.1652C14.539 23.2439 14.6682 23.4346 14.6682 23.6466V23.8529C14.6682 23.9902 14.6136 24.1218 14.5164 24.2189C14.4193 24.3159 14.2875 24.3705 14.1501 24.3705H12.9797C12.8422 24.3705 12.7105 24.3159 12.6133 24.2189C12.5161 24.1218 12.4615 23.9902 12.4615 23.853C12.4615 23.8529 12.4615 23.8529 12.4615 23.5958C12.4615 23.2538 12.1824 23.0739 11.9513 23.0739C11.7323 23.0739 11.4231 23.2435 11.4231 23.5927C11.4231 23.5959 11.4231 23.5959 11.4231 23.5959ZM7.78845 13.4816H19.7307C20.0173 13.4816 20.25 13.2492 20.25 12.963C20.25 12.6768 20.0173 12.4444 19.7307 12.4444H7.78845C7.50183 12.4444 7.26918 12.6768 7.26918 12.963C7.26918 13.2492 7.50183 13.4816 7.78845 13.4816ZM7.78845 10.3705H19.7307C20.0173 10.3705 20.25 10.1381 20.25 9.85189C20.25 9.56567 20.0173 9.33333 19.7307 9.33333H7.78845C7.50183 9.33333 7.26918 9.56567 7.26918 9.85189C7.26918 10.1381 7.50183 10.3705 7.78845 10.3705ZM7.78845 7.25934H14.5385C14.825 7.25934 15.0576 7.027 15.0576 6.74078C15.0576 6.45456 14.825 6.22222 14.5385 6.22222H7.78845C7.50183 6.22222 7.26918 6.45456 7.26918 6.74078C7.26918 7.027 7.50183 7.25934 7.78845 7.25934ZM19.7307 0.345707V5.70379C19.7307 5.8413 19.7854 5.97321 19.8829 6.0704C19.9802 6.16759 20.1123 6.22222 20.25 6.22222H24.1442L19.7307 0.345707Z" fill="white" />
-                            </svg>
+                            {open && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-scroll  no-scrollbar">
 
-                            Add CSV
-                        </button>
-                        <button className="flex justify-center items-center gap-2 rounded-md bg-secondary  w-full sm:w-[fit-content]   px-[20px] py-[13px]   text-sm font-bold leading-normal text-white hover:bg-opacity-90 transition">
-                            <svg className='w-[15px]' width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 0C7.49022 0 7.07692 0.413277 7.07692 0.923077V7.07692H0.923077C0.413262 7.07692 0 7.49018 0 8C0 8.50978 0.413262 8.92308 0.923077 8.92308H7.07692V15.0769C7.07692 15.5867 7.49022 16 8 16C8.50982 16 8.92308 15.5867 8.92308 15.0769V8.92308H15.0769C15.5867 8.92308 16 8.50978 16 8C16 7.49018 15.5867 7.07692 15.0769 7.07692H8.92308V0.923077C8.92308 0.413277 8.50982 0 8 0Z" fill="white" />
-                            </svg>
-                            Add Jobs
-                        </button>
+                                    <div className="relative w-full max-w-[580px] mx-[10px] my-[50px] rounded-xl bg-white p-[35px] pt-[60px]">
+
+
+                                        <div className="flex items-center justify-between mb-[30px] ">
+                                            <h2 className=" mx-auto text-[20px] md:text-[24px] lg:text-[34px] font-black text-primary">
+                                                Pay Adjustment Detail
+                                            </h2>
+
+                                            <button
+                                                onClick={() => setOpen(false)}
+                                                className="w-5 h-5 md:w-8 md:h-8 rounded-full absolute top-[20px] right-[20px] bg-secondary text-white flex items-center justify-center text-lg font-bold" >
+                                                <svg
+                                                    viewBox="0 0 14 14"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="w-[10px] h-[10px] md:w-[14px] md:h-[14px]"
+                                                >
+                                                    <path
+                                                        d="M11.9268 13.4982L6.90334 8.4747L1.78513 13.5929L-0.000174888 11.8076L5.11804 6.6894L0.1192 1.69055L1.72608 0.0836703L6.72493 5.08251L11.8074 2.39727e-06L13.5927 1.7853L8.51023 6.86781L13.5337 11.8913L11.9268 13.4982Z"
+                                                        fill="white"
+                                                    />
+                                                </svg>
+
+                                            </button>
+                                        </div>
+
+
+                                        <div className="text-[14px] sm:text-[16px] font-normal text-[#515151]">
+
+                                            <div className="flex justify-between mb-4 py-[18px] border-y border-[#EEEFF5]">
+                                                <span className=" font-bold">Docket Total</span>
+                                                <span>1,471.30</span>
+                                            </div>
+
+
+                                            <div className="grid grid-cols-3 gap-[12px]  font-bold mb-2">
+                                                <span>Description</span>
+                                                <span>Value</span>
+                                                <span>VAT</span>
+                                            </div>
+
+
+                                            <div className="grid grid-cols-3 gap-3 mb-2 flex items-center">
+                                                <span>Admin Fee</span>
+                                                <input
+                                                    defaultValue="-9.00"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                                <input
+                                                    defaultValue="+20.00%"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                            </div>
+
+
+                                            <div className="grid grid-cols-3 gap-3 mb-2">
+                                                <span>Vehicle Hire charges</span>
+                                                <input
+                                                    defaultValue="-"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                                <input
+                                                    defaultValue="-"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                            </div>
+
+
+                                            <div className="grid grid-cols-3 gap-3 mb-2">
+                                                <span>Insurance charge</span>
+                                                <input
+                                                    defaultValue="-"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                                <input
+                                                    defaultValue="-"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                            </div>
+
+
+                                            <div className="grid grid-cols-3 gap-3 mb-2">
+                                                <span>Fuel charge</span>
+                                                <input
+                                                    defaultValue="-330.26"
+                                                    className="border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                                <input
+                                                    defaultValue="-"
+                                                    className=" text-[14px] border border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                            </div>
+
+
+                                            <div className="grid grid-cols-3 gap-3 mb-2 items-center">
+                                                <span>Any additional charges</span>
+
+                                                <input
+                                                    defaultValue="-"
+                                                    className="col-span-2 border text-[14px] border-[#22358114] rounded px-[20px] py-[15px]"
+                                                />
+                                            </div>
+
+                                            <div className="border-b border-[#EEEFF5] mt-[30px] mb-[20px]"></div>
+
+                                            <div className="grid grid-cols-3 gap-3 mt-4 ">
+                                                <span className="font-bold">Total</span>
+                                                <span>-339.26</span>
+                                                <span>-1.80</span>
+                                            </div>
+
+
+                                            <div className="bg-[#22358114] rounded-[15px] p-4 mt-[25px]">
+                                                <div className="flex justify-between text-primary font-bold">
+                                                    <span>Adjustment Total:</span>
+                                                    <span>-341.06</span>
+                                                </div>
+                                                <div className="flex justify-between mt-[15px] text-primary font-bold">
+                                                    <span>Total:</span>
+                                                    <span>1,130.24</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-center mt-[28px]">
+                                            <button className="bg-secondary text-white text-sm font-bold px-[20px] py-[12px] rounded-md">
+                                                Generate Invoice
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
+
                 </div>
                 <div className='w-full overflow-x-scroll'>
                     <table className='w-full border-separate border-spacing-y-3 '>

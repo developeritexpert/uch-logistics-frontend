@@ -28,7 +28,7 @@ function LayoutWrapper({children}) {
             <Sidebar collapsed={collapsed} setcollapsed={setcollapsed} />
             <div className={`${collapsed ? 'w-[calc(100%-80px)]' : 'w-[calc(100%-250px)]'} flex flex-col`}>
                 <Header collapsed={collapsed} setcollapsed={setcollapsed} />
-                <main className="h-[calc(100vh-160px)] p-[30px] bg-[#FAFBFC] overflow-auto">
+                <main className="h-[calc(100vh-160px)] md:p-[30px] p-[20px] bg-[#FAFBFC] overflow-auto">
                     {children}
                 </main>
                 <Footer />
