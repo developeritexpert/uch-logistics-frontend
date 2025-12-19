@@ -15,7 +15,7 @@ export default function Breadcrumb({ items = [] }) {
           {item.href ? (
             <Link
               href={item.href}
-              className="flex items-center gap-[10px] hover:text-[#223581]">
+              className="flex items-center  hover:text-[#223581]">
               {item.isHome && (
                 <div className="w-[29px] h-[29px] flex items-center justify-center rounded-full border border-[#515151]">
                   <svg
