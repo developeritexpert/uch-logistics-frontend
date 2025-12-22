@@ -23,16 +23,16 @@ function LoginPage() {
           alt="Logo"
           width={300}
           height={300}
-          className="w-[150px] md:w-[200px]"
+          className="w-[150px] md:w-[200px] 2xl:w-[308px]"
         />
       </div>
-      <div className="w-full max-w-[600px]">
+      <div className="w-full max-w-[600px] 2xl:max-w-[721px]">
         <div className="bg-white rounded-[25px] shadow-[0px_64px_94px_0px_#2235810D] p-[30px] md:p-[50px]">
           <div className="text-center mb-8">
-            <h1 className="text-[25px] md:text-[30px] font-bold text-primary leading-[1.2]">
+            <h1 className="text-[25px] md:text-[30px] 2xl:text-[42px] font-black text-primary leading-[1.2]">
               Welcome Back, Admin!
             </h1>
-            <p className="text-[#515151] text-sm">
+            <p className="text-[#515151] text-sm 2xl:text-[18px] mt-[5px]">
               Your command center for real-time logistics control starts here.
             </p>
           </div>
