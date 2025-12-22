@@ -10,7 +10,7 @@ export default function Breadcrumb({ items = [] }) {
         <div key={index} className="flex items-center gap-[10px]">
           {index !== 0 && (
             <svg className="h-3 w-3 text-[#515151]" width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.600097 6.60001L3.6001 3.60001L0.600098 0.600006" stroke="#515151" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M0.600097 6.60001L3.6001 3.60001L0.600098 0.600006" stroke="#515151" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           )}
           {item.href ? (
