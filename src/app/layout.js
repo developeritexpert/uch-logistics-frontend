@@ -1,6 +1,7 @@
 import { Lato } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "./layoutWrapper";
+import { Toaster } from 'react-hot-toast';
 
 const lato = Lato({
   subsets: ["latin"],
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       <body className={`${lato.className} antialiased`}>
         <LayoutWrapper>
           {children}
+          <Toaster position="top-right" />
         </LayoutWrapper>
       </body>
     </html>

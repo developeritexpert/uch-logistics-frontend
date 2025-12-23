@@ -8,7 +8,9 @@ import CustomDropdown from "@/components/layout/CustomDropdown";
 import { useParams } from "next/navigation";
 import { fetchSingleDriver } from "@/lib/api/driver.api";
 import { fetchAllJobs } from "@/lib/api/job.api";
-import { formatDriverRate } from "@/utils/helpers";
+import { formatDriverRate, handleDeleteDriver } from "@/utils/helpers";
+import Loader from "./Loader";
+import ConfirmModal from "./ConfirmModal";
 
 function DriverProfileDetail() {
   const { id } = useParams();
@@ -29,6 +31,10 @@ function DriverProfileDetail() {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [selectedDriver, setSelectedDriver] = useState(null);
 
   // Fetch driver data
   useEffect(() => {
@@ -136,20 +142,21 @@ function DriverProfileDetail() {
   };
 
   const handleEdit = (driverId, driverName) => {
-    console.log(`Edit driver: ${driverName} (ID: ${driverId})`);
-    alert(`Editing driver: ${driverName}`);
+    routerServerGlobal.push
   };
 
   const handleDelete = (driverId, driverName) => {
-    console.log(`Delete driver: ${driverName} (ID: ${driverId})`);
-    if (confirm(`Are you sure you want to delete ${driverName}?`)) {
-      alert(`Driver ${driverName} deleted successfully`);
-    }
+    console.log('HI');
+    
+    setSelectedDriver({ id: driverId, name: driverName });
+    setShowDeleteModal(true);
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">Loading...</div>
+      <div className="flex justify-center items-center h-64">
+        <Loader />
+      </div>
     );
   }
 
@@ -159,7 +166,7 @@ function DriverProfileDetail() {
         items={[
           { label: "", href: "/dashboard", isHome: true },
           { label: "Driver Profiles", href: "/drivers" },
-          { label: driver?.name || "Driver Details" },
+          { label: "Driver Details" },
         ]}
       />
 
@@ -167,8 +174,8 @@ function DriverProfileDetail() {
         <div className="bg-white rounded-[15px] border border-[#22358114] py-[22px] px-[20px] xl:basis-[312px] xl:shrink-0">
           <div className="flex flex-col items-center text-center">
             <div className="w-[53px] h-[53px] rounded-full">
-              <Image
-                src={driver?.profile_image || "/img/user-img.png"}
+              <img
+                src={driver?.image || "/img/user-img.png"}
                 alt=""
                 width={200}
                 height={200}
@@ -180,7 +187,7 @@ function DriverProfileDetail() {
               {driver?.name || "N/A"}
             </h3>
             <p className="text-sm text-[#515151]">
-              {driver?.employee_id || "N/A"}
+              {driver?.call_sign || "N/A"}
             </p>
           </div>
           <div className="border-b border-[#22358114] mt-[20px] mb-[25px]"></div>
@@ -195,13 +202,15 @@ function DriverProfileDetail() {
             </div>
             <div className="flex justify-between">
               <span className="font-bold">Account:</span>
-              <span className="font-normal">{driver?.account || "N/A"}</span>
+              <span className="font-normal">
+                {driver?.bank_account_no || "N/A"}
+              </span>
             </div>
           </div>
 
           <div className="mt-[25px] flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
             <Link
-              href={`/driver-profile-edit/${id}`}
+              href={`/drivers/edit/${id}`}
               className="block text-center flex-1 min-w-[80px] cursor-pointer rounded-[6px] bg-primary border border-primary px-[20px] py-[10px] text-sm font-semibold text-white hover:bg-primary/20 hover:text-primary duration-300 transition"
             >
               Edit Info
@@ -222,11 +231,11 @@ function DriverProfileDetail() {
               <p>
                 <span className="font-bold">Address:</span>
                 <br />
-                <p>
+                <span>
                   {[driver?.address_details, driver?.address, driver?.zip_code]
                     .filter(Boolean)
                     .join(", ") || "N/A"}
-                </p>
+                </span>
               </p>
               <p>
                 <span className="font-bold">Email:</span>
@@ -292,7 +301,7 @@ function DriverProfileDetail() {
                       : "text-red-600"
                   }`}
                 >
-                  {driver?.status == 'active' ? 'Active' : 'Inactive' || "N/A"}
+                  {driver?.status == "active" ? "Active" : "Inactive" || "N/A"}
                 </span>
               </p>
             </div>
@@ -501,6 +510,7 @@ function DriverProfileDetail() {
           <table className="w-full border-separate border-spacing-y-3">
             <thead className="text-[16px] sm:text-[18px] lg:text-[20px] font-bold">
               <tr>
+                <th>#</th>
                 <th className="text-center px-[20px] py-[5px] whitespace-nowrap">
                   Docket
                 </th>
@@ -530,13 +540,13 @@ function DriverProfileDetail() {
             <tbody className="text-[16px] text-normal text-[#515151]">
               {jobsLoading ? (
                 <tr>
-                  <td colSpan="7" className="text-center py-8">
-                    Loading jobs...
+                  <td colSpan={7}>
+                    <Loader text="Fetching Jobs..." />
                   </td>
                 </tr>
               ) : jobs.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center py-8">
+                  <td colSpan="9" className="text-center py-8">
                     No jobs found for this driver.
                   </td>
                 </tr>
@@ -544,30 +554,10 @@ function DriverProfileDetail() {
                 jobs.map((job) => (
                   <tr key={job.id || job._id} className="bg-white">
                     <td className="px-[20px] py-[20px] text-center border-y border-[#22358114] border-l rounded-l-[15px]">
-                      {/* <label className="group flex items-center gap-[15px] cursor-pointer select-none">
-                        <input type="checkbox" className="hidden" />
-                        <span
-                          className="w-[20px] h-[20px] lg:w-[30px] lg:h-[30px] rounded-[4px] border border-[#D1D5DB] flex items-center justify-center transition-all
-                          group-has-[:checked]:border-[#1E3A8A]
-                          group-has-[:checked]:bg-[#1E3A8A]"
-                        >
-                          <svg
-                            className="w-3 h-3 lg:w-4 lg:h-4 opacity-0 transition group-has-[:checked]:opacity-100"
-                            viewBox="0 0 12 10"
-                            fill="none"
-                          >
-                            <path
-                              d="M1 5L4.5 8.5L11 1"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                        <span>{job.docket_no || "N/A"}</span>
-                      </label> */}
                       {jobs.indexOf(job) + 1}
+                    </td>{" "}
+                    <td className="px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap">
+                      {job.docket_no}
                     </td>
                     <td className="px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap">
                       {job.driver_name || driver?.name || "N/A"}
@@ -689,6 +679,32 @@ function DriverProfileDetail() {
           </div>
         )}
       </section>
+
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Delete Driver"
+        description={`Are you sure you want to delete ${selectedDriver?.name}?`}
+        confirmText="Delete"
+        loading={deleteLoading}
+        onCancel={() => setShowDeleteModal(false)}
+        onConfirm={() =>
+          handleDeleteDriver({
+            driverId: selectedDriver.id,
+            driverName: selectedDriver.name,
+            setLoading: setDeleteLoading,
+            closeModal: () => setShowDeleteModal(false),
+            onSuccess: (msg) => {
+              setShowDeleteModal(false);
+              setDrivers((prev) =>
+                prev.filter((d) => d.id !== selectedDriver.id)
+              );
+            },
+            onError: (msg) => {
+              setShowDeleteModal(false);
+            },
+          })
+        }
+      />
     </div>
   );
 }

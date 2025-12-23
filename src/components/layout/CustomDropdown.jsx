@@ -19,7 +19,7 @@ const CustomDropdown = ({ driverId, driverName, onView, onEdit, onDelete }) => {
     };
 
     const handleDelete = () => {
-        onDelete(driverId, driverName);
+        onDelete(driverId, driverName );
         setIsOpen(false);
     };
 

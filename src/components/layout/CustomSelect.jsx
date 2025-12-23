@@ -70,7 +70,7 @@ const CustomSelect = ({
             isOpen ? 'transform rotate-180' : ''
           }`}
            width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.900391 0.900023L7.90039 7.90002L14.9004 0.900025" stroke="#515151" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M0.900391 0.900023L7.90039 7.90002L14.9004 0.900025" stroke="#515151" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
 
         {/* <ChevronDown 

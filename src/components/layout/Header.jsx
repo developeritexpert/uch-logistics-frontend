@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation"
 
 function Header({ collapsed, setcollapsed }) {
   const pathname = usePathname()
+  console.log(pathname , "pathname");
+  
 
   const isDashboard = pathname === "/" || pathname === "/dashboard"
 

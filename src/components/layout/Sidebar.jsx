@@ -4,14 +4,27 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logoutUser } from "@/lib/api/auth.api";
+import { useRouter } from "next/navigation";
 
 function Sidebar({ collapsed, setCollapsed }) {
+
+    const router = useRouter();
     const pathname = usePathname();
     const isActive = pathname === "/dashboard";
-    const isDriverActive = pathname === "/driver-profiles";
+    const isDriverActive = pathname === "/drivers";
     const isJobActive = pathname === "/job-management";
     const isInvoiceActive = pathname === "/invoices";
     const isSettingsActive = pathname === "/settings";
+
+    const handleLogout = async () => {
+    try {
+      await logoutUser();        
+      router.replace("/login");
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
     return (
         <aside
@@ -69,7 +82,7 @@ function Sidebar({ collapsed, setCollapsed }) {
                         Dashboard
                     </Link>
                     <Link
-                        href="/driver-profiles"
+                        href="/drivers"
                         className={`
                         ${collapsed ? "2xl:gap-[45px] gap-[35px]" : "gap-[10px]"}
                         flex items-center whitespace-nowrap 2xl:text-[20px] hover:font-black
@@ -172,7 +185,6 @@ function Sidebar({ collapsed, setCollapsed }) {
 
                                 <path
                                     d="M1.3514 8.38522C1.49116 8.38522 6.38307 9.27013 6.70889 9.3636V7.68638C6.70889 7.45314 6.89496 7.22078 7.17449 7.22078H9.55056C9.7838 7.22078 10.0162 7.40685 10.0162 7.68638V7.96592V9.3636C10.342 9.31731 15.2339 8.43152 15.3737 8.38522C16.166 8.24546 16.7713 7.54661 16.7713 6.66171V5.26402C16.7713 4.28564 16.0262 3.54051 15.0941 3.54051H12.1127V2.14282C12.1127 0.97838 11.1343 0 9.96987 0H6.80148C5.63704 0 4.65866 0.97838 4.65866 2.14282V3.54051H1.67722C0.745135 3.54051 0 4.33283 0 5.26402V6.66171C0 7.50032 0.559075 8.24546 1.39769 8.38522H1.3514ZM5.54445 2.60842V2.09564C5.54445 1.39679 6.10353 0.884008 6.80237 0.884008H9.97076C10.6696 0.884008 11.2287 1.44308 11.2287 2.09564V3.49332H5.59164V2.56123L5.54445 2.60842Z"
-                                    v
                                     className={`duration-300 ${isJobActive
                                             ? "fill-secondary"
                                             : "fill-white group-hover:fill-secondary"
@@ -286,11 +298,11 @@ function Sidebar({ collapsed, setCollapsed }) {
 
             {/* logout button  */}
             <div className="px-[20px]">
-                <Link
-                    href=""
+                <button
+                    onClick={handleLogout}
                     className={`
                     border border-[#FFFFFF33] 2xl:text-[20px] bg-[#FFFFFF0D] rounded-[130px] flex items-center w-fit m-auto
-                    text-white duration-300 py-[10px]
+                    text-white duration-300 py-[10px] cursor-pointer
                     ${collapsed
                                 ? "gap-0 px-[10px]"
                                 : "gap-[5px] px-[30px]"
@@ -318,7 +330,7 @@ function Sidebar({ collapsed, setCollapsed }) {
                                 ? "opacity-0 scale-0 text-[0px]"
                                 : "opacity-100 scale 1 text-inherit"
                             }`}>Logout</span>
-                </Link>
+                </button>
             </div>
         </aside>
     );

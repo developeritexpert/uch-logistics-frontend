@@ -41,7 +41,7 @@ export default function DriverProfileEdit() {
             <Breadcrumb
                 items={[
                     { href: "/dashboard", isHome: true },
-                    { label: "Driver Profiles", href: "/driver-profiles" },
+                    { label: "Driver Profiles", href: "/drivers" },
                     { label: "Vikas Sabharwal", href: "/driver-profile-detail" },
                     { label: "Profile Edit" },
                 ]}
@@ -57,7 +57,7 @@ export default function DriverProfileEdit() {
                             <img src={photo} className="w-full h-full object-cover" />
                         ) : (
                             <span className="w-[53px] h-[53px] rounded-full">
-                                <img src="img/user-img.png" alt="" />
+                                <img src="/img/user-img.png" alt="" />
                             </span>
                         )}
                     </div>
