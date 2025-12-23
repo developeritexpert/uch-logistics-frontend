@@ -2,9 +2,20 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const CustomDropdown = ({ driverId, driverName, onView, onEdit, onDelete }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const buttonRef = useRef(null);
     const dropdownRef = useRef(null);
 
     const toggleDropdown = () => {
+        if (!isOpen && buttonRef.current) {
+            const buttonRect = buttonRef.current.getBoundingClientRect();
+            
+            // Calculate position for the dropdown
+            setDropdownPosition({
+                top: buttonRect.bottom + window.scrollY,
+                left: buttonRect.right - 192, // 192px is approximately dropdown width (48 * 4)
+            });
+        }
         setIsOpen(!isOpen);
     };
 
@@ -25,7 +36,8 @@ const CustomDropdown = ({ driverId, driverName, onView, onEdit, onDelete }) => {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+                buttonRef.current && !buttonRef.current.contains(event.target)) {
                 setIsOpen(false);
             }
         };
@@ -36,58 +48,67 @@ const CustomDropdown = ({ driverId, driverName, onView, onEdit, onDelete }) => {
         };
     }, []);
 
+    // Close dropdown on scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsOpen(false);
+        };
+
+        window.addEventListener('scroll', handleScroll, true);
+        return () => window.removeEventListener('scroll', handleScroll, true);
+    }, []);
+
     return (
-        <div className="relative" ref={dropdownRef}>
-            {/* <button
-                onClick={toggleDropdown}
-                className="p-2 focus:outline-0"
-                aria-label="Actions">
-                <svg width="33" height="8" viewBox="0 0 33 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="29.3337" cy="3.66667" r="3.66667" transform="rotate(90 29.3337 3.66667)" fill="#223581" fill-opacity="0.08" />
-                    <circle cx="16.5007" cy="3.66667" r="3.66667" transform="rotate(90 16.5007 3.66667)" fill="#223581" fill-opacity="0.08" />
-                    <circle cx="3.66667" cy="3.66667" r="3.66667" transform="rotate(90 3.66667 3.66667)" fill="#223581" fill-opacity="0.08" />
-                </svg>
-
-
-            </button> */}
+        <div className="relative">
             <button
+                ref={buttonRef}
                 onClick={toggleDropdown}
                 className="p-1 focus:outline-0 cursor-pointer"
-                aria-label="Actions">
+                aria-label="Actions"
+            >
                 <svg
                     width="33"
                     height="8"
                     viewBox="0 0 33 8"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                    xmlns="http://www.w3.org/2000/svg"
+                >
                     <circle
                         cx="29.3337"
                         cy="3.66667"
                         r="3.66667"
                         transform="rotate(90 29.3337 3.66667)"
                         fill="#223581"
-                        fillOpacity={isOpen ? "1" : "0.08"}/>
+                        fillOpacity={isOpen ? "1" : "0.08"}
+                    />
                     <circle
                         cx="16.5007"
                         cy="3.66667"
                         r="3.66667"
                         transform="rotate(90 16.5007 3.66667)"
                         fill="#223581"
-                        fillOpacity={isOpen ? "1" : "0.08"}/>
+                        fillOpacity={isOpen ? "1" : "0.08"}
+                    />
                     <circle
                         cx="3.66667"
                         cy="3.66667"
                         r="3.66667"
                         transform="rotate(90 3.66667 3.66667)"
                         fill="#223581"
-                        fillOpacity={isOpen ? "1" : "0.08"}/>
+                        fillOpacity={isOpen ? "1" : "0.08"}
+                    />
                 </svg>
             </button>
 
-
-
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-[7px_11px_34px_#22358114] border border-gray-200 z-50">
+                <div
+                    ref={dropdownRef}
+                    className="fixed w-48 bg-white rounded-lg shadow-[7px_11px_34px_#22358114] border border-gray-200 z-[9999]"
+                    style={{
+                        top: `${dropdownPosition.top}px`,
+                        left: `${dropdownPosition.left}px`,
+                    }}
+                >
                     <div className="py-1">
                         <button
                             onClick={handleView}
