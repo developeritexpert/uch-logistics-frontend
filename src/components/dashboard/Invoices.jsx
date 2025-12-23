@@ -170,7 +170,7 @@ function Invoices() {
                             </div>
                         </div>
 
-                        <div className="relative  w-full max-w-[624px] ">
+                        <div className="relative  w-full 2xl:min-w-[624px] xl:!min-w-[350px]">
                             <input
                                 type="text"
                                 placeholder="Search with name, callsign, Journey etc..."
@@ -193,7 +193,7 @@ function Invoices() {
 
 
                     <div className="flex items-center gap-3">
-                        <button className=" gap-2 rounded-md bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary py-[10px] px-[25px] min-w-[100px] duration-300 leading-normal text-sm cursor-pointer font-semibold text-white transition">
+                        <button className=" gap-2 rounded-md bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary 2xl:py-[12px] py-[10px] px-[25px] min-w-[100px] duration-300 leading-normal 2xl:text-[18px] text-sm cursor-pointer font-semibold text-white transition">
                             Generate Invoice
                         </button>
                     </div>
@@ -204,19 +204,19 @@ function Invoices() {
                     <table className='w-full border-separate border-spacing-y-3'>
                         <thead className='text-[16px] md:text-[18px] lg:text-[20px] text-bold'>
                             <tr>
-                                <th className='text-center px-[20px] py-[5px] whitespace-nowrap'>#ID</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Drivers</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Callsign</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Date</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Driver Total</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Status</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Actions</th>
+                                <th className='text-center px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>#ID</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Drivers</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Callsign</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Date</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Driver Total</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Status</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Actions</th>
                             </tr>
                         </thead>
                         <tbody className='text-[16px] text-normal text-[#515151]'>
                             {drivers.map((driver) => (
                                 <tr key={driver.id} className='bg-white'>
-                                    <td className="pl-[50px] pr-[20px] py-[20px] border-y border-[#22358114] border-l rounded-l-[15px] whitespace-nowrap">
+                                    <td className="pl-[50px] pr-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] border-l rounded-l-[15px] whitespace-nowrap">
                                         <label className="group flex items-center  gap-[15px] cursor-pointer select-none">
 
                                             <input
@@ -245,19 +245,19 @@ function Invoices() {
                                             </span>
                                         </label>
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.driver}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.callsign}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.date}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.driverTotal}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114]'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]'>
                                         <span className={`text-sm font-medium  ${driver.status === "Paid"
                                             ? "text-[#009249]"
                                             : "text-[#C00000]"}`}>
@@ -281,7 +281,7 @@ function Invoices() {
                                     </div>
                                 </td> */}
 
-                                    <td className="px-[20px] py-[20px] border-y border-[#22358114] border-r rounded-r-[15px]">
+                                    <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] border-r rounded-r-[15px]">
                                         <div className="flex justify-center">
                                             <PaidCustomDropdown />
                                         </div>
