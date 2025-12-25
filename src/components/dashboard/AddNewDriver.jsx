@@ -49,7 +49,7 @@ function AddNewDriver() {
                 items={[
                     { href: "/dashboard", isHome: true },
                     { label: "Driver Profiles", href: "/driver-profiles" },
-                    { label: "Profile Add New Driver" },
+                    { label: "Add New Driver" },
                 ]}
             />
 
@@ -147,7 +147,6 @@ function AddNewDriver() {
                         placeholder="Active"
                         options={["Active", "Inactive"]}
                         onChange={(value) => handleSelectChange('status', value)}
-                        className="text-green-600"
                     />
                 </div>
 

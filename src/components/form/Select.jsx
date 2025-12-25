@@ -16,7 +16,7 @@ export default function Select({
             </label>
             <select
                 {...props}
-                className={` text-[#515151] w-full border border-[#22358114] rounded px-[20px] py-[12px] text-sm
+                className={` text-[#515151] w-full border border-[#22358114] rounded px-[20px] 2xl:py-[20px] py-[12px] text-sm
                          focus:outline-none focus:ring-1 focus:ring-[#515151] ${className}`}>
                 {options.map((op, index) => (
                     <option key={index} value={op}>

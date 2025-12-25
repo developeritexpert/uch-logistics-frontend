@@ -55,7 +55,7 @@ const CustomSelect = ({
       {/* Dropdown Trigger */}
       <button
         type="button"
-        className={`w-full flex items-center text-sm justify-between px-[20px] py-[10px] text-left bg-white border rounded-[5px] focus:outline-0 focus:border-[#515151] ${
+        className={`w-full flex items-center lg:text-base text-sm justify-between px-[20px] 2xl:py-[20px] py-[10px] text-left bg-white border rounded-[5px] focus:outline-0 focus:border-[#515151] ${
           disabled 
             ? 'bg-gray-50 cursor-not-allowed text-gray-400' 
             : ''
@@ -94,7 +94,7 @@ const CustomSelect = ({
                 <li key={index}>
                   <button
                     type="button"
-                    className={`w-full text-sm flex items-center justify-between px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
+                    className={`w-full lg:text-base text-sm flex items-center justify-between px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
                       selectedValue === option ? 'bg-primary/5 text-primary' : 'text-[#747474]'
                     }`}
                     onClick={() => handleSelect(option)}

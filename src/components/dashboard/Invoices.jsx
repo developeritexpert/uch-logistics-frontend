@@ -9,7 +9,7 @@ const drivers = [
         docket: "10848299",
         driver: "Vikas Sabharwal",
         callsign: "VIKAS",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
 
@@ -19,7 +19,7 @@ const drivers = [
         docket: "10848400",
         driver: "Andrei Toluntan",
         callsign: "XANDRETT",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
     },
@@ -28,7 +28,7 @@ const drivers = [
         docket: "10848299",
         driver: "Catalin Constantin Potur",
         callsign: "CATALIN",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
     },
@@ -37,7 +37,7 @@ const drivers = [
         docket: "10848416",
         driver: "Georgian-Alin Iacob",
         callsign: "IACOB",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
     },
@@ -46,7 +46,7 @@ const drivers = [
         docket: "10848436",
         driver: "Mihai Gabriel Iacob",
         callsign: "MIHAI",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
     },
@@ -55,7 +55,7 @@ const drivers = [
         docket: "10848479",
         driver: "Charnjit Singh Sangha",
         callsign: "CHARAN",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Pending",
         driverTotal: "$1,130.24",
     },
@@ -64,7 +64,7 @@ const drivers = [
         docket: "10848484",
         driver: "Bogdan Vasile Podariu",
         callsign: "XBOGDAN",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
     },
@@ -73,7 +73,7 @@ const drivers = [
         docket: "10848509",
         driver: "Alexandru Ionut Negru",
         callsign: "NEGRU",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Pending",
         driverTotal: "$1,130.24",
     },
@@ -82,7 +82,7 @@ const drivers = [
         docket: "10848529",
         driver: "Vikas Sabharwal",
         callsign: "VIKAS",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
     },
@@ -91,7 +91,7 @@ const drivers = [
         docket: "10848540",
         driver: "Andrei Toluntan",
         callsign: "XANDRETT",
-        date: "11/3/2025 5:00:00 AM",
+        date: "12/02/2025 - 11/3/2025",
         status: "Paid",
         driverTotal: "$1,130.24",
     },
@@ -155,7 +155,7 @@ function Invoices() {
                             <div className="relative w-full ]">
                                 <input
                                     type="date"
-                                    className="px-[16px] py-[10] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal "
+                                    className="px-[16px] 2xl:py-[15px] py-[10] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal "
                                 />
                             </div>
 
@@ -165,7 +165,7 @@ function Invoices() {
                             <div className="relative  w-full sm:w-[155px]">
                                 <input
                                     type="date"
-                                    className="px-[16px] py-[10] w-full  px-[13px] text-[#B4B4B4] rounded-[6px] text-[16px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
+                                    className="px-[16px] 2xl:py-[15px] py-[10] w-full  px-[13px] text-[#B4B4B4] rounded-[6px] text-[16px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
                                 />
                             </div>
                         </div>
@@ -174,7 +174,7 @@ function Invoices() {
                             <input
                                 type="text"
                                 placeholder="Search with name, callsign, Journey etc..."
-                                className="pl-[16px] pr-[60px] py-[10] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal   "
+                                className="pl-[16px] pr-[60px] 2xl:py-[15px] py-[10] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal   "
                             />
                             <svg
                                 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -258,7 +258,7 @@ function Invoices() {
                                         {driver.driverTotal}
                                     </td>
                                     <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]'>
-                                        <span className={`text-sm font-medium  ${driver.status === "Paid"
+                                        <span className={`2xl:text-base text-sm font-medium  ${driver.status === "Paid"
                                             ? "text-[#009249]"
                                             : "text-[#C00000]"}`}>
                                             {driver.status}
