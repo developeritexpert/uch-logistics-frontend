@@ -53,16 +53,16 @@ function AddNewDriver() {
                 ]}
             />
 
-            <div className="mx-auto bg-white rounded-lg shadow px-[30px] py-[30px] md:px-[40px] md:py-[40px] mt-[20px]">
+            <div className="mx-auto bg-white rounded-[15px] border border-[#22358114] px-[30px] py-[30px] md:px-[40px] md:py-[40px] mt-[20px]">
 
                 <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
                     Driver Information
                 </h2>
 
                 <div className="flex flex-col sm:flex-row items-center gap-[15px]">
-                    <div className="w-[120px] h-[120px] rounded-[15px] border border-[#22358114] flex items-center justify-center overflow-hidden">
+                    <div className="w-[120px] h-[120px] rounded-[5px] border border-[#22358114] flex items-center justify-center overflow-hidden">
                         {photo ? (
-                            <img src={photo} className="w-full h-full object-cover" />
+                            <img src={photo} className="w-[53px] h-[53px] rounded-full object-cover" />
                         ) : (
                             <span className="w-[53px] h-[53px] rounded-full">
                                 <img src="img/user-img.png" alt="" />
@@ -70,9 +70,9 @@ function AddNewDriver() {
                         )}
                     </div>
 
-                    <div className="flex items-center flex-col gap-[14px]">
+                    <div className="flex flex-col gap-[14px]">
                         <label className="text-[16px] font-bold">Profile Photo</label>
-                        <label className="text-sm font-bold bg-[#223581]/10 text-primary px-[22px] py-[12px] rounded cursor-pointer hover:bg-[#223581]/20 duration-300 transition-colors">
+                        <label className="text-sm font-bold bg-[#223581]/10 text-primary px-[22px] py-[12px] rounded-[6px] cursor-pointer hover:bg-[#223581]/20 duration-300 transition-colors">
                             Upload Photo
                             <input
                                 type="file"
@@ -154,13 +154,13 @@ function AddNewDriver() {
                 {/* ACTION BUTTONS */}
                 <div className="flex gap-[10px]">
                     <button 
-                        className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px]"
+                        className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[15px] py-[12px] rounded-[6px]  min-w-[150px] 2xl:min-w-[179px]"
                         onClick={handleAddDriver}
                     >
                         Add Driver
                     </button>
                     <button 
-                        className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px]"
+                        className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[15px] py-[12px] rounded-[6px]  min-w-[150px] 2xl:min-w-[179px]"
                         onClick={handleCancel}
                     >
                         Cancel

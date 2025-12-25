@@ -26,13 +26,13 @@ function LoginPage() {
           className="w-[150px] md:w-[200px] 2xl:w-[308px]"
         />
       </div>
-      <div className="w-full max-w-[600px] 2xl:max-w-[721px]">
+      <div className="w-full max-w-[600px] 2xl:min-w-[721px]">
         <div className="bg-white rounded-[25px] shadow-[0px_64px_94px_0px_#2235810D] p-[30px] md:p-[50px]">
           <div className="text-center mb-8">
             <h1 className="text-[25px] md:text-[30px] 2xl:text-[42px] font-black text-primary leading-[1.2]">
               Welcome Back, Admin!
             </h1>
-            <p className="text-[#515151] text-sm 2xl:text-[18px] mt-[5px]">
+            <p className="text-[#515151] text-sm 2xl:text-[18px] mt-[10px]">
               Your command center for real-time logistics control starts here.
             </p>
           </div>
@@ -40,15 +40,15 @@ function LoginPage() {
             <div className="mb-6">
               <input
                 type="email"
-                className="w-full px-4 py-3 border border-[#22358114] rounded-[7px] focus:outline-0 focus:border-[#515151] duration-300 text-sm placeholder:text-[#515151] placeholder:font-light"
+                className="w-full 2xl:py-[25px] px-4 py-3 border border-[#22358114] rounded-[7px] focus:outline-0 focus:border-[#515151] duration-300 2xl:text-[18px] text-sm placeholder:text-[#515151] placeholder:font-light"
                 placeholder="Enter Your Email"
               />
             </div>
 
-            <div className="mb-6 relative">
+            <div className="mb-[20px] relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full px-4 py-3 border border-[#22358114] rounded-[7px] focus:outline-0 focus:border-[#515151] duration-300 text-sm placeholder:text-[#515151] placeholder:font-light pr-10"
+                className="w-full 2xl:py-[25px] px-4 py-3 border border-[#22358114] rounded-[7px] focus:outline-0 focus:border-[#515151] duration-300 2xl:text-[18px] text-sm placeholder:text-[#515151] placeholder:font-light pr-10"
                 placeholder="Password"
               />
               <button
@@ -58,20 +58,20 @@ function LoginPage() {
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="#515151">
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                  <svg className="w-[15px] 2xl:w-[20px]" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5C5.63636 5 1 12 1 12C1 12 5.63636 19 12 19C18.3636 19 23 12 23 12C23 12 18.3636 5 12 5Z" stroke="#515151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#515151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="#515151">
-                    <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
-                    <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                  <svg className="w-[15px] 2xl:w-[20px]" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5.63636 20 1 12 1 12C2.015 9.747 3.558 7.607 5.06 6.06M9.9 4.24C10.5883 4.07888 11.2931 3.99834 12 4C18.3636 4 23 12 23 12C22.393 13.136 21.669 14.23 20.87 15.17M14.12 14.12C13.8454 14.4147 13.5141 14.6512 13.1462 14.8151C12.7782 14.9791 12.3809 15.0673 11.9781 15.0744C11.5753 15.0815 11.1752 15.0074 10.8016 14.8565C10.4281 14.7056 10.0887 14.481 9.80385 14.1962C9.51897 13.9113 9.29439 13.5719 9.14351 13.1984C8.99262 12.8248 8.91853 12.4247 8.92563 12.0219C8.93274 11.6191 9.02091 11.2218 9.18488 10.8538C9.34884 10.4859 9.58525 10.1546 9.88 9.88" stroke="#515151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 1L23 23" stroke="#515151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )}
               </button>
             </div>
 
-            <div className="mb-[20px]">
+            <div className="mb-[40px]">
               <label className="flex items-center cursor-pointer">
                 <input
                   type="checkbox"
@@ -79,21 +79,21 @@ function LoginPage() {
                   checked={rememberMe}
                   onChange={handleRememberMeChange}
                 />
-                <span className="ml-2 text-[#515151] text-sm">Remember Me?</span>
+                <span className="ml-2 text-[#515151] 2xl:text-base text-sm">Remember Me?</span>
               </label>
             </div>
 
-            <Link 
+            <Link
               href="/dashboard"
-              className="w-full block text-center bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 text-white py-3 px-4 rounded-[7px] font-medium"
+              className="w-full 2xl:text-[24px] block text-center bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 text-white 2xl:py-[20px] py-3 px-4 rounded-[7px] font-medium"
             >
               Login
             </Link>
 
-            <div className="mt-[15px] text-center">
+            <div className="mt-[25px] text-center">
               <a
                 href="#"
-                className="text-[#515151] text-sm font-medium hover:text-primary duration-300"
+                className="text-[#515151] 2xl:text-[18px] lg:text-base text-sm font-medium hover:text-primary duration-300"
               >
                 Forgot Password?
               </a>
