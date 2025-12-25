@@ -5,3 +5,18 @@ export const fetchAllJobs = (data) =>
     params: data,
   });
 
+export const fetchSingleJob = (id) =>
+  api.get("/job/get-job/" + id);
+
+export const addJob = (data) => 
+  api.post("/job/add-job", data);
+
+export const updateJob = (id, data) =>
+  api.put("/job/update-job/" + id, data);
+
+export const deleteJob = (id) =>
+  api.delete(`/job/delete-job/${id}`);
+
+export const importJobs = (data) =>
+  api.post("/job/import-jobs", data);
+

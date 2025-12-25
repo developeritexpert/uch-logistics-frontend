@@ -6,6 +6,7 @@ import CustomDropdown from "@/components/layout/CustomDropdown";
 import { fetchDashboardData } from "@/lib/api/dashboard.api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Loader from "./Loader";
 
 function Page() {
   const router = useRouter();
@@ -32,7 +33,7 @@ function Page() {
   }, [router]);
 
   if (loading) {
-    return <p className="text-center">Loading dashboard...</p>;
+    return <Loader text="Loading dashboard..." />;
   }
 
   const drivers = dashboard?.recent_active_drivers || [];
@@ -102,7 +103,7 @@ function Page() {
                 <table className='w-full border-separate border-spacing-y-3'>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>#ID</th>
                             <th className='text-left px-[20px] py-[5px] 2xl:text-[20px]'>Drivers</th>
                             <th className='text-left px-[20px] py-[5px] 2xl:text-[20px]'>Callsign</th>
                             <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Position</th>

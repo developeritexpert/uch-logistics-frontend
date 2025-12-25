@@ -1,173 +1,635 @@
-"use client"
-import { useState } from "react";
-import Breadcrumb from './Breadcrumb'
+"use client";
+import { useState, useEffect } from "react";
+import Breadcrumb from "./Breadcrumb";
 import Input from "../form/Input";
 import CustomSelect from "../layout/CustomSelect";
+import { useParams, useRouter } from "next/navigation";
+import { fetchSingleDriver, updateDriver } from "@/lib/api/driver.api";
+import toast from "react-hot-toast";
 
 export default function DriverProfileEdit() {
-    const [photo, setPhoto] = useState(null);
-    const [formData, setFormData] = useState({
-        position: "Van Driver",
-        workingHoursType: "Full Time",
-        workingAs: "Per hour",
-        status: "Active"
-    });
+  const { id } = useParams();
+  const router = useRouter();
 
-    const handlePhotoUpload = (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (!file) return;
-        setPhoto(URL.createObjectURL(file));
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+  const [driverName, setDriverName] = useState("");
+
+  const [errors, setErrors] = useState({});
+
+  const [formData, setFormData] = useState({
+    name: "",
+    call_sign: "",
+    position: "",
+    per_hour_rate: "",
+    total_hours: "",
+    weekly_fixed_rate: "",
+    total_days: "",
+    bank_account_no: "",
+    payment_reference: "",
+    iban_no: "",
+    address_details: "",
+    phone_number: "",
+    email: "",
+    status: "",
+    zip_code: "",
+    payroll_id: "",
+    working_type: "",
+  });
+
+  // Fetch driver data on component mount
+useEffect(() => {
+  const fetchDriver = async () => {
+    setIsFetching(true);
+    try {
+      const res = await fetchSingleDriver(id);
+
+      if (res.status === 200 && res.data.success === true) {
+        const data = res.data.data;
+        setDriverName(data.name || "");
+
+        let workingType = "";
+        if (data.per_hour_rate && data.total_hours) {
+          workingType = "Fixed Hours (Hourly Rate)";
+        } else if (data.weekly_fixed_rate && data.total_days) {
+          workingType = "Fixed Days (Weekly Rate)";
+        }
+
+
+        if (data.image) {
+          setPhotoPreview(data.image);
+        }
+
+        const formattedStatus = data.status
+          ? data.status.charAt(0).toUpperCase() + data.status.slice(1)
+          : "";
+
+        setFormData({
+          name: data.name ?? "",
+          call_sign: data.call_sign ?? "",
+          position: data.position ?? "",
+          per_hour_rate: data.per_hour_rate != null ? String(data.per_hour_rate) : "",
+          total_hours: data.total_hours != null ? String(data.total_hours) : "",
+          weekly_fixed_rate: data.weekly_fixed_rate != null ? String(data.weekly_fixed_rate) : "",
+          total_days: data.total_days != null ? String(data.total_days) : "",
+          bank_account_no: data.bank_account_no ?? "",
+          payment_reference: data.payment_reference ?? "",
+          iban_no: data.iban_no ?? "",
+          address_details: data.address_details ?? "",
+          phone_number: data.phone_number ?? "",
+          email: data.email ?? "",
+          status: formattedStatus,
+          zip_code: data.zip_code ?? "",
+          payroll_id: data.payroll_id ?? "",
+          working_type: workingType,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch driver details");
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  if (id) {
+    fetchDriver();
+  }
+}, [id]);
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload a valid image file");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    setPhotoFile(file);
+    const url = URL.createObjectURL(file);
+    setPhotoPreview(url);
+  };
+
+  const handleInputChange = (field, value) => {
+    setErrors((prev) => ({ ...prev, [field]: null }));
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSelectChange = (field, value) => {
+    setErrors((prev) => ({ ...prev, [field]: null }));
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.call_sign.trim())
+      newErrors.call_sign = "Call sign is required";
+    if (!formData.position) newErrors.position = "Position is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    if (!formData.phone_number.trim())
+      newErrors.phone_number = "Phone number is required";
+    if (!formData.address_details.trim())
+      newErrors.address_details = "Address is required";
+    if (!formData.zip_code.trim()) newErrors.zip_code = "Zip code is required";
+
+    if (!formData.bank_account_no.trim())
+      newErrors.bank_account_no = "Bank account number is required";
+    if (!formData.iban_no.trim())
+      newErrors.iban_no = "IBAN / Sort code is required";
+    if (!formData.payroll_id.trim())
+      newErrors.payroll_id = "Payroll ID is required";
+
+    if (!formData.working_type)
+      newErrors.working_type = "Working type is required";
+
+    if (!formData.status) newErrors.status = "Status is required";
+
+    if (formData.working_type === "Fixed Hours (Hourly Rate)") {
+      if (!formData.per_hour_rate)
+        newErrors.per_hour_rate = "Hourly rate is required";
+      if (!formData.total_hours)
+        newErrors.total_hours = "Total hours are required";
+    }
+
+    if (formData.working_type === "Fixed Days (Weekly Rate)") {
+      if (!formData.weekly_fixed_rate)
+        newErrors.weekly_fixed_rate = "Weekly rate is required";
+      if (!formData.total_days)
+        newErrors.total_days = "Total working days are required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSave = async () => {
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    const toastId = toast.loading("Updating driver...");
+
+    try {
+      const submitData = new FormData();
+
+      if (photoFile) submitData.append("image", photoFile);
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value === "" || value === null || value === undefined) return;
+
+        if (
+          formData.working_type === "Fixed Hours (Hourly Rate)" &&
+          ["weekly_fixed_rate", "total_days"].includes(key)
+        )
+          return;
+
+        if (
+          formData.working_type === "Fixed Days (Weekly Rate)" &&
+          ["per_hour_rate", "total_hours"].includes(key)
+        )
+          return;
+
+        if (key === "status") value = value.toLowerCase();
+
+        submitData.append(key, value);
+      });
+
+      submitData.delete("working_type");
+
+      const response = await updateDriver(id, submitData);
+
+      toast.success(response.data.message || "Driver updated successfully", {
+        id: toastId,
+      });
+
+      router.push("/drivers");
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message ||
+          "Failed to update driver. Please try again.",
+        { id: toastId }
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    router.back();
+  };
+
+  // Cleanup blob URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (photoPreview && photoPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(photoPreview);
+      }
     };
+  }, [photoPreview]);
 
-    const handleSelectChange = (field, value) => {
-        setFormData(prev => ({
-            ...prev,
-            [field]: value
-        }));
-    };
-
-    const handleSave = () => {
-        console.log("Saving changes:", formData);
-        // Add your save logic here
-    };
-
-    const handleCancel = () => {
-        console.log("Canceling changes");
-        // Add cancel logic here
-    };
-
+  // Show loading state while fetching data
+  if (isFetching) {
     return (
-        <div>
-            <Breadcrumb
-                items={[
-                    { href: "/dashboard", isHome: true },
-                    { label: "Driver Profiles", href: "/drivers" },
-                    { label: "Vikas Sabharwal", href: "/driver-profile-detail" },
-                    { label: "Profile Edit" },
-                ]}
-            />
-            <div className="mx-auto bg-white rounded-lg shadow px-[10px] py-[20px] sm:p-[30px] md:p-[40px] mt-[20px]">
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-lg font-semibold text-primary">Loading driver details...</div>
+      </div>
+    );
+  }
 
-                <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
-                    Driver Information
-                </h2>
-                <div className="flex flex-col sm:flex-row items-center gap-[15px]">
-                    <div className="w-[120px] h-[120px] rounded-[15px] border border-[#22358114] flex items-center justify-center overflow-hidden">
-                        {photo ? (
-                            <img src={photo} className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="w-[53px] h-[53px] rounded-full">
-                                <img src="/img/user-img.png" alt="" />
-                            </span>
-                        )}
-                    </div>
-                    <div className="flex items-center flex-col gap-[14px]">
-                        <label className="text-[16px] font-bold">Profile Photo</label>
-                        <label className="text-sm font-bold bg-[#223581]/10 text-primary px-[22px] py-[12px] rounded cursor-pointer hover:bg-[#223581]/20 duration-300 transition-colors">
-                            Upload Photo
-                            <input
-                                type="file"
-                                accept="image/*"
-                                hidden
-                                onChange={handlePhotoUpload} />
-                        </label>
-                    </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[30px] mt-[20px]">
-                    <Input label="Name" defaultValue="Vikas Saharwal" />
-                    <Input label="Callsign" defaultValue="Vikas" />
-                    <CustomSelect
-                        label="Position"
-                        options={["Van Driver", "Truck Driver"]}
-                        defaultValue="Van Driver"
-                        onChange={(value) => handleSelectChange('position', value)}
-                    />
-                    <Input label="Account" defaultValue="5002" />
-                </div>
+  return (
+    <div>
+      <Breadcrumb
+        items={[
+          { href: "/dashboard", isHome: true },
+          { label: "Driver Profiles", href: "/drivers" },
+          { label: driverName || "Driver", href: `/driver-profile-detail/${id}` },
+          { label: "Profile Edit" },
+        ]}
+      />
 
-                <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
-                    Contact Information
-                </h2>
-                <div className="flex flex-col md:flex-row gap-[20px]">
-                    <Input
-                        label="Address"
-                        wrapperClassName="flex-[2]"
-                        defaultValue="4941 Holt Street Oklahoma City, OK"
-                    />
-                    <Input
-                        label="Zip Code"
-                        wrapperClassName="flex-1"
-                        defaultValue="73109"
-                    />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] my-[20px]">
-                    <Input
-                        label="Email"
-                        defaultValue="vikassaharwal@gmail.com"
-                    />
-                    <Input
-                        label="Phone"
-                        defaultValue="+1 405 636 2685"
-                    />
-                </div>
+      <div className="mx-auto bg-white rounded-lg shadow px-[30px] py-[30px] md:px-[40px] md:py-[40px] mt-[20px]">
+        <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
+          Driver Information
+        </h2>
 
-                <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
-                    Payment Details
-                </h2>                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[20px]">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px]">
-                        <Input label="Rate" defaultValue="$21.02/hour" />
-                        <div className="flex items-end w-full">
-                            <CustomSelect 
-                                options={["Full Time", "Part Time"]}
-                                defaultValue="Full Time"
-                                onChange={(value) => handleSelectChange('workingHoursType', value)}
-                                wrapperClassName="w-full"
-                            />
-                        </div>
-                    </div>
-                    <Input label="Bank Account Number" defaultValue="5450 3205 7611 0692" />
-                    <Input label="Sort Code / IBAN" defaultValue="12 243 0E7 93 9138 871 1" />
-                    <Input label="Payroll ID" defaultValue="2295072524" />
-                </div>
+        <div className="flex flex-col sm:flex-row items-center gap-[15px]">
+          <div className="w-[120px] h-[120px] rounded-[15px] border border-[#22358114] flex items-center justify-center overflow-hidden">
+            {photoPreview ? (
+              <img
+                src={photoPreview}
+                className="w-full h-full object-cover"
+                alt="Driver"
+              />
+            ) : (
+              <span className="w-[53px] h-[53px] rounded-full">
+                <img src="/img/user-img.png" alt="" />
+              </span>
+            )}
+          </div>
 
-                <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
-                    Operational Details
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[50px]">
-                    <CustomSelect
-                        label="Working as"
-                        options={["Per hour", "Per day"]}
-                        defaultValue="Per hour"
-                        onChange={(value) => handleSelectChange('workingAs', value)}
-                    />
-                    <CustomSelect
-                        label="Status"
-                        options={["Active", "Inactive"]}
-                        defaultValue="Active"
-                        onChange={(value) => handleSelectChange('status', value)}
-                        className="text-green-600"
-                    />
-                </div>
-
-                {/* ACTIONS */}
-                <div className="flex gap-4">
-                    <button 
-                        className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px]"
-                        onClick={handleSave}
-                    >
-                        Save Changes
-                    </button>
-                    <button 
-                        className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px]"
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </div>
+          <div className="flex items-center flex-col gap-[14px]">
+            <label className="text-[16px] font-bold">Profile Photo</label>
+            <label className="text-sm font-bold bg-[#223581]/10 text-primary px-[22px] py-[12px] rounded cursor-pointer hover:bg-[#223581]/20 duration-300 transition-colors">
+              Upload Photo
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handlePhotoUpload}
+              />
+            </label>
+          </div>
         </div>
-    )
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[30px] mt-[20px]">
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Name"
+              value={formData.name}
+              onChange={(e) => handleInputChange("name", e.target.value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.name ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.name}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Callsign"
+              value={formData.call_sign}
+              onChange={(e) => handleInputChange("call_sign", e.target.value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.call_sign ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.call_sign}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <CustomSelect
+              label="Position"
+              placeholder="Choose Position"
+              options={["Van Driver", "Truck Driver"]}
+              value={formData.position}
+              onChange={(value) => handleSelectChange("position", value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.position ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.position}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Payment Reference"
+              value={formData.payment_reference}
+              onChange={(e) =>
+                handleInputChange("payment_reference", e.target.value)
+              }
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.payment_reference ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.payment_reference}
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
+          Contact Information
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[30px] mt-[20px]">
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Address"
+              wrapperClassName="flex-[2]"
+              value={formData.address_details}
+              onChange={(e) =>
+                handleInputChange("address_details", e.target.value)
+              }
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.address_details ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.address_details}
+            </p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Zip Code"
+              wrapperClassName="flex-1"
+              value={formData.zip_code}
+              onChange={(e) => handleInputChange("zip_code", e.target.value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.zip_code ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.zip_code}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] my-[20px]">
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.email ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.email}
+            </p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Phone"
+              value={formData.phone_number}
+              onChange={(e) =>
+                handleInputChange("phone_number", e.target.value)
+              }
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.phone_number ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.phone_number}
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
+          Payment Details
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[20px]">
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Bank Account Number"
+              value={formData.bank_account_no}
+              onChange={(e) =>
+                handleInputChange("bank_account_no", e.target.value)
+              }
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.bank_account_no ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.bank_account_no}
+            </p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Sort Code / IBAN"
+              value={formData.iban_no}
+              onChange={(e) => handleInputChange("iban_no", e.target.value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.iban_no ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.iban_no}
+            </p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Input
+              label="Payroll ID"
+              value={formData.payroll_id}
+              onChange={(e) => handleInputChange("payroll_id", e.target.value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.payroll_id ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.payroll_id}
+            </p>
+          </div>
+        </div>
+
+        <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
+          Weekly Rate & Operational Details
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[50px]">
+          <div className="flex flex-col gap-1">
+            <CustomSelect
+              label="Weekly Working Type"
+              placeholder="Choose working type"
+              options={[
+                "Fixed Hours (Hourly Rate)",
+                "Fixed Days (Weekly Rate)",
+              ]}
+              value={formData.working_type}
+              onChange={(value) => handleSelectChange("working_type", value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.working_type ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.working_type}
+            </p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <CustomSelect
+              label="Status"
+              placeholder="Select Status"
+              options={["Active", "Inactive"]}
+              value={formData.status}
+              onChange={(value) => handleSelectChange("status", value)}
+            />
+            <p
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                errors.status ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {errors.status}
+            </p>
+          </div>
+
+          {formData.working_type === "Fixed Hours (Hourly Rate)" && (
+            <>
+              <div className="flex flex-col gap-1">
+                <Input
+                  label="Per Hour Rate ($)"
+                  type="number"
+                  placeholder="Enter hourly rate"
+                  value={formData.per_hour_rate}
+                  onChange={(e) =>
+                    handleInputChange("per_hour_rate", e.target.value)
+                  }
+                />
+                <p
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                    errors.per_hour_rate ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {errors.per_hour_rate}
+                </p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <Input
+                  label="Total Hours Per Week"
+                  type="number"
+                  placeholder="Enter weekly hours"
+                  value={formData.total_hours}
+                  onChange={(e) =>
+                    handleInputChange("total_hours", e.target.value)
+                  }
+                />
+                <p
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                    errors.total_hours ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {errors.total_hours}
+                </p>
+              </div>
+            </>
+          )}
+
+          {formData.working_type === "Fixed Days (Weekly Rate)" && (
+            <>
+              <div className="flex flex-col gap-1">
+                <Input
+                  label="Weekly Fixed Rate ($)"
+                  type="number"
+                  placeholder="Enter weekly rate"
+                  value={formData.weekly_fixed_rate}
+                  onChange={(e) =>
+                    handleInputChange("weekly_fixed_rate", e.target.value)
+                  }
+                />
+                <p
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                    errors.weekly_fixed_rate ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {errors.weekly_fixed_rate}
+                </p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <Input
+                  label="Working Days Per Week"
+                  type="number"
+                  placeholder="Enter number of days (1-7)"
+                  value={formData.total_days}
+                  onChange={(e) =>
+                    handleInputChange("total_days", e.target.value)
+                  }
+                  min="1"
+                  max="7"
+                />
+                <p
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
+                    errors.total_days ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {errors.total_days}
+                </p>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* ACTION BUTTONS */}
+        <div className="flex gap-[10px]">
+          <button
+            className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleSave}
+            disabled={isLoading}
+          >
+            {isLoading ? "Saving..." : "Save Changes"}
+          </button>
+          <button
+            className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleCancel}
+            disabled={isLoading}
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }

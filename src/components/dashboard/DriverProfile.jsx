@@ -7,7 +7,8 @@ import { fetchAllDrivers } from "@/lib/api/driver.api";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
 import ConfirmModal from "./ConfirmModal";
-import { handleDeleteDriver } from "@/utils/helpers";
+import { calculatePageNumbers, handleDeleteDriver } from "@/utils/helpers";
+import toast from "react-hot-toast";
 
 function DriverProfilesPage() {
   const router = useRouter();
@@ -40,15 +41,14 @@ function DriverProfilesPage() {
           page: currentPage,
           search: searchTerm,
         });
-        console.log(response.data, "Derice");
-
+      
         if (response.data.success && response.data.statusCode === 200) {
           setDrivers(response.data.data || []);
           setTotalPages(response.data.pagination.totalPages || 1);
           setTotalDrivers(response.data.pagination.totalCount || 0);
         }
       } catch (err) {
-        setError(err?.response?.data?.message || "Failed to fetch drivers.");
+        toast.error(err?.response?.data?.message || "Failed to fetch drivers.");
       } finally {
         setLoading(false);
       }
@@ -97,34 +97,8 @@ function DriverProfilesPage() {
     }
   };
 
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    const maxButtons = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-    if (endPage - startPage < maxButtons - 1) {
-      startPage = Math.max(1, endPage - maxButtons + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(
-        <button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          className={`px-3 border w-[40px] h-[40px] rounded-[50%] text-sm duration-300 ${
-            currentPage === i
-              ? "border-primary bg-primary text-white"
-              : "border-[#22358114] text-[#515151] hover:border-primary hover:text-primary"
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    return buttons;
-  };
+   const getPageNumbers = () => calculatePageNumbers(totalPages, currentPage);
+ 
 
   return (
     <section className="">
@@ -184,7 +158,7 @@ function DriverProfilesPage() {
           <thead className="">
             <tr>
               <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
-                #
+                #ID
               </th>
               <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
                 Driver Name
@@ -259,7 +233,8 @@ function DriverProfilesPage() {
           </tbody>
         </table>
       </div>
-
+      {
+        drivers.length > 0 ? 
       <div className="flex items-center justify-between mt-8">
         <div className="text-sm text-gray-600">
           Showing {(currentPage - 1) * limit + 1} to{" "}
@@ -290,7 +265,25 @@ function DriverProfilesPage() {
             </svg>
           </button>
 
-          {renderPaginationButtons()}
+                        {/* Page Numbers */}
+              {getPageNumbers().map((page, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    typeof page === "number" && handlePageChange(page)
+                  }
+                  disabled={page === "..."}
+                  className={`px-3 border w-[40px] h-[40px] rounded-[50%] text-sm duration-300 ${
+                    page === currentPage
+                      ? "border-primary bg-primary text-white"
+                      : page === "..."
+                      ? "border-transparent cursor-default"
+                      : "border-[#22358114] hover:border-primary text-[#515151] hover:text-primary"
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
 
           <button
             onClick={() => handlePageChange(currentPage + 1)}
@@ -315,7 +308,8 @@ function DriverProfilesPage() {
             </svg>
           </button>
         </div>
-      </div>
+      </div> : null
+      }
 
       <ConfirmModal
         isOpen={showDeleteModal}

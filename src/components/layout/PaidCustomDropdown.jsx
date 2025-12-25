@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function PaidCustomDropdown() {
+export default function PaidCustomDropdown( { invoice, onDownload } ) {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("Paid");
   const ref = useRef(null);
@@ -98,6 +98,7 @@ export default function PaidCustomDropdown() {
           </button>
 
           <button
+            onClick={() => onDownload(invoice.id)}
             className="
               w-full
               border

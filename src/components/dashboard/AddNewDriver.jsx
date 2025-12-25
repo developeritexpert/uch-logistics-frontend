@@ -198,7 +198,7 @@ function AddNewDriver() {
 
   const handleCancel = () => {
     resetForm();
-
+    router.back();
   };
 
   useEffect(() => {
@@ -256,7 +256,7 @@ function AddNewDriver() {
             />
 
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.name ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -271,7 +271,7 @@ function AddNewDriver() {
               onChange={(e) => handleInputChange("call_sign", e.target.value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.call_sign ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -288,7 +288,7 @@ function AddNewDriver() {
               onChange={(value) => handleSelectChange("position", value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.position ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -305,7 +305,7 @@ function AddNewDriver() {
               }
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.payment_reference ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -329,7 +329,7 @@ function AddNewDriver() {
               }
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.address_details ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -344,7 +344,7 @@ function AddNewDriver() {
               onChange={(e) => handleInputChange("zip_code", e.target.value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.zip_code ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -362,7 +362,7 @@ function AddNewDriver() {
               onChange={(e) => handleInputChange("email", e.target.value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.email ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -378,7 +378,7 @@ function AddNewDriver() {
               }
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.phone_number ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -414,7 +414,7 @@ function AddNewDriver() {
               }
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.bank_account_no ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -428,7 +428,7 @@ function AddNewDriver() {
               onChange={(e) => handleInputChange("iban_no", e.target.value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.iban_no ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -442,7 +442,7 @@ function AddNewDriver() {
               onChange={(e) => handleInputChange("payroll_id", e.target.value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.payroll_id ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -468,7 +468,7 @@ function AddNewDriver() {
               onChange={(value) => handleSelectChange("working_type", value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.working_type ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -484,7 +484,7 @@ function AddNewDriver() {
               onChange={(value) => handleSelectChange("status", value)}
             />
             <p
-              className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+              className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                 errors.status ? "opacity-100" : "opacity-0"
               }`}
             >
@@ -505,7 +505,7 @@ function AddNewDriver() {
                   }
                 />
                 <p
-                  className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                     errors.per_hour_rate ? "opacity-100" : "opacity-0"
                   }`}
                 >
@@ -523,7 +523,7 @@ function AddNewDriver() {
                   }
                 />
                 <p
-                  className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                     errors.total_hours ? "opacity-100" : "opacity-0"
                   }`}
                 >
@@ -546,7 +546,7 @@ function AddNewDriver() {
                   }
                 />
                 <p
-                  className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                     errors.weekly_fixed_rate ? "opacity-100" : "opacity-0"
                   }`}
                 >
@@ -566,7 +566,7 @@ function AddNewDriver() {
                   max="7"
                 />
                 <p
-                  className={`text-xs text-red-500 min-h-[14px] transition-opacity ${
+                  className={`text-xs text-red-500 font-bold min-h-[14px] transition-opacity ${
                     errors.total_days ? "opacity-100" : "opacity-0"
                   }`}
                 >

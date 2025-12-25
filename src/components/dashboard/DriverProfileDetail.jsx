@@ -5,21 +5,29 @@ import Breadcrumb from "./Breadcrumb";
 import Image from "next/image";
 import Link from "next/link";
 import CustomDropdown from "@/components/layout/CustomDropdown";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetchSingleDriver } from "@/lib/api/driver.api";
 import { fetchAllJobs } from "@/lib/api/job.api";
-import { formatDriverRate, handleDeleteDriver } from "@/utils/helpers";
+import {
+  generateDraftInvoice,
+  generateFinalInvoice,
+} from "@/lib/api/invoice.api";
+import {
+  calculatePageNumbers,
+  formatDriverRate,
+  handleDeleteDriver,
+} from "@/utils/helpers";
 import Loader from "./Loader";
 import ConfirmModal from "./ConfirmModal";
+import toast from "react-hot-toast";
 
 function DriverProfileDetail() {
   const { id } = useParams();
-
+  const router = useRouter();
   const [driver, setDriver] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [jobsLoading, setJobsLoading] = useState(false);
-  const [open, setOpen] = useState(false);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,6 +44,25 @@ function DriverProfileDetail() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [selectedDriver, setSelectedDriver] = useState(null);
 
+  // Invoice modal states
+  const [dateModalOpen, setDateModalOpen] = useState(false);
+  const [adjustmentModalOpen, setAdjustmentModalOpen] = useState(false);
+  const [invoiceStartDate, setInvoiceStartDate] = useState("");
+  const [invoiceEndDate, setInvoiceEndDate] = useState("");
+  const [draftInvoice, setDraftInvoice] = useState(null);
+  const [draftLoading, setDraftLoading] = useState(false);
+  const [finalLoading, setFinalLoading] = useState(false);
+
+  // Adjustment form state
+  const [adjustmentData, setAdjustmentData] = useState({
+    admin_fee: 0,
+    vehicle_hire_charges: 0,
+    insurance_charge: 0,
+    fuel_charge: 0,
+    additional_charges: 0,
+    vat: "",
+  });
+
   // Fetch driver data
   useEffect(() => {
     const getDriver = async () => {
@@ -46,9 +73,13 @@ function DriverProfileDetail() {
         if (response.data.success && response.data.statusCode === 200) {
           const data = response.data.data;
           setDriver(data);
+        } else {
+          toast.error(response.data.message);
+          router.push("/drivers");
         }
       } catch (error) {
-        console.error("Error fetching driver:", error);
+        toast.error("Driver not found");
+        router.push("/drivers");
       } finally {
         setLoading(false);
       }
@@ -107,34 +138,7 @@ function DriverProfileDetail() {
     getJobs();
   };
 
-  const getPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage <= 3) {
-        for (let i = 1; i <= 4; i++) pages.push(i);
-        pages.push("...");
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1);
-        pages.push("...");
-        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
-      } else {
-        pages.push(1);
-        pages.push("...");
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
-        pages.push("...");
-        pages.push(totalPages);
-      }
-    }
-
-    return pages;
-  };
+  const getPageNumbers = () => calculatePageNumbers(totalPages, currentPage);
 
   const handleView = (driverId, driverName) => {
     console.log(`View driver: ${driverName} (ID: ${driverId})`);
@@ -142,14 +146,162 @@ function DriverProfileDetail() {
   };
 
   const handleEdit = (driverId, driverName) => {
-    routerServerGlobal.push
+    router.push(`/drivers/edit/${driverId}`);
   };
 
   const handleDelete = (driverId, driverName) => {
-    console.log('HI');
-    
+    console.log(`Delete driver: ${driverName} (ID: ${driverId})`);
     setSelectedDriver({ id: driverId, name: driverName });
     setShowDeleteModal(true);
+  };
+
+  // Handle opening date selection modal
+  const handleOpenDateModal = () => {
+    setInvoiceStartDate("");
+    setInvoiceEndDate("");
+    setDateModalOpen(true);
+  };
+
+  // Handle draft invoice generation
+  const handleGenerateDraftInvoice = async () => {
+    if (!invoiceStartDate || !invoiceEndDate) {
+      toast.error("Please select both start and end dates");
+      return;
+    }
+
+    if (new Date(invoiceStartDate) > new Date(invoiceEndDate)) {
+      toast.error("Start date cannot be greater than end date");
+      return;
+    }
+
+    try {
+      setDraftLoading(true);
+      const response = await generateDraftInvoice({
+        driver_id: id,
+        start_date: invoiceStartDate,
+        end_date: invoiceEndDate,
+      });
+
+      if (response.data.success && response.data.statusCode === 200) {
+        toast.success(response.data.message);
+        setDraftInvoice(response.data.data);
+        setDateModalOpen(false);
+        setAdjustmentModalOpen(true);
+
+        // Pre-fill adjustment data from draft
+        setAdjustmentData({
+          admin_fee: response.data.data.admin_fee || 0,
+          vehicle_hire_charges: response.data.data.vehicle_hire_charges || 0,
+          insurance_charge: response.data.data.insurance_charge || 0,
+          fuel_charge: response.data.data.fuel_charge || 0,
+          additional_charges: response.data.data.additional_charges || 0,
+          vat: response.data.data.vat || "",
+        });
+      } else {
+        toast.error(response.data.message || "Failed to generate draft invoice");
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Error generating draft invoice"
+      );
+    } finally {
+      setDraftLoading(false);
+    }
+  };
+
+  // Handle adjustment input change
+  const handleAdjustmentChange = (field, value) => {
+    setAdjustmentData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Calculate totals for adjustment modal
+  const calculateTotals = () => {
+    const adminFee = parseFloat(adjustmentData.admin_fee) || 0;
+    const vehicleHire = parseFloat(adjustmentData.vehicle_hire_charges) || 0;
+    const insurance = parseFloat(adjustmentData.insurance_charge) || 0;
+    const fuel = parseFloat(adjustmentData.fuel_charge) || 0;
+    const additional = parseFloat(adjustmentData.additional_charges) || 0;
+
+    const totalDeductions = adminFee + vehicleHire + insurance + fuel + additional;
+
+    // Calculate VAT
+    let vatAmount = 0;
+    const vatValue = adjustmentData.vat;
+    if (vatValue && vatValue.toString().includes("%")) {
+      const vatPercent = parseFloat(vatValue.replace("%", "")) || 0;
+      vatAmount = (totalDeductions * vatPercent) / 100;
+    } else if (vatValue) {
+      vatAmount = parseFloat(vatValue) || 0;
+    }
+
+    const totalWithVat = totalDeductions + vatAmount;
+    const docketTotal = draftInvoice?.docket_total || 0;
+    const finalTotal = docketTotal - totalWithVat;
+
+    return {
+      totalDeductions,
+      vatAmount,
+      totalWithVat,
+      docketTotal,
+      finalTotal,
+    };
+  };
+
+  // Handle final invoice generation
+  const handleGenerateFinalInvoice = async () => {
+    try {
+      setFinalLoading(true);
+      const response = await generateFinalInvoice({
+        invoice_id: draftInvoice.id,
+        admin_fee: parseFloat(adjustmentData.admin_fee) || 0,
+        vehicle_hire_charges: parseFloat(adjustmentData.vehicle_hire_charges) || 0,
+        insurance_charge: parseFloat(adjustmentData.insurance_charge) || 0,
+        fuel_charge: parseFloat(adjustmentData.fuel_charge) || 0,
+        additional_charges: parseFloat(adjustmentData.additional_charges) || 0,
+        vat: adjustmentData.vat,
+      });
+
+      if (response.data.success && response.data.statusCode === 200) {
+        toast.success(response.data.message);
+        setAdjustmentModalOpen(false);
+        setDraftInvoice(null);
+        setAdjustmentData({
+          admin_fee: 0,
+          vehicle_hire_charges: 0,
+          insurance_charge: 0,
+          fuel_charge: 0,
+          additional_charges: 0,
+          vat: "",
+        });
+        router.push("/invoices");
+        getJobs();
+      } else {
+        toast.error(response.data.message || "Failed to generate final invoice");
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Error generating final invoice"
+      );
+    } finally {
+      setFinalLoading(false);
+    }
+  };
+
+  // Close adjustment modal
+  const handleCloseAdjustmentModal = () => {
+    setAdjustmentModalOpen(false);
+    setDraftInvoice(null);
+    setAdjustmentData({
+      admin_fee: 0,
+      vehicle_hire_charges: 0,
+      insurance_charge: 0,
+      fuel_charge: 0,
+      additional_charges: 0,
+      vat: "",
+    });
   };
 
   if (loading) {
@@ -159,6 +311,8 @@ function DriverProfileDetail() {
       </div>
     );
   }
+
+  const totals = draftInvoice ? calculateTotals() : null;
 
   return (
     <div>
@@ -215,7 +369,10 @@ function DriverProfileDetail() {
             >
               Edit Info
             </Link>
-            <button className="flex-1 min-w-[80px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[20px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition">
+            <button
+              onClick={() => handleDelete(id, driver?.name)}
+              className="flex-1 min-w-[80px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[20px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition"
+            >
               Delete Profile
             </button>
           </div>
@@ -374,134 +531,11 @@ function DriverProfileDetail() {
           <div className="flex items-center gap-3">
             <div>
               <button
-                onClick={() => setOpen(true)}
+                onClick={handleOpenDateModal}
                 className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition"
               >
                 Generate Invoice
               </button>
-
-              {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-scroll no-scrollbar">
-                  <div className="relative w-full max-w-[580px] mx-[10px] my-[50px] rounded-xl bg-white p-[35px] pt-[40px]">
-                    <div className="flex items-center justify-between mb-[30px]">
-                      <h2 className="mx-auto text-[20px] md:text-[24px] lg:text-[34px] font-black text-primary">
-                        Pay Adjustment Detail
-                      </h2>
-
-                      <button
-                        onClick={() => setOpen(false)}
-                        className="w-5 h-5 md:w-8 md:h-8 rounded-full absolute top-[20px] right-[20px] bg-secondary text-white flex items-center justify-center text-lg font-bold"
-                      >
-                        <svg
-                          viewBox="0 0 14 14"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-[10px] h-[10px] md:w-[14px] md:h-[14px]"
-                        >
-                          <path
-                            d="M11.9268 13.4982L6.90334 8.4747L1.78513 13.5929L-0.000174888 11.8076L5.11804 6.6894L0.1192 1.69055L1.72608 0.0836703L6.72493 5.08251L11.8074 2.39727e-06L13.5927 1.7853L8.51023 6.86781L13.5337 11.8913L11.9268 13.4982Z"
-                            fill="white"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-
-                    <div className="text-[14px] sm:text-[16px] font-normal text-[#515151]">
-                      <div className="flex justify-between mb-4 py-[18px] border-y border-[#EEEFF5]">
-                        <span className="font-bold">Docket Total</span>
-                        <span>1,471.30</span>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-[12px] font-bold mb-2">
-                        <span>Description</span>
-                        <span>Value</span>
-                        <span>VAT</span>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-3 mb-2 items-center">
-                        <span>Admin Fee</span>
-                        <input
-                          defaultValue="-9.00"
-                          className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                        <input
-                          defaultValue="+20.00%"
-                          className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-3 mb-2">
-                        <span>Vehicle Hire charges</span>
-                        <input
-                          defaultValue="-"
-                          className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                        <input
-                          defaultValue="-"
-                          className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-3 mb-2">
-                        <span>Insurance charge</span>
-                        <input
-                          defaultValue="-"
-                          className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                        <input
-                          defaultValue="-"
-                          className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-3 mb-2">
-                        <span>Fuel charge</span>
-                        <input
-                          defaultValue="-330.26"
-                          className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                        <input
-                          defaultValue="-"
-                          className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-3 mb-2 items-center">
-                        <span>Any additional charges</span>
-                        <input
-                          defaultValue="-"
-                          className="col-span-2 border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
-                        />
-                      </div>
-
-                      <div className="border-b border-[#EEEFF5] mt-[30px] mb-[20px]"></div>
-
-                      <div className="grid grid-cols-3 gap-3 mt-4">
-                        <span className="font-bold">Total</span>
-                        <span>-339.26</span>
-                        <span>-1.80</span>
-                      </div>
-
-                      <div className="bg-[#22358114] rounded-[15px] p-4 mt-[25px]">
-                        <div className="flex justify-between text-primary font-bold">
-                          <span>Adjustment Total:</span>
-                          <span>-341.06</span>
-                        </div>
-                        <div className="flex justify-between mt-[15px] text-primary font-bold">
-                          <span>Total:</span>
-                          <span>1,130.24</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center mt-[28px]">
-                      <button className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition">
-                        Generate Invoice
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -510,7 +544,7 @@ function DriverProfileDetail() {
           <table className="w-full border-separate border-spacing-y-3">
             <thead className="text-[16px] sm:text-[18px] lg:text-[20px] font-bold">
               <tr>
-                <th>#</th>
+                <th>#ID</th>
                 <th className="text-center px-[20px] py-[5px] whitespace-nowrap">
                   Docket
                 </th>
@@ -540,7 +574,7 @@ function DriverProfileDetail() {
             <tbody className="text-[16px] text-normal text-[#515151]">
               {jobsLoading ? (
                 <tr>
-                  <td colSpan={7}>
+                  <td colSpan={9}>
                     <Loader text="Fetching Jobs..." />
                   </td>
                 </tr>
@@ -551,11 +585,11 @@ function DriverProfileDetail() {
                   </td>
                 </tr>
               ) : (
-                jobs.map((job) => (
-                  <tr key={job.id || job._id} className="bg-white">
+                jobs.map((job, index) => (
+                  <tr key={job.id} className="bg-white">
                     <td className="px-[20px] py-[20px] text-center border-y border-[#22358114] border-l rounded-l-[15px]">
-                      {jobs.indexOf(job) + 1}
-                    </td>{" "}
+                      {(currentPage - 1) * limit + index + 1}
+                    </td>
                     <td className="px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap">
                       {job.docket_no}
                     </td>
@@ -583,11 +617,17 @@ function DriverProfileDetail() {
                     <td className="px-[20px] py-[20px] border-y border-[#22358114] border-r rounded-r-[15px] whitespace-nowrap">
                       <div className="flex justify-center">
                         <CustomDropdown
-                          driverId={job.id || job._id}
-                          driverName={job.driver_name || driver?.name}
+                          driverId={job.id}
+                          driverName={job.call_sign}
                           onView={handleView}
                           onEdit={handleEdit}
                           onDelete={handleDelete}
+                          show={{ view: false, edit: true, delete: true }}
+                          labels={{
+                            view: "View Job",
+                            edit: "Edit Job",
+                            delete: "Remove Job",
+                          }}
                         />
                       </div>
                     </td>
@@ -680,6 +720,323 @@ function DriverProfileDetail() {
         )}
       </section>
 
+      {/* Date Selection Modal - Step 1 */}
+      {dateModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-scroll no-scrollbar">
+          <div className="relative w-full max-w-[480px] mx-[10px] my-[50px] rounded-xl bg-white p-[35px] pt-[40px]">
+            <div className="flex items-center justify-between mb-[30px]">
+              <h2 className="mx-auto text-[20px] md:text-[24px] lg:text-[28px] font-black text-primary">
+                Select Date Range
+              </h2>
+
+              <button
+                onClick={() => setDateModalOpen(false)}
+                className="w-5 h-5 md:w-8 md:h-8 rounded-full absolute top-[20px] right-[20px] bg-secondary text-white flex items-center justify-center text-lg font-bold"
+              >
+                <svg
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-[10px] h-[10px] md:w-[14px] md:h-[14px]"
+                >
+                  <path
+                    d="M11.9268 13.4982L6.90334 8.4747L1.78513 13.5929L-0.000174888 11.8076L5.11804 6.6894L0.1192 1.69055L1.72608 0.0836703L6.72493 5.08251L11.8074 2.39727e-06L13.5927 1.7853L8.51023 6.86781L13.5337 11.8913L11.9268 13.4982Z"
+                    fill="white"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-[#515151] mb-2">
+                  Start Date
+                </label>
+                <input
+                  type="date"
+                  value={invoiceStartDate}
+                  onChange={(e) => setInvoiceStartDate(e.target.value)}
+                  className="w-full py-[12px] px-[16px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[16px] font-normal"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-[#515151] mb-2">
+                  End Date
+                </label>
+                <input
+                  type="date"
+                  value={invoiceEndDate}
+                  onChange={(e) => setInvoiceEndDate(e.target.value)}
+                  className="w-full py-[12px] px-[16px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[16px] font-normal"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-center gap-3 mt-[28px]">
+              <button
+                onClick={() => setDateModalOpen(false)}
+                className="min-w-[100px] cursor-pointer rounded-[6px] bg-gray-200 border border-gray-200 px-[25px] py-[10px] text-sm font-semibold text-gray-700 hover:bg-gray-300 duration-300 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleGenerateDraftInvoice}
+                disabled={draftLoading}
+                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/80 duration-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {draftLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-4 w-4 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Generating...
+                  </>
+                ) : (
+                  "Generate Draft"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pay Adjustment Modal - Step 2 */}
+      {adjustmentModalOpen && draftInvoice && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-scroll no-scrollbar">
+          <div className="relative w-full max-w-[580px] mx-[10px] my-[50px] rounded-xl bg-white p-[35px] pt-[40px]">
+            <div className="flex items-center justify-between mb-[30px]">
+              <h2 className="mx-auto text-[20px] md:text-[24px] lg:text-[34px] font-black text-primary">
+                Pay Adjustment Detail
+              </h2>
+
+              <button
+                onClick={handleCloseAdjustmentModal}
+                className="w-5 h-5 md:w-8 md:h-8 rounded-full absolute top-[20px] right-[20px] bg-secondary text-white flex items-center justify-center text-lg font-bold"
+              >
+                <svg
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-[10px] h-[10px] md:w-[14px] md:h-[14px]"
+                >
+                  <path
+                    d="M11.9268 13.4982L6.90334 8.4747L1.78513 13.5929L-0.000174888 11.8076L5.11804 6.6894L0.1192 1.69055L1.72608 0.0836703L6.72493 5.08251L11.8074 2.39727e-06L13.5927 1.7853L8.51023 6.86781L13.5337 11.8913L11.9268 13.4982Z"
+                    fill="white"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="text-[14px] sm:text-[16px] font-normal text-[#515151]">
+              {/* Invoice Info */}
+              <div className="bg-blue-50 rounded-lg p-3 mb-4 text-sm">
+                <div className="flex justify-between mb-1">
+                  <span className="font-semibold">Driver:</span>
+                  <span>{draftInvoice.driver?.name || driver?.name}</span>
+                </div>
+                <div className="flex justify-between mb-1">
+                  <span className="font-semibold">Period:</span>
+                  <span>
+                    {draftInvoice.start_date} - {draftInvoice.end_date}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Total Dockets:</span>
+                  <span>{draftInvoice.total_number_of_dockets}</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between mb-4 py-[18px] border-y border-[#EEEFF5]">
+                <span className="font-bold">Docket Total</span>
+                <span>${draftInvoice.docket_total?.toFixed(2)}</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-[12px] font-bold mb-2">
+                <span>Description</span>
+                <span>Value ($)</span>
+                <span>VAT</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mb-2 items-center">
+                <span>Admin Fee</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={adjustmentData.admin_fee}
+                  onChange={(e) =>
+                    handleAdjustmentChange("admin_fee", e.target.value)
+                  }
+                  className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
+                  placeholder="0.00"
+                />
+                <input
+                  type="text"
+                  value={adjustmentData.vat}
+                  onChange={(e) => handleAdjustmentChange("vat", e.target.value)}
+                  className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
+                  placeholder="e.g. 20%"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mb-2">
+                <span>Vehicle Hire charges</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={adjustmentData.vehicle_hire_charges}
+                  onChange={(e) =>
+                    handleAdjustmentChange("vehicle_hire_charges", e.target.value)
+                  }
+                  className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
+                  placeholder="0.00"
+                />
+                <input
+                  type="text"
+                  disabled
+                  value="-"
+                  className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] bg-gray-50 cursor-not-allowed"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mb-2">
+                <span>Insurance charge</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={adjustmentData.insurance_charge}
+                  onChange={(e) =>
+                    handleAdjustmentChange("insurance_charge", e.target.value)
+                  }
+                  className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
+                  placeholder="0.00"
+                />
+                <input
+                  type="text"
+                  disabled
+                  value="-"
+                  className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] bg-gray-50 cursor-not-allowed"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mb-2">
+                <span>Fuel charge</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={adjustmentData.fuel_charge}
+                  onChange={(e) =>
+                    handleAdjustmentChange("fuel_charge", e.target.value)
+                  }
+                  className="border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
+                  placeholder="0.00"
+                />
+                <input
+                  type="text"
+                  disabled
+                  value="-"
+                  className="text-[14px] border border-[#22358114] rounded px-[20px] py-[10px] bg-gray-50 cursor-not-allowed"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 mb-2 items-center">
+                <span>Any additional charges</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={adjustmentData.additional_charges}
+                  onChange={(e) =>
+                    handleAdjustmentChange("additional_charges", e.target.value)
+                  }
+                  className="col-span-2 border text-[14px] border-[#22358114] rounded px-[20px] py-[10px] focus:border-[#515151] duration-300 focus-visible:!outline-0"
+                  placeholder="0.00"
+                />
+              </div>
+
+              <div className="border-b border-[#EEEFF5] mt-[30px] mb-[20px]"></div>
+
+              <div className="grid grid-cols-3 gap-3 mt-4">
+                <span className="font-bold">Total Deductions</span>
+                <span>-${totals?.totalDeductions?.toFixed(2)}</span>
+                <span>
+                  {totals?.vatAmount > 0 ? `-$${totals?.vatAmount?.toFixed(2)}` : "-"}
+                </span>
+              </div>
+
+              <div className="bg-[#22358114] rounded-[15px] p-4 mt-[25px]">
+                <div className="flex justify-between text-primary font-bold">
+                  <span>Adjustment Total:</span>
+                  <span>-${totals?.totalWithVat?.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between mt-[15px] text-primary font-bold">
+                  <span>Final Total:</span>
+                  <span>${totals?.finalTotal?.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center gap-3 mt-[28px]">
+              <button
+                onClick={handleCloseAdjustmentModal}
+                className="min-w-[100px] cursor-pointer rounded-[6px] bg-gray-200 border border-gray-200 px-[25px] py-[10px] text-sm font-semibold text-gray-700 hover:bg-gray-300 duration-300 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleGenerateFinalInvoice}
+                disabled={finalLoading}
+                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/80 duration-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {finalLoading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-4 w-4 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Generating...
+                  </>
+                ) : (
+                  "Generate Invoice"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ConfirmModal
         isOpen={showDeleteModal}
         title="Delete Driver"
@@ -695,9 +1052,7 @@ function DriverProfileDetail() {
             closeModal: () => setShowDeleteModal(false),
             onSuccess: (msg) => {
               setShowDeleteModal(false);
-              setDrivers((prev) =>
-                prev.filter((d) => d.id !== selectedDriver.id)
-              );
+              router.push("/drivers");
             },
             onError: (msg) => {
               setShowDeleteModal(false);
