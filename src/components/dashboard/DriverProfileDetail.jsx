@@ -129,7 +129,7 @@ function DriverProfileDetail() {
         <div>
             <Breadcrumb
                 items={[
-                    { label: "", href: "/dashboard", isHome: true },
+                    { href: "/dashboard", isHome: true },
                     { label: "Driver Profiles", href: "/driver-profiles" },
                     { label: "Vikas Sabharwal" },
                 ]}
