@@ -84,10 +84,10 @@ function EditJob() {
         </div>
         
         <div className="flex flex-col sm:flex-row gap-4 mt-[40px]">
-          <button className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white text-sm font-semibold px-[25px] py-[10px] rounded-[6px] min-w-[150px]">
+          <button className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-semibold px-[25px] 2xl:py-[13px] py-[10px] rounded-[6px] min-w-[150px]">
             Post Job
           </button>
-          <button className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white text-sm font-semibold px-[25px] py-[10px] rounded-[6px] min-w-[150px]">
+          <button className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-semibold px-[25px] 2xl:py-[13px] py-[10px] rounded-[6px] min-w-[150px]">
             Cancel
           </button>
         </div>

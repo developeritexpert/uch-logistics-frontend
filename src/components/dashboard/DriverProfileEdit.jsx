@@ -120,8 +120,8 @@ export default function DriverProfileEdit() {
                         <Input label="Rate" defaultValue="$21.02/hour" />
                         <div className="flex items-end w-full">
                             <CustomSelect 
-                                options={["Full Time", "Part Time"]}
-                                defaultValue="Full Time"
+                                options={["Working Hours", "Full Time"]}
+                                defaultValue="Working Hours"
                                 onChange={(value) => handleSelectChange('workingHoursType', value)}
                                 wrapperClassName="w-full"
                             />
@@ -155,13 +155,13 @@ export default function DriverProfileEdit() {
                 {/* ACTIONS */}
                 <div className="flex gap-4">
                     <button 
-                        className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px]"
+                        className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px]"
                         onClick={handleSave}
                     >
                         Save Changes
                     </button>
                     <button 
-                        className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px]"
+                        className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px]"
                         onClick={handleCancel}
                     >
                         Cancel

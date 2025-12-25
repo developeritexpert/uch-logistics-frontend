@@ -149,7 +149,7 @@ function DriverProfileDetail() {
                         <h3 className="mt-3 text-[18px] md:text-[20px] xl:text-[22px] font-black text-primary ">
                             Vikas Sabharwal
                         </h3>
-                        <p className="text-sm text-[#515151]">10848299</p>
+                        <p className="2xl:text-[15px] text-sm text-[#515151]">10848299</p>
                     </div>
                     <div className="border-b border-[#22358114] mt-[20px] mb-[25px]"></div>
                     <div className="space-y-3 text-sm text-[#515151]">
@@ -240,7 +240,7 @@ function DriverProfileDetail() {
                             <div className="relative w-full ]">
                                 <input
                                     type="date"
-                                    className="py-[10px] px-[16px]  w-full sm:w-[155px] rounded-[6px] border  border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal "
+                                    className="2xl:py-[12px] py-[10px] px-[16px]  w-full sm:w-[155px] rounded-[6px] border  border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal "
                                 />
                             </div>
 
@@ -250,7 +250,7 @@ function DriverProfileDetail() {
                             <div className="relative  w-full sm:w-[155px]">
                                 <input
                                     type="date"
-                                    className="py-[10px] px-[16px] w-full  px-[13px] text-[#B4B4B4] text-[16px]  rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
+                                    className="2xl:py-[12px] py-[10px] px-[16px] w-full  px-[13px] text-[#B4B4B4] text-[16px]  rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
                                 />
                             </div>
                         </div>
@@ -259,7 +259,7 @@ function DriverProfileDetail() {
                             <input
                                 type="text"
                                 placeholder="Search with name, callsign, Journey etc..."
-                                className="py-[10px] pl-[16px] pr-[60px] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal   "
+                                className="2xl:py-[12px] py-[10px] pl-[16px] pr-[60px] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] px-[13px] text-[#B4B4B4] text-[16px] font-normal   "
                             />
                             <svg
                                 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -283,7 +283,7 @@ function DriverProfileDetail() {
 
                             <button
                                 onClick={() => setOpen(true)}
-                                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition" >
+                                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] 2xl:py-[13px] py-[10px] 2xl:text-[18px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition" >
                                 Generate Invoice
                             </button>
 
@@ -416,7 +416,7 @@ function DriverProfileDetail() {
                                         </div>
 
                                         <div className="flex justify-center mt-[28px]">
-                                            <button className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition">
+                                            <button className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] 2xl:py-[13px] py-[10px] 2xl:text-[18px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition">
                                                 Generate Invoice
                                             </button>
                                         </div>
@@ -432,19 +432,19 @@ function DriverProfileDetail() {
                     <table className='w-full border-separate border-spacing-y-3 '>
                         <thead className=' text-[16px] sm:text-[18px] lg:text-[20px] font-bold'>
                             <tr>
-                                <th className='text-center px-[20px] py-[5px] whitespace-nowrap'>Docket</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap '>Drivers</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Callsign</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Date/Time</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Journey</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Driver Total</th>
-                                <th className='text-left px-[20px] py-[5px] whitespace-nowrap'>Actions</th>
+                                <th className='text-center px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Docket</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap '>Drivers</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Callsign</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Date/Time</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Journey</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Driver Total</th>
+                                <th className='text-left px-[20px] py-[5px] 2xl:text-[20px] whitespace-nowrap'>Actions</th>
                             </tr>
                         </thead>
                         <tbody className='text-[16px] text-normal text-[#515151]'>
                             {drivers.map((driver) => (
                                 <tr key={driver.id} className='bg-white'>
-                                    <td className=" px-[20px] py-[20px] border-y border-[#22358114] border-l rounded-l-[15px]">
+                                    <td className=" px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] border-l rounded-l-[15px]">
                                         <label className="group flex items-center  gap-[15px] cursor-pointer select-none">
                                             <input
                                                 type="checkbox"
@@ -472,23 +472,23 @@ function DriverProfileDetail() {
                                             </span>
                                         </label>
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.driver}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.callsign}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.date}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.journey}
                                     </td>
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap'>
                                         {driver.driverTotal}
                                     </td>
 
-                                    <td className='px-[20px] py-[20px] border-y border-[#22358114] border-r rounded-r-[15px] whitespace-nowrap'>
+                                    <td className='px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] border-r rounded-r-[15px] whitespace-nowrap'>
                                         <div className='flex justify-center'>
 
                                             <CustomDropdown
