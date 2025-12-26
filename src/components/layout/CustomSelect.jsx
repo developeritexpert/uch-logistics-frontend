@@ -1,47 +1,60 @@
-"use client"
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from "react";
 
 const CustomSelect = ({
   label,
-  options,
+  options = [],
   defaultValue = "",
   value,
   onChange,
   placeholder = "Select an option",
   disabled = false,
   error,
-  className = ""
+  className = "",
+  isStatusSelect = false, // ✅ ONLY status dropdown uses color logic
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedValue, setSelectedValue] = useState(defaultValue || (value || ""))
-  const dropdownRef = useRef(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(
+    defaultValue || value || ""
+  );
 
+  const dropdownRef = useRef(null);
+
+  // Sync controlled value
   useEffect(() => {
     if (value !== undefined) {
-      setSelectedValue(value)
+      setSelectedValue(value);
     }
-  }, [value])
+  }, [value]);
 
+  // Close dropdown on outside click
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false)
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
       }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSelect = (option) => {
-    const newValue = option
-    setSelectedValue(newValue)
-    onChange && onChange(newValue)
-    setIsOpen(false)
-  }
+    setSelectedValue(option);
+    onChange?.(option);
+    setIsOpen(false);
+  };
 
-  const displayValue = selectedValue || placeholder
+  const displayValue = selectedValue || placeholder;
+
+  // ✅ Text color logic (scoped)
+  const getTextColor = () => {
+    if (!isStatusSelect) return "text-[#747474]"; // normal dropdowns
+
+    if (selectedValue === "Inactive") return "text-[#D92D20]"; // 🔴 red
+    return "text-[#009249]"; // 🟢 green (Active + placeholder)
+  };
 
   return (
     <div className={`relative w-full ${className}`} ref={dropdownRef}>
@@ -52,58 +65,85 @@ const CustomSelect = ({
         </label>
       )}
 
-      {/* Dropdown Trigger */}
+      {/* Trigger */}
       <button
         type="button"
-        className={`w-full flex items-center lg:text-base text-sm justify-between px-[20px] 2xl:py-[20px] py-[10px] text-left bg-white border rounded-[5px] focus:outline-0 focus:border-[#515151] ${
-          disabled 
-            ? 'bg-gray-50 cursor-not-allowed text-gray-400' 
-            : ''
-        } ${error ? 'border-red-500' : 'border-[#22358114]'}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
+        className={`
+          w-full
+          flex items-center justify-between
+          px-[20px]
+          py-[10px] 2xl:py-[20px]
+          text-left
+          bg-white
+          border
+          rounded-[5px]
+          focus:outline-none
+          focus:border-[#515151]
+          ${
+            disabled
+              ? "bg-gray-50 cursor-not-allowed text-gray-400"
+              : ""
+          }
+          ${error ? "border-red-500" : "border-[#22358114]"}
+        `}
       >
-        <span className={`truncate ${!selectedValue ? 'text-[#515151]' : 'text-[#747474]'}`}>
+        {/* Selected / Placeholder */}
+        <span className={`truncate ${getTextColor()}`}>
           {displayValue}
         </span>
-        <svg className={`w-[10px] h-[10px] text-[#515151] duration-300 transition-transform ${
-            isOpen ? 'transform rotate-180' : ''
-          }`}
-           width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.900391 0.900023L7.90039 7.90002L14.9004 0.900025" stroke="#515151" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
 
-        {/* <ChevronDown 
-          className={`w-5 h-5 text-gray-400 transition-transform ${
-            isOpen ? 'transform rotate-180' : ''
+        {/* Arrow */}
+        <svg
+          className={`w-[10px] h-[10px] text-[#515151] transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
           }`}
-        /> */}
+          viewBox="0 0 16 9"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.900391 0.900023L7.90039 7.90002L14.9004 0.900025"
+            stroke="#515151"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </button>
 
-      {/* Error Message */}
+      {/* Error */}
       {error && (
         <p className="mt-1 text-sm text-red-600">{error}</p>
       )}
 
-      {/* Dropdown Options */}
+      {/* Dropdown */}
       {isOpen && !disabled && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-[#22358114] rounded-[5px] shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-50 w-full mt-1 bg-white border border-[#22358114] rounded-[5px] shadow-lg max-h-60 overflow-auto">
           <ul className="py-1">
-            {options.length > 0 ? (
+            {options.length ? (
               options.map((option, index) => (
                 <li key={index}>
                   <button
                     type="button"
-                    className={`w-full lg:text-base text-sm flex items-center justify-between px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
-                      selectedValue === option ? 'bg-primary/5 text-primary' : 'text-[#747474]'
-                    }`}
                     onClick={() => handleSelect(option)}
+                    className={`
+                      w-full
+                      flex items-center justify-between
+                      px-4 py-2
+                      text-left
+                      text-sm
+                      hover:bg-gray-50
+                      transition-colors
+                      ${
+                        selectedValue === option
+                          ? "bg-primary/5 text-primary"
+                          : "text-[#747474]"
+                      }
+                    `}
                   >
                     <span className="truncate">{option}</span>
-                    {selectedValue === option && (
-                    //   <Check className="w-4 h-4 text-primary" />
-                    <div></div>
-                    )}
                   </button>
                 </li>
               ))
@@ -116,7 +156,7 @@ const CustomSelect = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default CustomSelect
+export default CustomSelect;

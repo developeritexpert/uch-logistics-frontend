@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import CustomDropdown from '@/components/layout/CustomDropdown';
 import Link from 'next/link';
+import StatusDropdown from './StatusDropdown';
 
 const drivers = [
   {
@@ -147,7 +148,7 @@ function DriverProfilesPage() {
               <th className='text-left px-[20px] py-[10px] 2xl:text-[20px]'>Drivers</th>
               <th className='text-left px-[20px] py-[10px] 2xl:text-[20px]'>Callsign</th>
               <th className='text-left px-[20px] py-[10px] 2xl:text-[20px]'>Position</th>
-              <th className='text-left px-[20px] py-[10px] 2xl:text-[20px]'>Status</th>
+              <th className='text-left px-[20px] py-[10px] 2xl:text-[20px]'><StatusDropdown/></th>
               <th className='text-left px-[20px] py-[10px] 2xl:text-[20px] !text-center'>Actions</th>
             </tr>
           </thead>
@@ -169,16 +170,14 @@ function DriverProfilesPage() {
                       className="w-[20px] h-[20px] lg:w-[30px] lg:h-[30px] 2xl:w-[36px] 2xl:h-[36px]  rounded-[4px] border border-[#22358114] flex items-center justify-center transition-all
                                                  group-has-[:checked]:border-[#1E3A8A]
                                                  group-has-[:checked]:bg-[#1E3A8A]">
-                      <svg
-                        className=" w-3 w-3 lg:w-4 lg:h-4
-                                                    opacity-0 transition group-has-[:checked]:opacity-100" viewBox="0 0 12 10" fill="none">
+                      <svg className=" w-3 w-3 lg:w-4 lg:h-4
+                        opacity-0 transition group-has-[:checked]:opacity-100" viewBox="0 0 12 10" fill="none">
                         <path
                           d="M1 5L4.5 8.5L11 1"
                           stroke="white"
                           strokeWidth="2"
                           strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                          strokeLinejoin="round"/>
                       </svg>
                     </span>
 
