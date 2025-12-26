@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import ConfirmModal from "./ConfirmModal";
 import { calculatePageNumbers, handleDeleteDriver } from "@/utils/helpers";
 import toast from "react-hot-toast";
+import StatusDropdown from "./StatusDropdown";
 
 function DriverProfilesPage() {
   const router = useRouter();

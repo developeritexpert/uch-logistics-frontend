@@ -143,19 +143,19 @@ function LoginPage() {
               disabled={loading}
               className="w-full block text-center bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 text-white py-3 px-4 rounded-[7px] font-medium"
             >
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? "Logging in..." : "Login"}
             </button>
-
           </form>
-            <div className="mt-[15px] text-center">
+          <div className="mt-[15px] text-center">
             <div className="mt-[25px] text-center">
               <a
                 href="#"
                 className="text-[#515151] 2xl:text-[18px] lg:text-base text-sm font-medium hover:text-primary duration-300"
               >
-                Forgot Password?  
+                Forgot Password?
               </a>
             </div>
+          </div>
         </div>
       </div>
     </div>
