@@ -110,7 +110,7 @@ function JobManagement() {
       <section className="">
         <div className="flex flex-wrap xl:flex-nowrap items-center justify-between gap-[20px] mb-6">
           <div className="flex flex-col items-start sm:flex-row sm:items-center flex-wrap xl:flex-nowrap gap-[20px] w-full xl:w-[70%]">
-            <span className="text-[20px] font-bold">Filter:</span>
+            <span className="text-[20px] font-bold">Filter:</span>      
 
             <div className="flex w-full sm:w-[fit-content] flex-col sm:flex-row md:flex-nowrap flex-wrap items-center gap-[10px]">
               <div className="relative w-full">

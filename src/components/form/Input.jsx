@@ -14,7 +14,7 @@ export default function Input({
             </label>
             <input
                 {...props}
-                className={` w-[100%] text-[#515151] w-full border border-[#22358114] rounded px-[20px] py-[10px] text-sm
+                className={` w-[100%] text-[#515151] w-full border border-[#22358114] rounded px-[20px] py-[10px] 2xl:py-[20px] lg:text-base text-sm
                        focus:outline-0 focus:border-[#515151] ${className}`}
             />
         </div>

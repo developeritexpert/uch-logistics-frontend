@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Breadcrumb from "./Breadcrumb";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,6 +23,7 @@ import ConfirmModal from "./ConfirmModal";
 import toast from "react-hot-toast";
 
 function DriverProfileDetail() {
+     const dateRef = useRef(null);
   const { id } = useParams();
   const router = useRouter();
   const [driver, setDriver] = useState(null);
@@ -344,7 +345,7 @@ function DriverProfileDetail() {
     <div>
       <Breadcrumb
         items={[
-          { label: "", href: "/dashboard", isHome: true },
+          { href: "/dashboard", isHome: true },
           { label: "Driver Profiles", href: "/drivers" },
           { label: "Driver Details" },
         ]}
@@ -366,7 +367,7 @@ function DriverProfileDetail() {
             <h3 className="mt-3 text-[18px] md:text-[20px] xl:text-[22px] font-black text-primary">
               {driver?.name || "N/A"}
             </h3>
-            <p className="text-sm text-[#515151]">
+            <p className="2xl:text-[15px] text-sm text-[#515151]">
               {driver?.call_sign || "N/A"}
             </p>
           </div>
@@ -541,7 +542,7 @@ function DriverProfileDetail() {
                 placeholder="Search with docket, journey etc..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="py-[10px] pl-[16px] pr-[60px] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
+                className="2xl:py-[12px] py-[10px] pl-[16px] pr-[60px] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
               />
               <svg
                 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -808,7 +809,7 @@ function DriverProfileDetail() {
               <button
                 onClick={handleGenerateDraftInvoice}
                 disabled={draftLoading}
-                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/80 duration-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] 2xl:py-[13px] py-[10px] 2xl:text-[18px] text-sm font-semibold text-white hover:bg-secondary/80 duration-300 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {draftLoading ? (
                   <>

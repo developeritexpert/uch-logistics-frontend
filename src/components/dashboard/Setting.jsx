@@ -292,6 +292,11 @@ function Setting() {
 
   const EyeIcon = ({ show }) =>
     show ? (
+      <svg className="w-[15px] 2xl:w-[20px]" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5C5.63636 5 1 12 1 12C1 12 5.63636 19 12 19C18.3636 19 23 12 23 12C23 12 18.3636 5 12 5Z" stroke="#515151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#515151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ) : (
       <svg
         className="w-[15px] 2xl:w-[20px]"
         width="20"

@@ -217,15 +217,16 @@ function AddNewDriver() {
         ]}
       />
 
-      <div className="mx-auto bg-white rounded-lg shadow px-[30px] py-[30px] md:px-[40px] md:py-[40px] mt-[20px]">
-        <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
-          Driver Information
-        </h2>
+            <div className="mx-auto bg-white rounded-[15px] border border-[#22358114] px-[30px] py-[30px] md:px-[40px] md:py-[40px] mt-[20px]">
+
+                <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
+                    Driver Information
+                </h2>
 
         <div className="flex flex-col sm:flex-row items-center gap-[15px]">
-          <div className="w-[120px] h-[120px] rounded-[15px] border border-[#22358114] flex items-center justify-center overflow-hidden">
+          <div className="w-[120px] h-[120px] rounded-[5px] border border-[#22358114] flex items-center justify-center overflow-hidden">
             {photoPreview ? (
-              <img src={photoPreview} className="w-full h-full object-cover" />
+              <img src={photoPreview} className="w-[53px] h-[53px] rounded-full object-cover" />
             ) : (
               <span className="w-[53px] h-[53px] rounded-full">
                 <img src="/img/user-img.png" alt="" />
@@ -233,9 +234,9 @@ function AddNewDriver() {
             )}
           </div>
 
-          <div className="flex items-center flex-col gap-[14px]">
+          <div className="flex flex-col gap-[14px]">
             <label className="text-[16px] font-bold">Profile Photo</label>
-            <label className="text-sm font-bold bg-[#223581]/10 text-primary px-[22px] py-[12px] rounded cursor-pointer hover:bg-[#223581]/20 duration-300 transition-colors">
+            <label className="text-sm font-bold bg-[#223581]/10 text-primary px-[22px] py-[12px] rounded-[6px] cursor-pointer hover:bg-[#223581]/20 duration-300 transition-colors">
               Upload Photo
               <input
                 type="file"

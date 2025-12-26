@@ -170,7 +170,7 @@ function DriverProfilesPage() {
                 Position
               </th>
               <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
-                Status
+                <StatusDropdown/>
               </th>
               <th className="text-left px-[20px] py-[10px] 2xl:text-[20px] !text-center">
                 Actions

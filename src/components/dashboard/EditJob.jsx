@@ -358,6 +358,7 @@ function EditJob() {
           Edit Job
         </h2>
 
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[24px] gap-y-[18px]">
           {/* Driver Selection Dropdown - Using CustomSelect */}
           <CustomSelect
@@ -438,6 +439,7 @@ function EditJob() {
                 {errors.time}
               </p>
             )}
+
           </div>
 
           {/* Pickup Location */}
@@ -463,7 +465,7 @@ function EditJob() {
               placeholder="Enter drop-off location"
               onChange={(e) => handleInputChange("dropoff", e.target.value)}
             />
-            {errors.dropoff && (
+  {errors.dropoff && (
               <p className="text-red-500 font-bold text-xs mt-1">
                 {errors.dropoff}
               </p>
@@ -496,7 +498,7 @@ function EditJob() {
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white text-sm font-semibold px-[25px] py-[10px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-semibold px-[25px] 2xl:py-[13px] py-[10px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {submitting ? (
               <>
@@ -510,7 +512,7 @@ function EditJob() {
           <button
             onClick={handleCancel}
             disabled={submitting}
-            className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white text-sm font-semibold px-[25px] py-[10px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-semibold px-[25px] 2xl:py-[13px] py-[10px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </button>

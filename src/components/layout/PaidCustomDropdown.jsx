@@ -184,7 +184,7 @@ export default function PaidCustomDropdown({
               w-full
               bg-[#223581]
               text-white
-              text-[12px]
+              text-[10px]
               font-bold              
               rounded-[3px]
               px-[17px]
@@ -213,7 +213,7 @@ export default function PaidCustomDropdown({
               gap-2
               border
               border-[#22358114]
-              text-[12px]
+              text-[10px]
               text-[#000]
               font-bold
               rounded-[3px]

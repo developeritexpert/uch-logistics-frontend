@@ -615,14 +615,14 @@ useEffect(() => {
         {/* ACTION BUTTONS */}
         <div className="flex gap-[10px]">
           <button
-            className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSave}
             disabled={isLoading}
           >
             {isLoading ? "Saving..." : "Save Changes"}
           </button>
           <button
-            className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white text-sm font-bold px-[25px] py-[12px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px] disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleCancel}
             disabled={isLoading}
           >

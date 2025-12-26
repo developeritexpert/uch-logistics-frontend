@@ -14,9 +14,20 @@ const CustomDropdown = ({
   show = { view: true, edit: true, delete: true },
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const buttonRef = useRef(null);
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
+        if (!isOpen && buttonRef.current) {
+            const buttonRect = buttonRef.current.getBoundingClientRect();
+            
+            // Calculate position for the dropdown
+            setDropdownPosition({
+                top: buttonRect.bottom + window.scrollY,
+                left: buttonRect.right - 192, // 192px is approximately dropdown width (48 * 4)
+            });
+        }
     setIsOpen(!isOpen);
   };
 
@@ -37,7 +48,8 @@ const CustomDropdown = ({
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+                buttonRef.current && !buttonRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
@@ -47,6 +59,16 @@ const CustomDropdown = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+    // Close dropdown on scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsOpen(false);
+        };
+
+        window.addEventListener('scroll', handleScroll, true);
+        return () => window.removeEventListener('scroll', handleScroll, true);
+    }, []);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -102,7 +124,14 @@ const CustomDropdown = ({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-[7px_11px_34px_#22358114] border border-gray-200 z-50">
+        <div
+                    ref={dropdownRef}
+                    className="fixed w-48 bg-white rounded-lg shadow-[7px_11px_34px_#22358114] border border-gray-200 z-[9999]"
+                    style={{
+                        top: `${dropdownPosition.top}px`,
+                        left: `${dropdownPosition.left}px`,
+                    }}
+                >
           <div className="py-1">
             {show.view && (
               <button
