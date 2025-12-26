@@ -112,7 +112,7 @@ function AddNewDriver() {
                 <h2 className="text-[18px] lg:text-[22px] text-primary font-black mb-[20px]">
                     Payment Details
                 </h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] mb-[20px]">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px]">
                         <Input label="Rate" />
@@ -146,19 +146,21 @@ function AddNewDriver() {
                         label="Status"
                         placeholder="Active"
                         options={["Active", "Inactive"]}
-                        onChange={(value) => handleSelectChange('status', value)}
+                        onChange={(value) => handleSelectChange("status", value)}
+                        isStatusSelect
                     />
+
                 </div>
 
                 {/* ACTION BUTTONS */}
                 <div className="flex gap-[10px]">
-                    <button 
+                    <button
                         className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[15px] py-[12px] rounded-[6px]  min-w-[150px] 2xl:min-w-[179px]"
                         onClick={handleAddDriver}
                     >
                         Add Driver
                     </button>
-                    <button 
+                    <button
                         className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[15px] py-[12px] rounded-[6px]  min-w-[150px] 2xl:min-w-[179px]"
                         onClick={handleCancel}
                     >
