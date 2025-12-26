@@ -16,6 +16,7 @@ import {
   calculatePageNumbers,
   formatDriverRate,
   handleDeleteDriver,
+  formatDateForAPI,
 } from "@/utils/helpers";
 import Loader from "./Loader";
 import ConfirmModal from "./ConfirmModal";
@@ -35,10 +36,10 @@ function DriverProfileDetail() {
   const [totalJobs, setTotalJobs] = useState(0);
   const limit = 10;
 
-  // Filter state
+  // Filter state - renamed to match JobManagement
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -90,42 +91,65 @@ function DriverProfileDetail() {
     }
   }, [id]);
 
-  // Fetch jobs separately with driver's callsign
+  // Fetch jobs with filters - same pattern as JobManagement
   const getJobs = useCallback(async () => {
     if (!driver?.call_sign) return;
 
     try {
       setJobsLoading(true);
+
+      // Combine driver's call_sign with search term if provided
+      const searchValue = searchTerm 
+        ? `${driver.call_sign} ${searchTerm}`.trim()
+        : driver.call_sign;
+
       const response = await fetchAllJobs({
         page: currentPage,
         limit: limit,
-        search: driver.call_sign,
-        from_date: fromDate,
-        to_date: toDate,
+        search: searchValue,
+        from_date: formatDateForAPI(fromDate),
+        to_date: formatDateForAPI(toDate),
       });
 
       if (response.data.success && response.data.statusCode === 200) {
         const data = response.data;
-        setJobs(data.data || []);
+        
+        // Filter to ensure only this driver's jobs are shown
+        let filteredJobs = data.data || [];
+        if (searchTerm) {
+          filteredJobs = filteredJobs.filter(job => 
+            job.call_sign === driver.call_sign || 
+            job.callsign === driver.call_sign
+          );
+        }
+        
+        setJobs(filteredJobs);
         setTotalPages(
           data.pagination.totalPages ||
             Math.ceil(data.pagination.totalCount / limit) ||
             1
         );
-        setTotalJobs(data.pagination.totalCount || 0);
+        setTotalJobs(searchTerm ? filteredJobs.length : (data.pagination.totalCount || 0));
       }
     } catch (error) {
       console.error("Error fetching jobs:", error);
+      toast.error("Failed to fetch jobs");
     } finally {
       setJobsLoading(false);
     }
-  }, [driver?.call_sign, currentPage, fromDate, toDate, limit]);
+  }, [driver?.call_sign, currentPage, fromDate, toDate, searchTerm, limit]);
 
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, fromDate, toDate]);
+
+  // Fetch jobs when dependencies change - same pattern as JobManagement
   useEffect(() => {
     if (driver?.call_sign) {
       getJobs();
     }
-  }, [driver?.call_sign, currentPage, fromDate, toDate, getJobs]);
+  }, [driver?.call_sign, currentPage, fromDate, toDate, searchTerm, getJobs]);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -133,9 +157,11 @@ function DriverProfileDetail() {
     }
   };
 
-  const handleFilterSubmit = () => {
-    setCurrentPage(1);
-    getJobs();
+  // Clear filter function - same as JobManagement
+  const handleClearFilter = () => {
+    setSearchTerm("");
+    setFromDate("");
+    setToDate("");
   };
 
   const getPageNumbers = () => calculatePageNumbers(totalPages, currentPage);
@@ -145,8 +171,8 @@ function DriverProfileDetail() {
     alert(`Viewing details for ${driverName}`);
   };
 
-  const handleEdit = (driverId, driverName) => {
-    router.push(`/drivers/edit/${driverId}`);
+  const handleEdit = (jobId, driverName) => {
+    router.push(`/job-management/edit/${jobId}`);
   };
 
   const handleDelete = (driverId, driverName) => {
@@ -370,7 +396,7 @@ function DriverProfileDetail() {
               Edit Info
             </Link>
             <button
-              onClick={() => handleDelete(id, driver?.name)}
+              onClick={() => handleDelete(id, driver?.name || driver?.call_sign)}
               className="flex-1 min-w-[80px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[20px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition"
             >
               Delete Profile
@@ -471,11 +497,12 @@ function DriverProfileDetail() {
       </h2>
 
       <section className="mt-[30px]">
-        <div className="flex flex-wrap xl:flex-nowrap items-center justify-between gap-[40px] mb-6">
+        {/* Updated Filter Section - Same as JobManagement */}
+        <div className="flex flex-wrap xl:flex-nowrap items-center justify-between gap-[20px] mb-6">
           <div className="flex flex-col items-start sm:flex-row sm:items-center flex-wrap xl:flex-nowrap gap-[20px] w-full xl:w-[70%]">
             <span className="text-[20px] font-bold">Filter:</span>
 
-            <div className="flex w-full sm:w-[fit-content] flex-col sm:flex-row items-center gap-[15px]">
+            <div className="flex w-full sm:w-[fit-content] flex-col sm:flex-row md:flex-nowrap flex-wrap items-center gap-[10px]">
               <div className="relative w-full">
                 <input
                   type="date"
@@ -495,21 +522,25 @@ function DriverProfileDetail() {
                   className="py-[10px] px-[16px] w-full text-[#B4B4B4] text-[16px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
                 />
               </div>
+            </div>
 
+            {/* Clear Filter Button - Same as JobManagement */}
+            <div className="relative w-full sm:w-[155px]">
               <button
-                onClick={handleFilterSubmit}
-                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition"
+                onClick={handleClearFilter}
+                className="whitespace-nowrap group flex justify-center items-center gap-[5px] rounded-[6px] bg-secondary border border-secondary hover:text-secondary hover:bg-secondary/20 duration-300 cursor-pointer w-full sm:w-[fit-content] min-w-[100px] px-[25px] py-[10px] text-sm font-semibold leading-normal text-white transition"
               >
-                Apply
+                Clear Filter
               </button>
             </div>
 
-            <div className="relative w-full max-w-[624px]">
+            {/* Search Input - Same as JobManagement */}
+            <div className="relative w-full lg:max-w-[200px] 2xl:max-w-[624px]">
               <input
                 type="text"
-                placeholder="Search with name, callsign, Journey etc..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search with docket, journey etc..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="py-[10px] pl-[16px] pr-[60px] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
               />
               <svg
@@ -528,15 +559,13 @@ function DriverProfileDetail() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div>
-              <button
-                onClick={handleOpenDateModal}
-                className="min-w-[100px] cursor-pointer rounded-[6px] bg-secondary border border-secondary px-[25px] py-[10px] text-sm font-semibold text-white hover:bg-secondary/20 hover:text-secondary duration-300 transition"
-              >
-                Generate Invoice
-              </button>
-            </div>
+          <div className="w-full flex flex-wrap xl:flex-nowrap items-center xl:justify-end gap-3 xl:w-[30%]">
+            <button
+              onClick={handleOpenDateModal}
+              className="whitespace-nowrap group flex justify-center items-center gap-[5px] rounded-[6px] bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 w-full sm:w-[fit-content] px-[25px] py-[10px] min-w-[100px] text-sm font-semibold leading-normal text-white cursor-pointer transition"
+            >
+              Generate Invoice
+            </button>
           </div>
         </div>
 
@@ -573,14 +602,14 @@ function DriverProfileDetail() {
             </thead>
             <tbody className="text-[16px] text-normal text-[#515151]">
               {jobsLoading ? (
-                <tr>
-                  <td colSpan={9}>
-                    <Loader text="Fetching Jobs..." />
+                <tr className="bg-white">
+                  <td colSpan={9} className="py-[20px] text-center">
+                    <Loader text="Fetching jobs..." />
                   </td>
                 </tr>
               ) : jobs.length === 0 ? (
-                <tr>
-                  <td colSpan="9" className="text-center py-8">
+                <tr className="bg-white">
+                  <td colSpan={9} className="py-[20px] text-center">
                     No jobs found for this driver.
                   </td>
                 </tr>
@@ -638,16 +667,21 @@ function DriverProfileDetail() {
           </table>
         </div>
 
-        {/* Dynamic Pagination */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center mt-8">
+        {/* Pagination - Same style as JobManagement */}
+        {jobs.length > 0 ? (
+          <div className="flex items-center justify-between mt-8">
+            <div className="text-sm text-gray-600">
+              Showing {(currentPage - 1) * limit + 1} to{" "}
+              {Math.min(currentPage * limit, totalJobs)} of {totalJobs} jobs
+            </div>
             <div className="flex gap-2">
-              {/* Previous Button */}
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`group px-3 border border-[#22358114] w-[40px] h-[40px] hover:border-secondary hover:bg-secondary text-[#515151] hover:text-primary rounded-[50%] text-sm duration-300 flex items-center justify-center ${
-                  currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                className={`group px-3 border w-[40px] h-[40px] rounded-[50%] text-sm duration-300 flex items-center justify-center ${
+                  currentPage === 1
+                    ? "opacity-50 cursor-not-allowed border-[#22358114]"
+                    : "border-[#22358114] hover:border-secondary hover:bg-secondary"
                 }`}
               >
                 <svg
@@ -684,14 +718,13 @@ function DriverProfileDetail() {
                 </button>
               ))}
 
-              {/* Next Button */}
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={`group px-3 border border-[#22358114] w-[40px] h-[40px] hover:border-secondary hover:bg-secondary text-[#515151] hover:text-primary rounded-[50%] text-sm duration-300 flex items-center justify-center ${
+                className={`group px-3 border w-[40px] h-[40px] rounded-[50%] text-sm duration-300 flex items-center justify-center ${
                   currentPage === totalPages
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
+                    ? "opacity-50 cursor-not-allowed border-[#22358114]"
+                    : "border-[#22358114] hover:border-secondary hover:bg-secondary"
                 }`}
               >
                 <svg
@@ -709,15 +742,7 @@ function DriverProfileDetail() {
               </button>
             </div>
           </div>
-        )}
-
-        {/* Page Info */}
-        {totalJobs > 0 && (
-          <div className="text-center mt-4 text-sm text-[#515151]">
-            Showing {(currentPage - 1) * limit + 1} to{" "}
-            {Math.min(currentPage * limit, totalJobs)} of {totalJobs} entries
-          </div>
-        )}
+        ) : null}
       </section>
 
       {/* Date Selection Modal - Step 1 */}

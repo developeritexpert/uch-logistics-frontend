@@ -27,6 +27,8 @@ function Invoices() {
   const [fromDate, setFromDate] = useState(searchParams.get("from_date") || "");
   const [toDate, setToDate] = useState(searchParams.get("to_date") || "");
 
+  const [downloadingId, setDownloadingId] = useState(null);
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
@@ -129,8 +131,11 @@ function Invoices() {
     fetchInvoicesData();
   };
 
+  // Updated to return a Promise for the dropdown to await
   const handleUpdatePaidStatus = async (invoiceId, isPaid) => {
-    console.log(`Marking invoice ${invoiceId} as ${isPaid} `);
+    console.log(
+      `Marking invoice ${invoiceId} as ${isPaid ? "Paid" : "Unpaid"}`
+    );
 
     try {
       const response = await updateInvoice(invoiceId, { is_paid: isPaid });
@@ -139,19 +144,33 @@ function Invoices() {
         toast.success(
           `Invoice marked as ${isPaid ? "Paid" : "Unpaid"} successfully`
         );
+
+        // Update both invoices and filteredInvoices states
         setInvoices((prevInvoices) =>
           prevInvoices.map((invoice) =>
             invoice.id === invoiceId ? { ...invoice, is_paid: isPaid } : invoice
           )
         );
+
+        setFilteredInvoices((prevFiltered) =>
+          prevFiltered.map((invoice) =>
+            invoice.id === invoiceId ? { ...invoice, is_paid: isPaid } : invoice
+          )
+        );
+
+        return true; // Indicate success
       } else {
         toast.error(response.data.message || "Failed to update invoice status");
+        throw new Error(
+          response.data.message || "Failed to update invoice status"
+        );
       }
     } catch (error) {
       console.error("Error updating invoice:", error);
       toast.error(
         error.response?.data?.message || "Failed to update invoice status"
       );
+      throw error; // Re-throw so dropdown can handle it
     }
   };
 
@@ -172,18 +191,31 @@ function Invoices() {
 
   const handleDownloadInvoice = async (invoiceId) => {
     try {
+      setDownloadingId(invoiceId);
       const response = await getInvoicePdfUrl(invoiceId);
 
       if (response?.data?.success && response?.data?.statusCode === 200) {
         const pdfUrl = response.data.data.url;
-        window.open(pdfUrl, "_blank");
+        console.log("PDF URL:", pdfUrl);
+
+        const newWindow = window.open(pdfUrl, "_blank");
+
+        toast.success("Invoice PDF opened successfully");
+        return true;
       } else {
         toast.error(response?.data?.message || "Failed to download invoice");
+        throw new Error(
+          response?.data?.message || "Failed to download invoice"
+        );
       }
     } catch (error) {
+      console.error("Error downloading invoice:", error);
       toast.error(
         error?.response?.data?.message || "Failed to download invoice"
       );
+      throw error;
+    } finally {
+      setDownloadingId(null);
     }
   };
 
@@ -219,13 +251,14 @@ function Invoices() {
                 />
               </div>
             </div>
-
-            <button
-              onClick={handleClearFilters}
-              className="whitespace-nowrap group flex justify-center items-center gap-[5px] rounded-[6px] bg-secondary border border-secondary hover:text-secondary hover:bg-secondary/20 duration-300 cursor-pointer w-full sm:w-[fit-content] min-w-[100px] px-[25px] py-[10px] text-sm font-semibold leading-normal text-white transition"
-            >
-              Clear Filter
-            </button>
+            <div className="relative w-full sm:w-[155px]">
+              <button
+                onClick={handleClearFilters}
+                className="whitespace-nowrap group flex justify-center items-center gap-[5px] rounded-[6px] bg-secondary border border-secondary hover:text-secondary hover:bg-secondary/20 duration-300 cursor-pointer w-full sm:w-[fit-content] min-w-[100px] px-[25px] py-[10px] text-sm font-semibold leading-normal text-white transition"
+              >
+                Clear Filter
+              </button>
+            </div>
 
             {/* Search Input */}
             <div className="relative w-full 2xl:min-w-[400px] xl:!min-w-[300px]">
@@ -257,13 +290,6 @@ function Invoices() {
               </button>
             </div>
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <button className="gap-2 rounded-md bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary 2xl:py-[12px] py-[10px] px-[25px] min-w-[100px] duration-300 leading-normal 2xl:text-[18px] text-sm cursor-pointer font-semibold text-white transition">
-              Generate Invoice
-            </button>
-          </div>
         </div>
 
         {/* Table */}
@@ -290,7 +316,10 @@ function Invoices() {
                   Final Total
                 </th>
                 <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
-                  Status
+                  Invoice Status
+                </th>
+                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                  Payment Status
                 </th>
                 <th className="text-center px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap rounded-r-[15px]">
                   Actions
@@ -300,7 +329,7 @@ function Invoices() {
             <tbody className="text-[16px] text-[#515151]">
               {loading ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-20">
+                  <td colSpan="9" className="text-center py-20">
                     <div className="flex flex-col items-center justify-center gap-3">
                       <Loader text="Loading invoices..." />
                     </div>
@@ -308,7 +337,7 @@ function Invoices() {
                 </tr>
               ) : filteredInvoices.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-20">
+                  <td colSpan="9" className="text-center py-20">
                     <div className="flex flex-col items-center justify-center gap-3">
                       <svg
                         className="w-16 h-16 text-gray-300"
@@ -373,12 +402,24 @@ function Invoices() {
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]">
                       <span
                         className={`text-sm font-medium ${
-                          invoice.is_paid === true
+                          invoice.status !== "DRAFT"
                             ? "text-[#009249]"
                             : "text-[#C00000]"
                         }`}
                       >
-                        {invoice.is_paid ? "Paid" : "Pending"}
+                        {invoice.status}
+                      </span>
+                    </td>
+
+                    <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]">
+                      <span
+                        className={`text-sm font-medium px-3 py-1 rounded-full ${
+                          invoice.is_paid === true
+                            ? "text-[#009249] bg-[#009249]/10"
+                            : "text-[#C00000] bg-[#C00000]/10"
+                        }`}
+                      >
+                        {invoice.is_paid ? "Paid" : "Unpaid"}
                       </span>
                     </td>
 
@@ -387,9 +428,10 @@ function Invoices() {
                         <PaidCustomDropdown
                           invoice={invoice}
                           onDownload={handleDownloadInvoice}
-                          onStatusUpdate={(status) =>
-                            handleUpdatePaidStatus(invoice.id, status)
+                          onStatusUpdate={(isPaid) =>
+                            handleUpdatePaidStatus(invoice.id, isPaid)
                           }
+                          isDownloading={downloadingId === invoice.id}
                         />
                       </div>
                     </td>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "./Breadcrumb";
 import Input from "../form/Input";
+import CustomSelect from "../layout/CustomSelect";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { addJob } from "@/lib/api/job.api";
@@ -38,7 +39,6 @@ function AddJob() {
     driver_total: "",
   });
 
-  // Fetch all drivers on component mount
   useEffect(() => {
     getDrivers();
   }, []);
@@ -46,7 +46,7 @@ function AddJob() {
   const getDrivers = async () => {
     try {
       setLoadingDrivers(true);
-      const response = await fetchAllDrivers();
+      const response = await fetchAllDrivers({ limit: 100 });
 
       if (response.data?.success) {
         const validDrivers = (response.data?.data || []).filter(
@@ -64,13 +64,25 @@ function AddJob() {
     }
   };
 
+  const driverOptions = drivers.map(
+    (driver) => `${driver.name || ""} (${driver.call_sign || "N/A"})`
+  );
+
+  const getSelectedDriverDisplay = () => {
+    if (!formData.driver_id) return "";
+    const driver = drivers.find((d) => d.id === formData.driver_id);
+    if (driver) {
+      return `${driver.name || ""} (${driver.call_sign || "N/A"})`;
+    }
+    return "";
+  };
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({
         ...prev,
@@ -79,12 +91,10 @@ function AddJob() {
     }
   };
 
-  const handleDriverChange = (e) => {
-    const selectedDriverId = e.target.value;
-    console.log("Selected driver ID:", selectedDriverId);
+  const handleDriverChange = (selectedOption) => {
+    console.log("Selected option:", selectedOption);
 
-    if (!selectedDriverId) {
-      // Reset driver fields if no driver selected
+    if (!selectedOption) {
       setFormData((prev) => ({
         ...prev,
         driver_id: "",
@@ -94,9 +104,9 @@ function AddJob() {
       return;
     }
 
-    // Find the selected driver from the drivers array
     const selectedDriver = drivers.find(
-      (driver) => driver.id === selectedDriverId
+      (driver) =>
+        `${driver.name || ""} (${driver.call_sign || "N/A"})` === selectedOption
     );
 
     console.log("Found driver:", selectedDriver);
@@ -109,7 +119,6 @@ function AddJob() {
         call_sign: selectedDriver.call_sign || "",
       }));
 
-      // Clear driver_id error
       if (errors.driver_id) {
         setErrors((prev) => ({
           ...prev,
@@ -274,44 +283,16 @@ function AddJob() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[24px] gap-y-[18px]">
-          {/* Driver Selection Dropdown */}
-          <div>
-            <label className="text-sm text-[16px] font-bold block mb-1">
-              Select Driver
-            </label>
-            <select
-              value={formData.driver_id}
-              onChange={handleDriverChange}
-              disabled={loadingDrivers}
-              className={`text-[#515151] w-full border border-[#22358114] rounded px-[20px] py-[10px] text-sm
-                         focus:outline-none focus:ring-1 focus:ring-[#515151]
-                ${
-                  loadingDrivers
-                    ? "opacity-50 cursor-not-allowed"
-                    : "cursor-pointer"
-                }`}
-            >
-              <option value="">
-                {loadingDrivers ? "Loading drivers..." : "Select a driver"}
-              </option>
-              {drivers.length > 0 &&
-                drivers.map((driver, index) => (
-                  <option
-                    key={driver.id || `driver-${index}`}
-                    value={driver.id}
-                  >
-                    {driver.name || " "} ({driver.call_sign || "N/A"})
-                  </option>
-                ))}
-            </select>
-            {errors.driver_id && (
-              <p className="text-red-500 font-bold text-xs mt-1">
-                {errors.driver_id}
-              </p>
-            )}
-          </div>
+          <CustomSelect
+            label="Select Driver"
+            options={driverOptions}
+            value={getSelectedDriverDisplay()}
+            onChange={handleDriverChange}
+            placeholder={loadingDrivers ? "Loading drivers..." : "Select a driver"}
+            disabled={loadingDrivers}
+            error={errors.driver_id}
+          />
 
-          {/* Callsign - Auto-populated and readonly */}
           <div>
             <Input
               label="Callsign"

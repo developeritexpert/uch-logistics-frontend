@@ -73,11 +73,6 @@ const CustomSelect = ({
             <path d="M0.900391 0.900023L7.90039 7.90002L14.9004 0.900025" stroke="#515151" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
 
-        {/* <ChevronDown 
-          className={`w-5 h-5 text-gray-400 transition-transform ${
-            isOpen ? 'transform rotate-180' : ''
-          }`}
-        /> */}
       </button>
 
       {/* Error Message */}

@@ -257,7 +257,7 @@ useEffect(() => {
         items={[
           { href: "/dashboard", isHome: true },
           { label: "Driver Profiles", href: "/drivers" },
-          { label: driverName || "Driver", href: `/driver-profile-detail/${id}` },
+          { label: driverName || "Driver", href: `/drivers/view/${id}` },
           { label: "Profile Edit" },
         ]}
       />
