@@ -152,7 +152,7 @@ const dateRef = useRef(null);
                     <div className="flex  flex-col items-start sm:flex-row sm:items-center  flex-wrap xl:flex-nowrap gap-[20px] w-full xl:w-[70%]">
                         <span className="text-[20px] font-bold">
                             Filter:
-                        </span>
+                        </span>      
 
                         <div className='flex w-full sm:w-[fit-content] flex-col sm:flex-row  md:flex-nowrap flex-wrap items-center gap-[10px]'>
                             <div className="relative w-full sm:w-[155px]" onClick={() => dateRef.current?.showPicker()}>
@@ -160,7 +160,7 @@ const dateRef = useRef(null);
                                     type="date"
                                     className="
                                          w-full  px-[16px] pr-[42px] 2xl:py-[15px] py-[10px] rounded-[6px] border border-[#22358114] text-[#515151]
-                                         text-[16px] font-normal focus:outline-none focus:border-[#515151]  appearance-none bg-white "/>
+                                         text-[16px] font-normal focus:outline-none focus:border-[#515151]  appearance-none  "/>
                                 <span className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2">
                                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M15.832 1.42737H13.3531V0.657207C13.3531 0.294267 13.0588 0 12.6958 0C12.3329 0 12.0386 0.294267 12.0386 0.657207V1.42737H7.04925V0.657207C7.04925 0.294267 6.75499 0 6.39205 0C6.02911 0 5.73484 0.294267 5.73484 0.657207V1.42737H3.25587C1.46042 1.42737 0 2.88796 0 4.6834V13.8874C0 15.6591 1.44117 17.1002 3.21255 17.1002H15.8753C17.6467 17.1002 19.0879 15.6591 19.0879 13.8874V4.6834C19.0879 2.88796 17.6275 1.42737 15.832 1.42737ZM3.25587 2.74179H5.73484V3.12318C5.73484 3.48612 6.02911 3.78039 6.39205 3.78039C6.75499 3.78039 7.04925 3.48612 7.04925 3.12318V2.74179H12.0386V3.12318C12.0386 3.48612 12.3329 3.78039 12.6958 3.78039C13.0588 3.78039 13.3531 3.48612 13.3531 3.12318V2.74179H15.832C16.9025 2.74179 17.7735 3.61271 17.7735 4.6834V5.30676H1.31441V4.6834C1.31441 3.61271 2.18534 2.74179 3.25587 2.74179ZM15.8753 15.7858H3.21255C2.16577 15.7858 1.31441 14.9341 1.31441 13.8874V6.62117H17.7735V13.8874C17.7735 14.9341 16.9221 15.7858 15.8753 15.7858Z" fill="#515151" />
@@ -183,7 +183,7 @@ const dateRef = useRef(null);
                                     type="date"
                                     className="
                                          w-full  px-[16px] pr-[42px] 2xl:py-[15px] py-[10px] rounded-[6px] border border-[#22358114] text-[#515151]
-                                         text-[16px] font-normal focus:outline-none focus:border-[#515151]  appearance-none bg-white "/>
+                                         text-[16px] font-normal focus:outline-none focus:border-[#515151]  appearance-none "/>
                                 <span className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2">
                                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M15.832 1.42737H13.3531V0.657207C13.3531 0.294267 13.0588 0 12.6958 0C12.3329 0 12.0386 0.294267 12.0386 0.657207V1.42737H7.04925V0.657207C7.04925 0.294267 6.75499 0 6.39205 0C6.02911 0 5.73484 0.294267 5.73484 0.657207V1.42737H3.25587C1.46042 1.42737 0 2.88796 0 4.6834V13.8874C0 15.6591 1.44117 17.1002 3.21255 17.1002H15.8753C17.6467 17.1002 19.0879 15.6591 19.0879 13.8874V4.6834C19.0879 2.88796 17.6275 1.42737 15.832 1.42737ZM3.25587 2.74179H5.73484V3.12318C5.73484 3.48612 6.02911 3.78039 6.39205 3.78039C6.75499 3.78039 7.04925 3.48612 7.04925 3.12318V2.74179H12.0386V3.12318C12.0386 3.48612 12.3329 3.78039 12.6958 3.78039C13.0588 3.78039 13.3531 3.48612 13.3531 3.12318V2.74179H15.832C16.9025 2.74179 17.7735 3.61271 17.7735 4.6834V5.30676H1.31441V4.6834C1.31441 3.61271 2.18534 2.74179 3.25587 2.74179ZM15.8753 15.7858H3.21255C2.16577 15.7858 1.31441 14.9341 1.31441 13.8874V6.62117H17.7735V13.8874C17.7735 14.9341 16.9221 15.7858 15.8753 15.7858Z" fill="#515151" />
@@ -219,7 +219,7 @@ const dateRef = useRef(null);
 
                         </div>
                     </div>
-
+  
 
                     <div className=" w-full flex flex-wrap xl:flex-nowrap items-center xl:justify-end gap-3 xl:w-[30%]">
 

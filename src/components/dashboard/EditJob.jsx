@@ -73,8 +73,7 @@ function EditJob() {
       font-normal
       focus:outline-none
       focus:border-[#515151]
-      appearance-none
-      bg-white
+      appearance-none   
       cursor-pointer
     "
             />
