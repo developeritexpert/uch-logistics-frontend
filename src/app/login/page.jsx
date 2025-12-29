@@ -32,12 +32,15 @@ function LoginPage() {
       const response = await loginUser({ email, password });
 
       if (response.data.success && response.data.statusCode === 200) {
+        const token = response.data.token;
+        console.log(token , "token");
+        
         Cookies.set("auth_token", response.data.token, {
           expires: 7,
           sameSite: "strict",
         });
       }
-      
+
       router.push("/dashboard");
     } catch (err) {
       setError(
