@@ -97,13 +97,13 @@ function Setting() {
             <div className="flex gap-3">
               <button 
                 onClick={handleCancelEdit}
-                className="min-w-[100px] cursor-pointer rounded-[6px] hover:bg-[#515151]/20 border border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[10px] 2xl:text-[18px] text-sm text-[#515151] font-semibold transition"
+                className="min-w-[125px] cursor-pointer rounded-[6px] hover:bg-[#515151]/20 border border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[10px] 2xl:text-[18px] text-sm text-[#515151] font-semibold transition"
               >
                 Cancel
               </button>
               <button 
                 onClick={handleSavePersonalInfo}
-                className="min-w-[100px] cursor-pointer rounded-[6px] bg-primary border border-primary px-[25px] py-[10px] 2xl:text-[18px] text-sm font-semibold text-white hover:bg-primary/20 hover:text-primary duration-300 transition"
+                className="min-w-[125px] cursor-pointer rounded-[6px] bg-primary border border-primary px-[25px] py-[10px] 2xl:text-[18px] text-sm font-semibold text-white hover:bg-primary/20 hover:text-primary duration-300 transition"
               >
                 Save
               </button>
@@ -111,7 +111,7 @@ function Setting() {
           ) : (
             <button 
               onClick={() => setIsEditing(true)}
-              className="group flex items-center gap-2 rounded-md bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 px-[25px] py-[10px] min-w-[100px] 2xl:text-[18px] text-sm text-white transition"
+              className="group flex items-center gap-2 rounded-md bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 px-[34px] py-[13px] min-w-[100px] 2xl:text-[18px] text-sm text-white transition"
             >
               <svg className="w-[15px] h-[15px]" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21.5442 0.531628C20.8368 -0.175716 19.6818 -0.178701 18.9744 0.531628L9.20851 10.2971C8.97869 10.527 8.81751 10.8105 8.73394 11.1239L7.5729 15.5888C7.52216 15.7888 7.57887 16.0007 7.72512 16.1469C7.83555 16.2573 7.98479 16.317 8.13701 16.317C8.18476 16.317 8.2355 16.3111 8.28326 16.2991L12.7483 15.1381C13.0617 15.0575 13.3483 14.8934 13.5751 14.6636L23.341 4.89806C24.0484 4.19071 24.0484 3.03568 23.341 2.32834L21.5442 0.528643V0.531628ZM8.95183 14.9232L9.69203 12.0789L11.7962 14.1831L8.95183 14.9232ZM12.9274 13.6697L10.2054 10.9478L17.1717 3.98179L19.8937 6.70372L12.9274 13.6697ZM20.7175 5.87998L17.9954 3.15805L18.3297 2.82378L21.0517 5.54571L20.7175 5.87998ZM22.5202 4.0773L21.8755 4.72197L19.1535 2.00004L19.7982 1.35537C19.9265 1.22703 20.0937 1.16436 20.2608 1.16436C20.4279 1.16436 20.5951 1.22703 20.7234 1.35537L22.5202 3.15507C22.7739 3.40876 22.7739 3.82361 22.5202 4.0773Z" 
@@ -194,10 +194,10 @@ function Setting() {
           </h2>
 
           <div className="flex gap-3 items-center">
-            <button className="min-w-[100px] cursor-pointer rounded-[6px] border hover:bg-[#515151]/20 border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[10px] 2xl:text-[18px] text-sm text-[#515151] font-semibold transition">
+            <button className="min-w-[125px] cursor-pointer rounded-[6px] border hover:bg-[#515151]/20 border-[#22358114] hover:border-[#515151] duration-300 px-[25px] py-[13px] 2xl:text-[18px] text-sm text-[#515151] font-semibold transition">
               Cancel
             </button>
-            <button className="min-w-[100px] cursor-pointer rounded-[6px] bg-primary border border-primary px-[25px] py-[10px] 2xl:text-[18px] text-sm font-semibold text-white hover:bg-primary/20 hover:text-primary duration-300 transition">
+            <button className="min-w-[125px] cursor-pointer rounded-[6px] bg-primary border border-primary px-[25px] py-[13px] 2xl:text-[18px] text-sm font-semibold text-white hover:bg-primary/20 hover:text-primary duration-300 transition">
               Save
             </button>
           </div>
