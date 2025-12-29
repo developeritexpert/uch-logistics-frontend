@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/lib/api/auth.api";
+import Cookies from "js-cookie";
 
 function LoginPage() {
   const router = useRouter();
@@ -28,7 +29,15 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      await loginUser({ email, password });
+      const response = await loginUser({ email, password });
+
+      if (response.data.success && response.data.statusCode === 200) {
+        Cookies.set("auth_token", response.data.token, {
+          expires: 7,
+          sameSite: "strict",
+        });
+      }
+      
       router.push("/dashboard");
     } catch (err) {
       setError(
@@ -143,18 +152,17 @@ function LoginPage() {
               disabled={loading}
               className="w-full block text-center bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 text-white py-3 px-4 rounded-[7px] font-medium"
             >
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? "Logging in..." : "Login"}
             </button>
-
           </form>
-            <div className="mt-[15px] text-center">
-              <a
-                href="#"
-                className="text-[#515151] text-sm font-medium hover:text-primary duration-300"
-              >
-                Forgot Password?  
-              </a>
-            </div>
+          <div className="mt-[15px] text-center">
+            <a
+              href="#"
+              className="text-[#515151] text-sm font-medium hover:text-primary duration-300"
+            >
+              Forgot Password?
+            </a>
+          </div>
         </div>
       </div>
     </div>
