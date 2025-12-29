@@ -8,6 +8,12 @@ const nextConfig = {
         port: "8000",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "consummately-obsessive-alene.ngrok-free.dev",
+        // port: "8000",
+        pathname: "/uploads/**",
+      }
     ],
   },
 };
