@@ -33,11 +33,11 @@ function LoginPage() {
 
       if (response.data.success && response.data.statusCode === 200) {
         const token = response.data.token;
-        console.log(token , "token");
+        console.log(token , "token--------------");
         
         Cookies.set("auth_token", response.data.token, {
           expires: 7,
-          sameSite: "strict",
+          sameSite: "none",
         });
       }
 
