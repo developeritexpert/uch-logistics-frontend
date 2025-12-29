@@ -32,11 +32,11 @@ function LoginPage() {
       const response = await loginUser({ email, password });
 
       if (response.data.success && response.data.statusCode === 200) {
-        const token = response.data.token;
+        const token = response.data.data.token;
         console.log(token , "token--------------");
         
         Cookies.set("auth_token", response.data.token, {
-          expires: 7,
+          expires: 1,
           sameSite: "none",
         });
       }
