@@ -153,15 +153,15 @@ export default function DriverProfileEdit() {
                 </div>
 
                 {/* ACTIONS */}
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap">
                     <button 
-                        className="bg-primary border border-primary hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px]"
+                        className="bg-primary border border-primary w-full sm:max-w-[179px] hover:bg-primary/20 hover:text-primary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px]"
                         onClick={handleSave}
                     >
                         Save Changes
                     </button>
                     <button 
-                        className="bg-secondary border border-secondary hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px]"
+                        className="bg-secondary border border-secondary w-full sm:max-w-[179px] hover:bg-secondary/20 hover:text-secondary duration-300 cursor-pointer text-white 2xl:text-[18px] text-sm font-bold px-[25px] 2xl:py-[13px] py-[12px] rounded-[6px] min-w-[150px]"
                         onClick={handleCancel}
                     >
                         Cancel
