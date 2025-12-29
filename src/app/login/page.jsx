@@ -40,7 +40,7 @@ function LoginPage() {
         });
       }
 
-      router.push("/dashboard");
+      router.replace("/dashboard");
     } catch (err) {
       setError(
         err?.response?.data?.message || "Login failed. Please try again."
