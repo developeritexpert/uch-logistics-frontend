@@ -13,15 +13,10 @@ export function middleware(req) {
     }
   }
 
-  if(pathname === "/dashboard") {
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-    else{
-      return NextResponse.next();
-    }
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
-
+  
   return NextResponse.next();
 }
 
