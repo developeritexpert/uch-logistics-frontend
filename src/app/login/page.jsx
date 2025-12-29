@@ -33,9 +33,8 @@ function LoginPage() {
 
       if (response.data.success && response.data.statusCode === 200) {
         const token = response.data.data.token;
-        console.log(token , "token--------------");
-        
-        Cookies.set("auth_token", response.data.token, {
+    
+        Cookies.set("auth_token", token, {
           expires: 1,
           sameSite: "none",
         });
