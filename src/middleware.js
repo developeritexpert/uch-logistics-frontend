@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export function middleware(req) {
-  const token = req.cookies.get("auth_token")?.value;
+  const token = req.cookies.get("auth_token")?.value ;
   const { pathname } = req.nextUrl;
 
   if (pathname === "/login" || pathname === "/reset-password") {
@@ -10,7 +10,7 @@ export function middleware(req) {
     }
     else{
       return NextResponse.next();
-    }
+    } 
   }
 
   if (!token) {

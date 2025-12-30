@@ -77,21 +77,21 @@ function Page() {
                     <Image alt="Total Jobs Listed" src="/icons/total-jobs-listed.png" height={100} width={100} className="w-[60px] 2xl:w-[82px]" />
                     <div className='text-right'>
                         <p className='text-[#515151] md:text-[18px] 2xl:text-[22px]'>Total Jobs Listed</p>
-                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black'>{dashboard.total_jobs}</span>
+                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black'>{dashboard?.total_jobs || 0}</span>
                     </div>
                 </div>
                 <div className='basis-[100%] sm:basis-[48%] lg:basis-[33%] flex justify-between items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]'>
                     <Image alt="Total Jobs Listed" src="/icons/active-drivers.png" height={100} width={100} className="w-[60px] 2xl:w-[82px]" />
                     <div className='text-right'>
                         <p className='text-[#515151] md:text-[18px] 2xl:text-[22px]'>Active Drivers</p>
-                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black'>{dashboard.active_drivers}</span>
+                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black'>{dashboard?.active_drivers || 0}</span>
                     </div>
                 </div>
                 <div className='basis-[100%] sm:basis-[48%] lg:basis-[33%] flex justify-between items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]'>
                     <Image alt="Total Jobs Listed" src="/icons/total-revenue.png" height={100} width={100} className="w-[60px] 2xl:w-[82px]" />
                     <div className='text-right'>
                         <p className='text-[#515151] md:text-[18px] 2xl:text-[22px]'>Total Revenue</p>
-                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black'>${dashboard.total_revenue}</span>
+                        <span className='block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black'>${dashboard?.total_revenue || 0}</span>
                     </div>
                 </div>
             </div>
