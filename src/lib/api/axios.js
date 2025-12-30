@@ -12,11 +12,9 @@ api.interceptors.request.use(
   (config) => {
     const token = Cookies.get("auth_token");
     
-    console.log("Interceptor running - Token:", token);
     
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("Added Authorization header:", config.headers.Authorization);
     }
     
     return config;

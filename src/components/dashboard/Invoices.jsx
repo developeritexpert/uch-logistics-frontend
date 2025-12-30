@@ -3,14 +3,685 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import toast from "react-hot-toast";
+import Image from "next/image";
 import PaidCustomDropdown from "../layout/PaidCustomDropdown";
 import {
   fetchAllInvoices,
   getInvoicePdfUrl,
   updateInvoice,
+  fetchSingleInvoice,
 } from "@/lib/api/invoice.api";
 import Loader from "./Loader";
 import { calculatePageNumbers } from "@/utils/helpers";
+
+// Invoice Preview Modal Component - Exact HTML Template Design
+const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
+  if (!isOpen) return null;
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const formatDateTime = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2);
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return (
+      <>
+        {day}/{month}/{year} &nbsp;&nbsp;{hours}:{minutes}
+      </>
+    );
+  };
+
+  const formatCurrency = (amount) => {
+    const num = Number(amount) || 0;
+    return num.toLocaleString("en-GB", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formatNegativeCurrency = (amount) => {
+    const num = Number(amount) || 0;
+    if (num === 0) return "";
+    return `-${formatCurrency(num)}`;
+  };
+
+  // Calculate totals
+  const calculateTotalDeductions = () => {
+    if (!invoice) return 0;
+    return (
+      (Number(invoice.admin_fee) || 0) +
+      (Number(invoice.vehicle_hire_charges) || 0) +
+      (Number(invoice.insurance_charge) || 0) +
+      (Number(invoice.fuel_charge) || 0) +
+      (Number(invoice.additional_charges) || 0)
+    );
+  };
+
+  const calculateVatAmount = () => {
+    if (!invoice) return 0;
+    const adminFee = Number(invoice.admin_fee) || 0;
+    return adminFee * 0.2;
+  };
+
+  const calculateAdjustmentTotal = () => {
+    return calculateTotalDeductions() + calculateVatAmount();
+  };
+
+  // Parse address into lines
+  const parseAddress = (address) => {
+    if (!address) return [];
+    return address.split(",").map((line) => line.trim());
+  };
+
+  // Calculate total pages based on jobs
+  const jobsPerPage = 10;
+  const totalPages = invoice?.jobs
+    ? Math.ceil(invoice.jobs.length / jobsPerPage)
+    : 1;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal Content */}
+      <div className="relative bg-white rounded-lg shadow-2xl w-full max-w-[1400px] max-h-[95vh] overflow-hidden flex flex-col">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b bg-[#223581] text-white flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <h2 className="text-xl font-bold">Invoice Preview</h2>
+            {invoice && (
+              <span className="text-sm opacity-80">
+                #{invoice.id}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Invoice Content - Scrollable */}
+        <div
+          className="flex-1 overflow-y-auto bg-gray-200"
+          style={{ fontFamily: "Lato, sans-serif" }}
+        >
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader text="Loading invoice details..." />
+            </div>
+          ) : invoice ? (
+            <div className="bg-white mx-auto my-6 shadow-2xl max-w-[1200px]">
+              {/* ==================== HEADER SECTION ==================== */}
+              <section className="relative h-[450px] overflow-hidden bg-white">
+                {/* Red Shade Image */}
+                <img
+                  src="/img/red-shade.png"
+                  alt=""
+                  className="absolute top-0 h-full z-[1]"
+                  style={{ left: "260px" }}
+                />
+
+                {/* Blue Shade Image */}
+                <img
+                  src="/img/blue-shades.png"
+                  alt=""
+                  className="absolute top-0 left-0 h-full w-full z-[2]"
+                />
+
+                {/* Logo */}
+                <div
+                  className="absolute z-[3]"
+                  style={{
+                    top: "50%",
+                    left: "240px",
+                    transform: "translateY(-50%)",
+                  }}
+                >
+                  <img src="/img/logoi.png" alt="UCH Logistics" />
+                </div>
+
+                {/* Company Info */}
+                <div
+                  className="relative z-[4] max-w-[1980px] h-full mx-auto flex justify-end items-end"
+                  style={{ padding: "0 40px 40px 0" }}
+                >
+                  <div className="max-w-[420px] text-black">
+                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
+                      UCH Logistics Address:
+                    </h3>
+                    <p className="text-[18px] mb-5 max-w-[252px] leading-[1.5] mt-0">
+                      Colnbrook Cargo Centre, Old Bath Road, Colnbrook, SL3 0NW.
+                    </p>
+
+                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
+                      Telephone:
+                    </h3>
+                    <p className="text-[18px] mb-5 mt-0">+44 (0) 1784 242 824</p>
+
+                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
+                      Fax:
+                    </h3>
+                    <p className="text-[18px] mb-5 mt-0">+44 (0) 1784 245 222</p>
+
+                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
+                      Email:
+                    </h3>
+                    <p className="text-[18px] m-0">info@uchlogistics.co.uk</p>
+                  </div>
+                </div>
+              </section>
+
+              {/* ==================== TO/FROM SECTION ==================== */}
+              <section className="py-[140px] pb-[90px]">
+                <div
+                  className="flex max-w-[1980px] mx-auto border-t pt-[50px]"
+                  style={{ borderColor: "#22358114", padding: "50px 40px 0" }}
+                >
+                  {/* TO Section */}
+                  <div className="flex-1">
+                    <div
+                      className="w-fit border border-dashed rounded-[10px] flex gap-[10px] text-[22px]"
+                      style={{ borderColor: "#2235811A", padding: "40px 45px" }}
+                    >
+                      <h3 className="m-0 font-black text-[#223581]">To:</h3>
+                      <ul className="list-none p-0 m-0 text-[#515151] flex flex-col gap-[7px]">
+                        <li className="font-extrabold">UCH Logistics Ltd</li>
+                        <li className="font-normal">Colnbrook Cargo Centre</li>
+                        <li className="font-normal">Old Bath Road</li>
+                        <li className="font-normal">Colnbrook</li>
+                        <li className="font-normal">Slough</li>
+                        <li className="font-normal">SL3 0NW</li>
+                        <li className="font-normal">+44 (0)1784 242824</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* FROM & DRIVER INFO Section */}
+                  <div className="flex-1 flex gap-[70px]">
+                    {/* FROM */}
+                    <div
+                      className="w-fit border border-dashed rounded-[10px] flex gap-[10px] text-[22px]"
+                      style={{ borderColor: "#2235811A", padding: "40px 45px" }}
+                    >
+                      <h3 className="m-0 font-black text-[#223581]">From:</h3>
+                      <ul className="list-none p-0 m-0 font-normal text-[#515151] flex flex-col gap-[7px]">
+                        <li>{invoice.driver?.name || "N/A"}</li>
+                        {parseAddress(invoice.driver?.address_details).map(
+                          (line, idx) => (
+                            <li key={idx}>{line}</li>
+                          )
+                        )}
+                        {invoice.driver?.zip_code && (
+                          <li>{invoice.driver.zip_code}</li>
+                        )}
+                        {invoice.driver?.phone_number && (
+                          <li>{invoice.driver.phone_number}</li>
+                        )}
+                      </ul>
+                    </div>
+
+                    {/* DRIVER INFO BOX */}
+                    <div
+                      className="w-full max-w-[420px] border border-dashed rounded-[10px] box-border"
+                      style={{ borderColor: "#2235811A", padding: "40px 45px" }}
+                    >
+                      <div className="flex mb-[18px]">
+                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                          Driver Callsign:
+                        </div>
+                        <div className="text-[22px] font-normal text-[#515151]">
+                          {invoice.driver?.call_sign || "N/A"}
+                        </div>
+                      </div>
+
+                      <div className="flex mb-[18px]">
+                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                          Self Bill Date:
+                        </div>
+                        <div className="text-[22px] font-normal text-[#515151]">
+                          {formatDate(invoice.created_at)}
+                        </div>
+                      </div>
+
+                      <div className="flex mb-[26px]">
+                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                          Self Bill Number:
+                        </div>
+                        <div className="text-[22px] font-normal text-[#515151] leading-[1.5]">
+                          {invoice.id?.slice(-6) || "N/A"} <br />
+                          Page 1 of {totalPages}
+                        </div>
+                      </div>
+
+                      <div className="flex">
+                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                          Period:
+                        </div>
+                        <div className="text-[22px] font-normal text-[#515151]">
+                          {formatDate(invoice.start_date)} -{" "}
+                          {formatDate(invoice.end_date)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* ==================== JOBS TABLE SECTION ==================== */}
+              <section className="pb-[180px]" style={{ padding: "0 40px 180px" }}>
+                <div className="max-w-[1980px] mx-auto">
+                  <table
+                    className="w-full text-[13px]"
+                    style={{ borderCollapse: "collapse" }}
+                  >
+                    <thead>
+                      <tr className="bg-[#223581] text-white text-[26px] font-black">
+                        <th className="py-[30px] px-[50px] text-left">
+                          Docket No.
+                        </th>
+                        <th className="py-[30px] px-[40px] text-left">
+                          Pickup Date/Time
+                        </th>
+                        <th className="py-[30px] px-[40px] text-left">Tariff</th>
+                        <th className="py-[30px] px-[40px] text-left">
+                          Journey Details
+                        </th>
+                        <th className="py-[30px] px-[40px] text-left min-w-[250px]">
+                          Amount
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody className="text-[#515151]">
+                      {invoice.jobs && invoice.jobs.length > 0 ? (
+                        invoice.jobs.map((job, index) => (
+                          <tr
+                            key={job.id || index}
+                            className="text-[22px] font-normal"
+                            style={{ borderBottom: "1px solid #E6E9F5" }}
+                          >
+                            <td
+                              className="py-[30px] px-[50px]"
+                              style={{ border: "1px solid #22358114" }}
+                            >
+                              {job.docket_no || "N/A"}
+                            </td>
+                            <td
+                              className="py-[30px] px-[40px]"
+                              style={{ border: "1px solid #22358114" }}
+                            >
+                              {formatDateTime(job.date_time)}
+                            </td>
+                            <td
+                              className="py-[30px] px-[40px]"
+                              style={{ border: "1px solid #22358114" }}
+                            >
+                              {job.tariff || "N/A"}
+                            </td>
+                            <td
+                              className="py-[30px] px-[40px]"
+                              style={{ border: "1px solid #22358114" }}
+                            >
+                              {job.journey || "N/A"}
+                            </td>
+                            <td
+                              className="py-[30px] px-[40px]"
+                              style={{ border: "1px solid #22358114" }}
+                            >
+                              {formatCurrency(job.driver_total)}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="5"
+                            className="py-[60px] text-center text-gray-400 text-[20px]"
+                          >
+                            No jobs found for this invoice
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+
+                    <tfoot>
+                      <tr className="bg-[#BF0000] text-white text-[26px] font-black">
+                        <td className="py-[30px] px-[50px]" colSpan="4" align="right">
+                          Carried Forward
+                        </td>
+                        <td className="py-[30px] px-[40px] text-left">
+                          {formatCurrency(invoice.docket_total)}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </section>
+
+              {/* ==================== PAY ADJUSTMENT SECTION ==================== */}
+              <section
+                className="mt-[60px] pb-[150px]"
+                style={{ padding: "0 40px 150px" }}
+              >
+                <div className="w-full max-w-[1980px] mx-auto bg-white text-[#515151]">
+                  {/* Summary Header */}
+                  <div
+                    className="flex justify-between items-center py-[30px] px-[60px] text-[26px] font-semibold"
+                    style={{ backgroundColor: "#2235810A" }}
+                  >
+                    <div className="text-black">
+                      Number of Dockets:{" "}
+                      <span className="text-[#223581]">
+                        {invoice.total_number_of_dockets || 0}
+                      </span>
+                    </div>
+                    <div className="text-black">
+                      Docket Total:{" "}
+                      <span className="text-[#223581]">
+                        {formatCurrency(invoice.docket_total)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Pay Adjustment Detail */}
+                  <div className="py-[30px] px-[60px] pr-[45px]">
+                    <h3 className="m-0 mb-[30px] text-[32px] font-bold text-black">
+                      Pay Adjustment Detail
+                    </h3>
+
+                    <div className="flex">
+                      {/* Left - Adjustments Table */}
+                      <div className="flex-1">
+                        {/* Table Header */}
+                        <div
+                          className="flex text-[20px] text-[#777] pb-[20px]"
+                          style={{ borderBottom: "1px dashed #22358114" }}
+                        >
+                          <div className="w-[80%]">Description</div>
+                          <div className="w-[10%] text-right">Value</div>
+                          <div className="w-[10%] text-right">VAT</div>
+                        </div>
+
+                        {/* Admin Fee Row */}
+                        <div
+                          className="flex text-[22px] py-[20px]"
+                          style={{ borderBottom: "1px dashed #22358114" }}
+                        >
+                          <div className="w-[80%]">Admin Fee</div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {Number(invoice.admin_fee) > 0
+                              ? formatNegativeCurrency(invoice.admin_fee)
+                              : ""}
+                          </div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {Number(invoice.admin_fee) > 0 ? "+20.00%" : ""}
+                          </div>
+                        </div>
+
+                        {/* Vehicle Hire Row */}
+                        <div
+                          className="flex text-[22px] py-[20px]"
+                          style={{ borderBottom: "1px dashed #22358114" }}
+                        >
+                          <div className="w-[80%]">Vehicle Hire charges</div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {Number(invoice.vehicle_hire_charges) > 0
+                              ? formatNegativeCurrency(
+                                  invoice.vehicle_hire_charges
+                                )
+                              : ""}
+                          </div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            &nbsp;
+                          </div>
+                        </div>
+
+                        {/* Insurance Row */}
+                        <div
+                          className="flex text-[22px] py-[20px]"
+                          style={{ borderBottom: "1px dashed #22358114" }}
+                        >
+                          <div className="w-[80%]">Insurance charge</div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {Number(invoice.insurance_charge) > 0
+                              ? formatNegativeCurrency(invoice.insurance_charge)
+                              : ""}
+                          </div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            &nbsp;
+                          </div>
+                        </div>
+
+                        {/* Fuel Row */}
+                        <div
+                          className="flex text-[22px] py-[20px]"
+                          style={{ borderBottom: "1px dashed #22358114" }}
+                        >
+                          <div className="w-[80%]">Fuel charge</div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {Number(invoice.fuel_charge) > 0
+                              ? formatNegativeCurrency(invoice.fuel_charge)
+                              : ""}
+                          </div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {Number(invoice.fuel_charge) > 0 ? "-" : ""}
+                          </div>
+                        </div>
+
+                        {/* Additional Charges Row */}
+                        <div
+                          className="flex text-[22px] py-[20px]"
+                          style={{ borderBottom: "1px dashed #22358114" }}
+                        >
+                          <div className="w-[80%]">Any additional charges</div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {Number(invoice.additional_charges) > 0
+                              ? formatNegativeCurrency(
+                                  invoice.additional_charges
+                                )
+                              : ""}
+                          </div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            &nbsp;
+                          </div>
+                        </div>
+
+                        {/* Total Row */}
+                        <div className="flex pt-[20px] font-semibold">
+                          <div className="w-[80%] text-[24px]">Total</div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {calculateTotalDeductions() > 0
+                              ? `-${formatCurrency(calculateTotalDeductions())}`
+                              : ""}
+                          </div>
+                          <div className="w-[10%] text-[20px] font-normal text-right">
+                            {calculateVatAmount() > 0
+                              ? `-${formatCurrency(calculateVatAmount())}`
+                              : ""}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right - Adjustment Total */}
+                      <div className="flex-1 flex">
+                        <div className="flex-1 flex items-end justify-end text-[24px] font-semibold">
+                          Adjustment Total:
+                        </div>
+                        <div className="flex-1 flex items-end justify-end text-[20px] font-normal">
+                          {calculateAdjustmentTotal() > 0
+                            ? `-${formatCurrency(calculateAdjustmentTotal())}`
+                            : "0.00"}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Total Footer */}
+                  <div
+                    className="flex justify-between items-center py-[30px] px-[60px]"
+                    style={{ backgroundColor: "#2235810A" }}
+                  >
+                    <div className="text-[22px] text-[#223581] font-bold flex-1">
+                      Please call 01753 336540 with any queries
+                    </div>
+
+                    <div className="flex-1 flex text-[22px] font-bold text-[#223581]">
+                      <p className="flex-1 flex items-center justify-end m-0">
+                        Total:
+                      </p>
+                      <span className="flex-1 flex items-center justify-end">
+                        {formatCurrency(invoice.final_total)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Payment Details */}
+                  <div className="flex justify-between items-end py-[30px] px-[60px] pr-[45px] text-black">
+                    <div>
+                      <div className="text-[32px] font-bold mb-[6px] mb-[15px]">
+                        Payment Details
+                      </div>
+                      <div className="text-[22px] text-[#515151]">
+                        BACS: {formatCurrency(invoice.final_total)}
+                      </div>
+                      {invoice.driver?.bank_account_no && (
+                        <div className="text-[18px] text-[#515151] mt-2">
+                          Account No: {invoice.driver.bank_account_no}
+                        </div>
+                      )}
+                      {invoice.driver?.iban_no && (
+                        <div className="text-[18px] text-[#515151] mt-1">
+                          IBAN: {invoice.driver.iban_no}
+                        </div>
+                      )}
+                      {invoice.driver?.payment_reference && (
+                        <div className="text-[18px] text-[#515151] mt-1">
+                          Reference: {invoice.driver.payment_reference}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-end h-full">
+                      <div className="text-[32px] font-bold mr-[12px]">
+                        Signed:
+                      </div>
+                      <div
+                        className="w-[220px] border-b border-black"
+                        style={{ height: "20px" }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* ==================== FOOTER SECTION ==================== */}
+              <section className="relative h-[450px] overflow-hidden bg-white">
+                {/* Red Shade Image */}
+                <img
+                  src="/img/red-shade2.png"
+                  alt=""
+                  className="absolute bottom-0 h-full z-[1]"
+                  style={{ right: "260px" }}
+                />
+
+                {/* Blue Shade Image */}
+                <img
+                  src="/img/blue-shade2.png"
+                  alt=""
+                  className="absolute bottom-0 right-0 h-full w-full z-[2] object-cover"
+                />
+
+                {/* Logo */}
+                <div
+                  className="absolute z-[3]"
+                  style={{
+                    top: "50%",
+                    right: "195px",
+                    transform: "translateY(-50%)",
+                  }}
+                >
+                  <img src="/img/logoi.png" alt="UCH Logistics" />
+                </div>
+              </section>
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <svg
+                className="w-16 h-16 text-gray-300 mx-auto mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <p className="text-gray-500 text-lg">No invoice data available</p>
+            </div>
+          )}
+        </div>
+
+        {/* Modal Footer */}
+        <div className="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50 flex-shrink-0">
+          <button
+            onClick={onClose}
+            className="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 function Invoices() {
   const router = useRouter();
@@ -28,6 +699,11 @@ function Invoices() {
   const [toDate, setToDate] = useState(searchParams.get("to_date") || "");
 
   const [downloadingId, setDownloadingId] = useState(null);
+
+  // Modal states
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,6 +788,37 @@ function Invoices() {
     setCurrentPage(1);
   }, [invoices, searchTerm, fromDate, toDate]);
 
+  // Fetch single invoice and open preview modal
+  const handlePreviewInvoice = async (invoiceId) => {
+    try {
+      setPreviewLoading(true);
+      setIsPreviewModalOpen(true);
+
+      const response = await fetchSingleInvoice(invoiceId);
+
+      if (response.data.success) {
+        setSelectedInvoice(response.data.data);
+      } else {
+        toast.error(response.data.message || "Failed to fetch invoice details");
+        setIsPreviewModalOpen(false);
+      }
+    } catch (error) {
+      console.error("Error fetching invoice:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to fetch invoice details"
+      );
+      setIsPreviewModalOpen(false);
+    } finally {
+      setPreviewLoading(false);
+    }
+  };
+
+  // Close preview modal
+  const handleClosePreviewModal = () => {
+    setIsPreviewModalOpen(false);
+    setSelectedInvoice(null);
+  };
+
   const handleSearch = () => {
     updateURL();
     fetchInvoicesData();
@@ -131,7 +838,6 @@ function Invoices() {
     fetchInvoicesData();
   };
 
-  // Updated to return a Promise for the dropdown to await
   const handleUpdatePaidStatus = async (invoiceId, isPaid) => {
     console.log(
       `Marking invoice ${invoiceId} as ${isPaid ? "Paid" : "Unpaid"}`
@@ -145,7 +851,6 @@ function Invoices() {
           `Invoice marked as ${isPaid ? "Paid" : "Unpaid"} successfully`
         );
 
-        // Update both invoices and filteredInvoices states
         setInvoices((prevInvoices) =>
           prevInvoices.map((invoice) =>
             invoice.id === invoiceId ? { ...invoice, is_paid: isPaid } : invoice
@@ -158,7 +863,7 @@ function Invoices() {
           )
         );
 
-        return true; // Indicate success
+        return true;
       } else {
         toast.error(response.data.message || "Failed to update invoice status");
         throw new Error(
@@ -170,7 +875,7 @@ function Invoices() {
       toast.error(
         error.response?.data?.message || "Failed to update invoice status"
       );
-      throw error; // Re-throw so dropdown can handle it
+      throw error;
     }
   };
 
@@ -198,7 +903,7 @@ function Invoices() {
         const pdfUrl = response.data.data.url;
         console.log("PDF URL:", pdfUrl);
 
-        const newWindow = window.open(pdfUrl, "_blank");
+        window.open(pdfUrl, "_blank");
 
         toast.success("Invoice PDF opened successfully");
         return true;
@@ -223,6 +928,14 @@ function Invoices() {
 
   return (
     <div>
+      {/* Invoice Preview Modal */}
+      <InvoicePreviewModal
+        isOpen={isPreviewModalOpen}
+        onClose={handleClosePreviewModal}
+        invoice={selectedInvoice}
+        loading={previewLoading}
+      />
+
       <section>
         {/* Filter Section */}
         <div className="flex flex-wrap xl:flex-nowrap items-center justify-between gap-[20px] mb-6">
@@ -372,7 +1085,7 @@ function Invoices() {
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap">
-                      #{invoice.id}
+                      #{invoice.id?.slice(-8)}
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap">
@@ -396,7 +1109,7 @@ function Invoices() {
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap">
-                      ${Number(invoice.final_total).toFixed(2)}
+                      £{Number(invoice.final_total).toFixed(2)}
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]">
@@ -425,6 +1138,33 @@ function Invoices() {
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] border-r rounded-r-[15px]">
                       <div className="flex items-center justify-center gap-2">
+                        {/* Preview Button */}
+                        <button
+                          onClick={() => handlePreviewInvoice(invoice.id)}
+                          className="p-2 hover:bg-blue-50 rounded-lg transition-colors group"
+                          title="Preview Invoice"
+                        >
+                          <svg
+                            className="w-5 h-5 text-blue-500 group-hover:text-blue-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
+                          </svg>
+                        </button>
+
                         <PaidCustomDropdown
                           invoice={invoice}
                           onDownload={handleDownloadInvoice}
