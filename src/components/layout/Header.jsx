@@ -71,7 +71,7 @@ function Header({ collapsed, setcollapsed }) {
           {getPageTitle()}
         </p>
 
-        {isDashboard && (
+        {/* {isDashboard && (
           <div className="relative ml-[20px] 2xl:ml-[40px] lg:min-w-[510px] md:min-w-[250px] max-w-[400px] 2xl:max-w-[510px]">
             <input
               type="text"
@@ -92,7 +92,7 @@ function Header({ collapsed, setcollapsed }) {
               />
             </svg>
           </div>
-        )}
+        )} */}
       </div>
 
       <div>
