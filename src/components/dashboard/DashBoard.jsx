@@ -21,7 +21,6 @@ function Page() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [selectedDriver, setSelectedDriver] = useState(null);
   const [drivers, setDrivers] = useState([]);
-   
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -44,7 +43,6 @@ function Page() {
   if (loading) {
     return <Loader text="Loading dashboard..." />;
   }
-
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
@@ -73,6 +71,20 @@ function Page() {
   const handleDelete = (driverId, driverName) => {
     setSelectedDriver({ id: driverId, name: driverName });
     setShowDeleteModal(true);
+  };
+
+  const formatRevenue = (amount) => {
+    if (!amount) return "0";
+
+    if (amount >= 1_000_000) {
+      return `${(amount / 1_000_000).toFixed(1)}M+`;
+    }
+
+    if (amount >= 1_000) {
+      return `${(amount / 1_000).toFixed(1)}k+`;
+    }
+
+    return amount.toString();
   };
 
   return (
@@ -124,8 +136,12 @@ function Page() {
             <p className="text-[#515151] md:text-[18px] 2xl:text-[22px]">
               Total Revenue
             </p>
-            <span className="block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black">
-              ${dashboard?.total_revenue || 0}
+
+            <span
+              title={`$${dashboard?.total_revenue?.toLocaleString()}`}
+              className="block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black cursor-pointer"
+            >
+              ${formatRevenue(dashboard?.total_revenue)}
             </span>
           </div>
         </div>
