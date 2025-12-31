@@ -339,6 +339,7 @@ function AddJob() {
               type="date"
               value={formData.date}
               onChange={(e) => handleInputChange("date", e.target.value)}
+              onKeyDown={(e) => e.preventDefault()}
             />
             {errors.date && (
               <p className="text-red-500 font-bold text-xs mt-1">

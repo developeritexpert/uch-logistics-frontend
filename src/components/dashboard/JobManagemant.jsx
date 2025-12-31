@@ -118,6 +118,7 @@ function JobManagement() {
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="py-[10px] px-[16px] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
                 />
               </div>
@@ -129,6 +130,7 @@ function JobManagement() {
                   type="date"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="py-[10px] px-[16px] w-full text-[#B4B4B4] text-[16px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
                 />
               </div>

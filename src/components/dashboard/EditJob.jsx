@@ -84,6 +84,7 @@ function EditJob() {
 
       if (response.data?.success) {
         const jobData = response.data?.data;
+        console.log("Job data:", jobData.date_time);
         
         // Parse date_time to separate date and time
         let date = "";
@@ -416,6 +417,7 @@ function EditJob() {
               label="Date"
               type="date"
               value={formData.date}
+              onKeyDown={(e) => e.preventDefault()}
               onChange={(e) => handleInputChange("date", e.target.value)}
             />
             {errors.date && (

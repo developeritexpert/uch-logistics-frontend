@@ -6,6 +6,7 @@ import CustomSelect from "../layout/CustomSelect";
 import { useParams, useRouter } from "next/navigation";
 import { fetchSingleDriver, updateDriver } from "@/lib/api/driver.api";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
 
 export default function DriverProfileEdit() {
   const { id } = useParams();
@@ -246,7 +247,7 @@ useEffect(() => {
   if (isFetching) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-lg font-semibold text-primary">Loading driver details...</div>
+        <div className="text-lg font-semibold text-primary"><Loader text="Loading driver details..." />"</div>
       </div>
     );
   }

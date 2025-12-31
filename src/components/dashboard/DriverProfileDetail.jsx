@@ -100,7 +100,7 @@ function DriverProfileDetail() {
 
       // Combine driver's call_sign with search term if provided
       const searchValue = searchTerm 
-        ? `${driver.call_sign} ${searchTerm}`.trim()
+        ? `${searchTerm}`.trim()
         : driver.call_sign;
 
       const response = await fetchAllJobs({
@@ -508,6 +508,7 @@ function DriverProfileDetail() {
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="py-[10px] px-[16px] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
                 />
               </div>
@@ -519,6 +520,7 @@ function DriverProfileDetail() {
                   type="date"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="py-[10px] px-[16px] w-full text-[#B4B4B4] text-[16px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151]"
                 />
               </div>
@@ -538,7 +540,7 @@ function DriverProfileDetail() {
             <div className="relative w-full lg:max-w-[200px] 2xl:max-w-[624px]">
               <input
                 type="text"
-                placeholder="Search with docket, journey etc..."
+                placeholder="Search with docket no."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="py-[10px] pl-[16px] pr-[60px] w-full rounded-md border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
@@ -781,6 +783,7 @@ function DriverProfileDetail() {
                   type="date"
                   value={invoiceStartDate}
                   onChange={(e) => setInvoiceStartDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="w-full py-[12px] px-[16px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[16px] font-normal"
                 />
               </div>
@@ -793,6 +796,7 @@ function DriverProfileDetail() {
                   type="date"
                   value={invoiceEndDate}
                   onChange={(e) => setInvoiceEndDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="w-full py-[12px] px-[16px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[16px] font-normal"
                 />
               </div>

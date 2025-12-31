@@ -949,6 +949,7 @@ function Invoices() {
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="py-[10px] px-[16px] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
                 />
               </div>
@@ -960,6 +961,7 @@ function Invoices() {
                   type="date"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
+                  onKeyDown={(e) => e.preventDefault()}
                   className="py-[10px] px-[16px] w-full sm:w-[155px] rounded-[6px] border border-[#22358114] focus-visible:!outline-0 duration-300 focus-visible:border-[#515151] text-[#B4B4B4] text-[16px] font-normal"
                 />
               </div>
@@ -1109,7 +1111,7 @@ function Invoices() {
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap">
-                      £{Number(invoice.final_total).toFixed(2)}
+                      ${Number(invoice.final_total).toFixed(2)}
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]">
