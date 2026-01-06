@@ -52,6 +52,7 @@ function LoginPage() {
     }
   };
 
+
   return (
     <div className="flex flex-col items-center justify-center relative z-[2] p-[20px] md:p-[30px]">
       <div className="mb-[30px] md:mb-[50px]">

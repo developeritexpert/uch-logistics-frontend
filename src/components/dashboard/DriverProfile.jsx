@@ -235,12 +235,12 @@ function DriverProfilesPage() {
       </div>
       {
         drivers.length > 0 ? 
-      <div className="flex items-center justify-between mt-8">
-        <div className="text-sm text-gray-600">
+      <div className="flex items-center justify-center mt-8">
+        {/* <div className="text-sm text-gray-600">
           Showing {(currentPage - 1) * limit + 1} to{" "}
           {Math.min(currentPage * limit, totalDrivers)} of {totalDrivers}{" "}
           drivers
-        </div>
+        </div> */}
         <div className="flex gap-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}

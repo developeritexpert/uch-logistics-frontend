@@ -9,9 +9,12 @@ import Link from "next/link";
 import Loader from "./Loader";
 import { handleDeleteDriver } from "@/utils/helpers";
 import ConfirmModal from "./ConfirmModal";
+import { useSelector } from "react-redux";
 
 function Page() {
   const router = useRouter();
+  const {search}=useSelector((state)=>state.search)
+  console.log(search)
 
   const [selectedDrivers, setSelectedDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -139,7 +142,7 @@ function Page() {
 
             <span
               title={`$${dashboard?.total_revenue?.toLocaleString()}`}
-              className="block text-primary text-[22px] md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black cursor-pointer"
+              className="block text-primary text-[22px]  md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black cursor-pointer"
             >
               ${formatRevenue(dashboard?.total_revenue)}
             </span>
@@ -237,7 +240,7 @@ function Page() {
                     {items.status}
                   </td>
                   <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] border-r rounded-r-[15px]">
-                    <div className="flex justify-center">
+                    <div className="">
                       <CustomDropdown
                         driverId={items.id}
                         driverName={items.name || "Unknown"}

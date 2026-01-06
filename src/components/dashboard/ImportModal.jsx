@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { importJobs } from "@/lib/api/job.api";
 
@@ -7,6 +7,7 @@ function ImportJobsModal({ isOpen, onClose, onSuccess }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef(null);
 
   if (!isOpen) return null;
 
@@ -85,6 +86,15 @@ function ImportJobsModal({ isOpen, onClose, onSuccess }) {
     onClose();
   };
 
+  const handleRemoveFile = (e) => {
+    e.stopPropagation();
+    setFile(null);
+    setDragActive(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const formatFileSize = (bytes) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -123,8 +133,11 @@ function ImportJobsModal({ isOpen, onClose, onSuccess }) {
             id="file-upload"
             accept=".csv,.xls,.xlsx"
             onChange={handleFileChange}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            className={`absolute inset-0 w-full h-full opacity-0 ${
+              file ? "pointer-events-none" : "cursor-pointer"
+            }`}
             disabled={loading}
+            ref={fileInputRef}
           />
 
           {!file ? (
@@ -191,10 +204,7 @@ function ImportJobsModal({ isOpen, onClose, onSuccess }) {
                 {formatFileSize(file.size)}
               </p>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setFile(null);
-                }}
+                onClick={handleRemoveFile}
                 className="pointer-events-auto text-xs text-red-600 hover:text-red-700 font-medium"
               >
                 Remove file

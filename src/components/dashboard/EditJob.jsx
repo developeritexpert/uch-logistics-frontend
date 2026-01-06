@@ -356,7 +356,7 @@ function EditJob() {
 
       <div className="mx-auto bg-white rounded-lg shadow py-[20px] px-[10px] sm:p-[25px] md:p-[40px] md:pt-[28px] mt-[30px]">
         <h2 className="text-[22px] font-black text-primary mb-[20px]">
-          Edit Job
+          Edit Information
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[24px] gap-y-[18px]">

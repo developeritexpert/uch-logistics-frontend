@@ -1,38 +1,75 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { setSearch } from "@/redux/feature/searchSlice";
+import { useDispatch } from "react-redux";
+import { fetchSingleDriver } from "@/lib/api/driver.api"; // Assuming this is an axios call
 
 function Header({ collapsed, setcollapsed }) {
+  const dispatch = useDispatch();
   const pathname = usePathname();
 
   const isDashboard = pathname === "/" || pathname === "/dashboard";
 
-  const getPageTitle = () => {
-    if (pathname === "/") return "Dashboard";
+  const [pageTitle, setPageTitle] = useState("Dashboard");
+  const [loading, setLoading] = useState(false); // For loading state
 
-    const routeTitleMap = [
-      { prefix: "/job-management", title: "Job Management" },
-      { prefix: "/drivers", title: "Driver Management" },
-      { prefix: "/invoices", title: "Invoice Management" },
-    ];
+  useEffect(() => {
+    const getPageTitle = async () => {
+      if (pathname === "/") return "Dashboard";
 
-    const matchedRoute = routeTitleMap.find((route) =>
-      pathname.startsWith(route.prefix)
-    );
+      const routeTitleMap = [
+        { prefix: "/job-management", title: "Job Management" },
+        { prefix: "/drivers", title: "Driver Profiles" },
+        { prefix: "/invoices", title: "Invoice Management" },
+      ];
 
-    if (matchedRoute) {
-      return matchedRoute.title;
-    }
+      const matchedRoute = routeTitleMap.find((route) =>
+        pathname.startsWith(route.prefix)
+      );
 
-    return pathname
-      .split("/")
-      .filter(Boolean)
-      .pop()
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-  };
+      if (matchedRoute) {
+        if (pathname.startsWith("/drivers/view/")) {
+          const driverId = pathname.split("/").pop();
+          setLoading(true); 
+
+          try {
+            const response = await fetchSingleDriver(driverId); 
+            if (response.data.success && response.data.statusCode === 200) {
+              const data = response.data.data;
+              setPageTitle(data.name ?? "Driver Details"); 
+            } else {
+              setPageTitle("Driver Details"); 
+            }
+          } catch (error) {
+            console.error("Error fetching driver:", error);
+            setPageTitle("Driver Details"); 
+          } finally {
+            setLoading(false); 
+          }
+        } else if (pathname.startsWith("/drivers/edit/")) {
+          setPageTitle("Driver Profile Edit"); 
+        }else if (pathname.startsWith("/drivers/add")) {
+          setPageTitle("Add New Driver"); 
+        } else {
+          setPageTitle(matchedRoute.title); 
+        }
+      } else {
+        setPageTitle(
+          pathname
+            .split("/")
+            .filter(Boolean)
+            .pop()
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase())
+        );
+      }
+    };
+
+    getPageTitle(); // Call function to set the page title on initial load or when the pathname changes
+  }, [pathname]);
 
   return (
     <header className="h-[80px] 2xl:h-[120px] flex items-center gap-[30px] justify-between px-[30px] py-[20px] bg-white">
@@ -68,13 +105,14 @@ function Header({ collapsed, setcollapsed }) {
         </div>
 
         <p className="text-[#223581] text-[20px] md:text-[26px] 2xl:text-[34px] font-bold">
-          {getPageTitle()}
+          {loading ? "Loading..." : pageTitle} {/* Show loading text when fetching */}
         </p>
 
         {/* {isDashboard && (
           <div className="relative ml-[20px] 2xl:ml-[40px] lg:min-w-[510px] md:min-w-[250px] max-w-[400px] 2xl:max-w-[510px]">
             <input
               type="text"
+              onChange={(e) => dispatch(setSearch(e.target.value))}
               placeholder="Search Something here..."
               className="bg-[#F8FAFC] rounded-[170px] w-full py-[15px] pr-[50px] pl-[25px] border border-transparent duration-300 focus-visible:!outline-0 focus-visible:border-[#515151]"
             />
