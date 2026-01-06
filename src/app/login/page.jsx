@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/lib/api/auth.api";
 import Cookies from "js-cookie";
+import useUserStore from "@/store/useUserStore";
 
 function LoginPage() {
   const router = useRouter();
@@ -33,17 +34,25 @@ function LoginPage() {
 
       if (response.data.success && response.data.statusCode === 200) {
         const token = response.data.data.token;
-
+        const user = response.data.data;
         Cookies.set("auth_token", token, {
           expires: 1, // 1 day
           secure: process.env.NODE_ENV === "production",
           sameSite: "strict",
           path: "/",
         });
-      }
 
-      router.replace("/dashboard");
+        useUserStore.getState().setUser({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatar: user.image || null,
+        });
+
+        router.replace("/dashboard");
+      }
     } catch (err) {
+      console.error("Login error:", err);
       setError(
         err?.response?.data?.message || "Login failed. Please try again."
       );

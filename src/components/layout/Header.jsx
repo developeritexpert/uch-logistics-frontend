@@ -3,9 +3,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import useUserStore from "@/store/useUserStore";
 
 function Header({ collapsed, setcollapsed }) {
   const pathname = usePathname();
+
+  const user = useUserStore((state) => state.user);
 
   const isDashboard = pathname === "/" || pathname === "/dashboard";
 
@@ -96,13 +99,19 @@ function Header({ collapsed, setcollapsed }) {
       </div>
 
       <div>
-        <Image
-          src="/img/header-img.png"
-          alt="User"
-          height={50}
-          width={50}
-          className="rounded-full w-[50px] 2xl:w-[60px]"
-        />
+        {user?.avatar ? (
+          <img
+            src={user.avatar}
+            alt="User"
+            height={60}
+            width={60}
+            className="rounded-full w-[50px] 2xl:w-[60px] object-cover"
+          />
+        ) : (
+          <div className="w-[50px] h-[50px] 2xl:w-[60px] 2xl:h-[60px] rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold text-gray-600">
+            {user?.name?.[0]?.toUpperCase() || "AD"}
+          </div>
+        )}
       </div>
     </header>
   );

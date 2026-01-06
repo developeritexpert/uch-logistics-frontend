@@ -7,6 +7,7 @@ import {
 } from "@/lib/api/profile.api";
 import { toast } from "react-hot-toast"; // or your toast library
 import Loader from "./Loader";
+import useUserStore from "@/store/useUserStore";
 
 function Setting() {
   const [showCurrent, setShowCurrent] = useState(false);
@@ -159,7 +160,13 @@ function Setting() {
       const response = await updateProfile(formData);
 
       if (response.status === 200 && response.data.success) {
+        console.log("response", response);
         toast.success(response.data.message || "Profile updated successfully");
+
+        if (response.data.data?.image) {
+          useUserStore.getState().setAvatar(response.data.data.image);
+        }
+
         setOriginalInfo({ ...personalInfo });
         setIsEditing(false);
         setImageFile(null);
@@ -344,7 +351,7 @@ function Setting() {
   if (profileLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader text="Loading profile..."/>
+        <Loader text="Loading profile..." />
       </div>
     );
   }
@@ -431,26 +438,26 @@ function Setting() {
               >
                 {loading ? (
                   <>
-                                    <svg
-                    className="animate-spin h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
+                    <svg
+                      className="animate-spin h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
                     Saving..
                   </>
                 ) : (

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { logoutUser } from "@/lib/api/auth.api";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import useUserStore from "@/store/useUserStore";
 
 function Sidebar({ collapsed, setCollapsed }) {
   const router = useRouter();
@@ -25,6 +26,7 @@ function Sidebar({ collapsed, setCollapsed }) {
       console.error("Logout failed", err);
     } finally {
       Cookies.remove("auth_token", { path: "/" });
+      useUserStore.getState().clearUser();
       router.replace("/login");
     }
   };
