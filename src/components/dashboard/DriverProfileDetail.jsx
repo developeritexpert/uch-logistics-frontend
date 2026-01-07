@@ -855,7 +855,7 @@ function DriverProfileDetail() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-scroll no-scrollbar">
           <div className="relative w-full max-w-[580px] mx-[10px] my-[50px] rounded-xl bg-white p-[35px] pt-[40px]">
             <div className="flex items-center justify-between mb-[30px]">
-              <h2 className="mx-auto text-[20px] md:text-[24px] lg:text-[34px] font-black text-primary">
+              <h2 className="mx-auto text-[20px] md:text-[24px] lg:text-[34px] 2xl:text-[42px] font-black text-primary">
                 Pay Adjustment Detail
               </h2>
 

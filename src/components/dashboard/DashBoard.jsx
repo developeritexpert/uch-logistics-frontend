@@ -13,8 +13,8 @@ import { useSelector } from "react-redux";
 
 function Page() {
   const router = useRouter();
-  const {search}=useSelector((state)=>state.search)
-  console.log(search)
+  const { search } = useSelector((state) => state.search);
+  console.log(search);
 
   const [selectedDrivers, setSelectedDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,8 +92,8 @@ function Page() {
 
   return (
     <section>
-      <div className="flex flex-wrap lg:flex-nowrap  items-stretch justify-between gap-[20px] lg:gap-[30px]">
-        <div className="basis-[100%] sm:basis-[48%] lg:basis-[33%] flex justify-between items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]">
+      <div className="flex flex-wrap md:flex-nowrap  items-stretch justify-between gap-[20px] lg:gap-[30px]">
+        <div className="basis-[100%] sm:basis-[48%] lg:basis-[33%] flex flex-row md:flex-col xl:flex-row justify-between items-end md:items-start xl:items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]">
           <Image
             alt="Total Jobs Listed"
             src="/icons/total-jobs-listed.png"
@@ -101,7 +101,7 @@ function Page() {
             width={100}
             className="w-[60px] 2xl:w-[82px]"
           />
-          <div className="text-right">
+          <div className="text-right md:text-start xl:text-right">
             <p className="text-[#515151] md:text-[18px] 2xl:text-[22px]">
               Total Jobs Listed
             </p>
@@ -110,7 +110,7 @@ function Page() {
             </span>
           </div>
         </div>
-        <div className="basis-[100%] sm:basis-[48%] lg:basis-[33%] flex justify-between items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]">
+        <div className="basis-[100%] sm:basis-[48%] lg:basis-[33%] flex flex-row md:flex-col xl:flex-row justify-between items-end md:items-start xl:items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]">
           <Image
             alt="Total Jobs Listed"
             src="/icons/active-drivers.png"
@@ -118,7 +118,7 @@ function Page() {
             width={100}
             className="w-[60px] 2xl:w-[82px]"
           />
-          <div className="text-right">
+          <div className="text-right md:text-start xl:text-right">
             <p className="text-[#515151] md:text-[18px] 2xl:text-[22px]">
               Active Drivers
             </p>
@@ -127,7 +127,7 @@ function Page() {
             </span>
           </div>
         </div>
-        <div className="basis-[100%] sm:basis-[48%] lg:basis-[33%] flex justify-between items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]">
+        <div className="basis-[100%] sm:basis-[48%] lg:basis-[33%] flex flex-row md:flex-col xl:flex-row justify-between items-end md:items-start xl:items-end gap-[30px] border border-[#22358114] bg-white rounded-[15px] p-[20px]">
           <Image
             alt="Total Jobs Listed"
             src="/icons/total-revenue.png"
@@ -135,7 +135,7 @@ function Page() {
             width={100}
             className="w-[60px] 2xl:w-[82px]"
           />
-          <div className="text-right">
+          <div className="text-right md:text-start xl:text-right">
             <p className="text-[#515151] md:text-[18px] 2xl:text-[22px]">
               Total Revenue
             </p>
