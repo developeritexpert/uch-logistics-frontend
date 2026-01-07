@@ -4,9 +4,12 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import useUserStore from "@/store/useUserStore";
+// import { useDispatch } from "react-redux";
+import { fetchSingleDriver } from "@/lib/api/driver.api";
+
 
 function Header({ collapsed, setcollapsed }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const pathname = usePathname();
 
   const user = useUserStore((state) => state.user);
@@ -37,6 +40,8 @@ function Header({ collapsed, setcollapsed }) {
 
           try {
             const response = await fetchSingleDriver(driverId); 
+            console.log("Header");
+            
             if (response.data.success && response.data.statusCode === 200) {
               const data = response.data.data;
               setPageTitle(data.name ?? "Driver Details"); 
