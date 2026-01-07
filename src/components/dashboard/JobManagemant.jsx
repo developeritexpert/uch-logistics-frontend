@@ -111,14 +111,14 @@ function JobManagement() {
     const [datePart, timePart] = dateTimeString.split(" ");
     if (!timePart) return dateTimeString;
 
-    const [hoursStr, minutes, seconds] = timePart.split(":");
+    const [hoursStr, minutes] = timePart.split(":");
     const hours24 = parseInt(hoursStr, 10);
     if (isNaN(hours24)) return dateTimeString;
 
     const period = hours24 >= 12 ? "PM" : "AM";
     const hours12 = String(hours24 % 12 || 12).padStart(2, "0");
 
-    return `${datePart} ${hours12}:${minutes}:${seconds} ${period}`;
+    return `${datePart} ${hours12}:${minutes} ${period}`;
   };
 
   return (
