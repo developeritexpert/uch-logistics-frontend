@@ -64,6 +64,9 @@ function DriverProfileDetail() {
     vat: "",
   });
 
+
+
+
   // Fetch driver data
   useEffect(() => {
     const getDriver = async () => {
@@ -346,7 +349,7 @@ function DriverProfileDetail() {
         items={[
           { label: "", href: "/dashboard", isHome: true },
           { label: "Driver Profiles", href: "/drivers" },
-          { label: "Driver Details" },
+          { label: driver.name??"Driver Details" },
         ]}
       />
 
@@ -414,7 +417,7 @@ function DriverProfileDetail() {
               <p>
                 <span className="font-bold">Address:</span>
                 <br />
-                <span>
+                <span className="break-words "> 
                   {[driver?.address_details, driver?.address, driver?.zip_code]
                     .filter(Boolean)
                     .join(", ") || "N/A"}
@@ -898,7 +901,8 @@ function DriverProfileDetail() {
                 <span>${draftInvoice.docket_total?.toFixed(2)}</span>
               </div>
 
-              <div className="grid grid-cols-3 gap-[12px] font-bold mb-2">
+             <div className="max-h-[150px] overflow-y-scroll scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-200">
+             <div className="grid grid-cols-3 gap-[12px] font-bold mb-2">
                 <span>Description</span>
                 <span>Value ($)</span>
                 <span>VAT</span>
@@ -998,6 +1002,7 @@ function DriverProfileDetail() {
                   placeholder="0.00"
                 />
               </div>
+             </div>
 
               <div className="border-b border-[#EEEFF5] mt-[30px] mb-[20px]"></div>
 

@@ -2,6 +2,8 @@ import { Lato } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "./layoutWrapper";
 import { Toaster } from 'react-hot-toast';
+import StoreProvider from "@/redux/StoreProvider";
+
 
 const lato = Lato({
   subsets: ["latin"],
@@ -14,10 +16,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${lato.className} antialiased`}>
+        <StoreProvider>
         <LayoutWrapper>
           {children}
           <Toaster position="top-right" />
         </LayoutWrapper>
+        </StoreProvider>
       </body>
     </html>
   );

@@ -213,7 +213,7 @@ function AddNewDriver() {
         items={[
           { href: "/dashboard", isHome: true },
           { label: "Driver Profiles", href: "/drivers" },
-          { label: "Profile Add New Driver" },
+          { label: "Add New Driver" },
         ]}
       />
 

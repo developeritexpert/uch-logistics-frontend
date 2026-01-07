@@ -356,6 +356,8 @@ function Setting() {
     );
   }
 
+
+  
   return (
     <div>
       {/* Profile Header Card */}
@@ -367,7 +369,7 @@ function Setting() {
               alt="Profile"
               width={200}
               height={200}
-              className="object-cover rounded-full w-full h-full"
+              className="object-cover rounded-full w-full h-full text-center border-2 border-gray-100"
             />
 
             <input

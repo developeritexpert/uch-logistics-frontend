@@ -157,79 +157,70 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
           ) : invoice ? (
             <div className="bg-white mx-auto my-6 shadow-2xl max-w-[1200px]">
               {/* ==================== HEADER SECTION ==================== */}
-              <section className="relative h-[450px] overflow-hidden bg-white">
+              <section className="relative  overflow-hidden bg-white h-[490px] md:h-[400px]  xl:h-[450px]">
                 {/* Red Shade Image */}
                 <img
                   src="/img/red-shade.png"
                   alt=""
-                  className="absolute top-0 h-full z-[1]"
-                  style={{ left: "260px" }}
+                  className="absolute -top-[20px] lg:-top-[29px] h-[150px] lg:h-auto w-full left-[80px] lg:left-[133px] "
                 />
 
                 {/* Blue Shade Image */}
                 <img
                   src="/img/blue-shades.png"
                   alt=""
-                  className="absolute top-0 left-0 h-full w-full z-[2]"
+                  className="absolute z-10 w-full h-[150px] lg:h-auto   "
                 />
 
-                {/* Logo */}
-                <div
-                  className="absolute z-[3]"
-                  style={{
-                    top: "50%",
-                    left: "240px",
-                    transform: "translateY(-50%)",
-                  }}
-                >
-                  <img src="/img/logoi.png" alt="UCH Logistics" />
-                </div>
+                <img
+                  src="/img/logoi.png"
+                  alt="UCH Logistics"
+                  className="absolute z-20 w-[150px] lg:h-auto   md:w-[200px]  top-[20px] left-[10px] lg:top-[30px] lg:left-[30px] xl:w-[250px] xl:top-[50px] xl:right-[80px]"
+                />
 
                 {/* Company Info */}
-                <div
-                  className="relative z-[4] max-w-[1980px] h-full mx-auto flex justify-end items-end"
-                  style={{ padding: "0 40px 40px 0" }}
-                >
-                  <div className="max-w-[420px] text-black">
-                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
-                      UCH Logistics Address:
-                    </h3>
-                    <p className="text-[18px] mb-5 max-w-[252px] leading-[1.5] mt-0">
-                      Colnbrook Cargo Centre, Old Bath Road, Colnbrook, SL3 0NW.
-                    </p>
+                <div className="max-w-[420px] text-black absolute right-[0] lg:right-10 top-40 md:top-20 ">
+  <h3 className="text-[22px] font-bold text-[#223581] mb-[2px] mt-0">
+    UCH Logistics Address:
+  </h3>
+  <p className="text-[18px] mb-[3px] max-w-[252px] leading-[1.5] mt-0">
+    Colnbrook Cargo Centre, Old Bath Road, Colnbrook, SL3 0NW.
+  </p>
 
-                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
-                      Telephone:
-                    </h3>
-                    <p className="text-[18px] mb-5 mt-0">+44 (0) 1784 242 824</p>
+  <h3 className="text-[22px] font-bold text-[#223581] mb-[2px] mt-0">
+    Telephone:
+  </h3>
+  <p className="text-[18px] mb-[3px] mt-0">+44 (0) 1784 242 824</p>
 
-                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
-                      Fax:
-                    </h3>
-                    <p className="text-[18px] mb-5 mt-0">+44 (0) 1784 245 222</p>
+  <h3 className="text-[22px] font-bold text-[#223581] mb-[2px] mt-0">
+    Fax:
+  </h3>
+  <p className="text-[18px] mb-[3px] mt-0">+44 (0) 1784 245 222</p>
 
-                    <h3 className="text-[22px] font-bold text-[#223581] mb-[6px] mt-0">
-                      Email:
-                    </h3>
-                    <p className="text-[18px] m-0">info@uchlogistics.co.uk</p>
-                  </div>
-                </div>
+  <h3 className="text-[22px] font-bold text-[#223581] mb-[2px] mt-0">
+    Email:
+  </h3>
+  <p className="text-[18px] m-0">info@uchlogistics.co.uk</p>
+</div>
+
+
               </section>
 
+            
               {/* ==================== TO/FROM SECTION ==================== */}
-              <section className="py-[140px] pb-[90px]">
+              <section className=" py-[40px] md:py-[20px] lg:py-[1px]  sm:pb-[80px] lg:pb-[90px] px-4 sm:px-6 lg:px-10 xl:px-[40px]">
                 <div
-                  className="flex max-w-[1980px] mx-auto border-t pt-[50px]"
-                  style={{ borderColor: "#22358114", padding: "50px 40px 0" }}
+                  className="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-[70px] max-w-[1980px] mx-auto border-t sm:pt-[30px] sm:pt-[40px] lg:pt-[50px]"
+                  style={{ borderColor: "#22358114" }}
                 >
                   {/* TO Section */}
                   <div className="flex-1">
                     <div
-                      className="w-fit border border-dashed rounded-[10px] flex gap-[10px] text-[22px]"
-                      style={{ borderColor: "#2235811A", padding: "40px 45px" }}
+                      className="w-full sm:w-fit border border-dashed rounded-[10px] flex gap-[10px] text-[18px] sm:text-[20px] lg:text-[22px]"
+                      style={{ borderColor: "#2235811A", padding: "28px 30px 30px 30px", minWidth: "260px" }}
                     >
                       <h3 className="m-0 font-black text-[#223581]">To:</h3>
-                      <ul className="list-none p-0 m-0 text-[#515151] flex flex-col gap-[7px]">
+                      <ul className="list-none p-0 m-0 text-[#515151] flex flex-col gap-[6px] sm:gap-[7px]">
                         <li className="font-extrabold">UCH Logistics Ltd</li>
                         <li className="font-normal">Colnbrook Cargo Centre</li>
                         <li className="font-normal">Old Bath Road</li>
@@ -242,14 +233,14 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
                   </div>
 
                   {/* FROM & DRIVER INFO Section */}
-                  <div className="flex-1 flex gap-[70px]">
+                  <div className="flex-1 flex flex-col sm:flex-row gap-6 lg:gap-[40px] xl:gap-[70px]">
                     {/* FROM */}
                     <div
-                      className="w-fit border border-dashed rounded-[10px] flex gap-[10px] text-[22px]"
-                      style={{ borderColor: "#2235811A", padding: "40px 45px" }}
+                      className="w-full sm:w-fit border border-dashed rounded-[10px] flex gap-[10px] text-[18px] sm:text-[20px] lg:text-[22px]"
+                      style={{ borderColor: "#2235811A", padding: "28px 30px 30px 30px", minWidth: "260px" }}
                     >
                       <h3 className="m-0 font-black text-[#223581]">From:</h3>
-                      <ul className="list-none p-0 m-0 font-normal text-[#515151] flex flex-col gap-[7px]">
+                      <ul className="list-none p-0 m-0 font-normal text-[#515151] flex flex-col gap-[6px] sm:gap-[7px]">
                         <li>{invoice.driver?.name || "N/A"}</li>
                         {parseAddress(invoice.driver?.address_details).map(
                           (line, idx) => (
@@ -267,42 +258,42 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
 
                     {/* DRIVER INFO BOX */}
                     <div
-                      className="w-full max-w-[420px] border border-dashed rounded-[10px] box-border"
-                      style={{ borderColor: "#2235811A", padding: "40px 45px" }}
+                      className="w-full sm:flex-1 lg:max-w-[420px] border border-dashed rounded-[10px] box-border"
+                      style={{ borderColor: "#2235811A", padding: "28px 30px 30px 30px" }}
                     >
-                      <div className="flex mb-[18px]">
-                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                      <div className="flex flex-wrap gap-2 mb-[14px] sm:mb-[16px] lg:mb-[18px]">
+                        <div className="w-[150px] sm:w-[160px] lg:w-[170px] font-black text-[#223581] text-[16px] sm:text-[17px] lg:text-[18px]">
                           Driver Callsign:
                         </div>
-                        <div className="text-[22px] font-normal text-[#515151]">
+                        <div className="text-[20px] sm:text-[21px] lg:text-[22px] font-normal text-[#515151]">
                           {invoice.driver?.call_sign || "N/A"}
                         </div>
                       </div>
 
-                      <div className="flex mb-[18px]">
-                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                      <div className="flex flex-wrap gap-2 mb-[14px] sm:mb-[16px] lg:mb-[18px]">
+                        <div className="w-[150px] sm:w-[160px] lg:w-[170px] font-black text-[#223581] text-[16px] sm:text-[17px] lg:text-[18px]">
                           Self Bill Date:
                         </div>
-                        <div className="text-[22px] font-normal text-[#515151]">
+                        <div className="text-[20px] sm:text-[21px] lg:text-[22px] font-normal text-[#515151]">
                           {formatDate(invoice.created_at)}
                         </div>
                       </div>
 
-                      <div className="flex mb-[26px]">
-                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                      <div className="flex flex-wrap gap-2 mb-[18px] sm:mb-[22px] lg:mb-[26px]">
+                        <div className="w-[150px] sm:w-[160px] lg:w-[170px] font-black text-[#223581] text-[16px] sm:text-[17px] lg:text-[18px]">
                           Self Bill Number:
                         </div>
-                        <div className="text-[22px] font-normal text-[#515151] leading-[1.5]">
+                        <div className="text-[20px] sm:text-[21px] lg:text-[22px] font-normal text-[#515151] leading-[1.5]">
                           {invoice.id?.slice(-6) || "N/A"} <br />
                           Page 1 of {totalPages}
                         </div>
                       </div>
 
-                      <div className="flex">
-                        <div className="w-[170px] font-black text-[#223581] text-[18px]">
+                      <div className="flex flex-wrap gap-2">
+                        <div className="w-[150px] sm:w-[160px] lg:w-[170px] font-black text-[#223581] text-[16px] sm:text-[17px] lg:text-[18px]">
                           Period:
                         </div>
-                        <div className="text-[22px] font-normal text-[#515151]">
+                        <div className="text-[20px] sm:text-[21px] lg:text-[22px] font-normal text-[#515151]">
                           {formatDate(invoice.start_date)} -{" "}
                           {formatDate(invoice.end_date)}
                         </div>
@@ -313,25 +304,27 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
               </section>
 
               {/* ==================== JOBS TABLE SECTION ==================== */}
-              <section className="pb-[180px]" style={{ padding: "0 40px 180px" }}>
-                <div className="max-w-[1980px] mx-auto">
+              <section className="pb-[120px] sm:pb-[140px] lg:pb-[180px] overflow-x-auto px-4 sm:px-6 lg:px-10 xl:px-[40px]">
+                <div className="max-w-[1980px] mx-auto  ">
                   <table
                     className="w-full text-[13px]"
                     style={{ borderCollapse: "collapse" }}
                   >
                     <thead>
-                      <tr className="bg-[#223581] text-white text-[26px] font-black">
-                        <th className="py-[30px] px-[50px] text-left">
+                      <tr className="bg-[#223581] text-white text-[26px] font-black text-nowrap">
+                        <th className="py-[20px] sm:py-[24px] lg:py-[30px] px-[20px] sm:px-[32px] lg:px-[50px] text-left">
                           Docket No.
                         </th>
-                        <th className="py-[30px] px-[40px] text-left">
+                        <th className="py-[20px] sm:py-[24px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px] text-left">
                           Pickup Date/Time
                         </th>
-                        <th className="py-[30px] px-[40px] text-left">Tariff</th>
-                        <th className="py-[30px] px-[40px] text-left">
+                        <th className="py-[20px] sm:py-[24px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px] text-left">
+                          Tariff
+                        </th>
+                        <th className="py-[20px] sm:py-[24px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px] text-left">
                           Journey Details
                         </th>
-                        <th className="py-[30px] px-[40px] text-left min-w-[250px]">
+                        <th className="py-[20px] sm:py-[24px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px] text-left min-w-[200px] sm:min-w-[220px] lg:min-w-[250px]">
                           Amount
                         </th>
                       </tr>
@@ -346,31 +339,31 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
                             style={{ borderBottom: "1px solid #E6E9F5" }}
                           >
                             <td
-                              className="py-[30px] px-[50px]"
+                              className="py-[18px] sm:py-[22px] lg:py-[30px] px-[20px] sm:px-[32px] lg:px-[50px]"
                               style={{ border: "1px solid #22358114" }}
                             >
                               {job.docket_no || "N/A"}
                             </td>
                             <td
-                              className="py-[30px] px-[40px]"
+                              className="py-[18px] sm:py-[22px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px]"
                               style={{ border: "1px solid #22358114" }}
                             >
                               {formatDateTime(job.date_time)}
                             </td>
                             <td
-                              className="py-[30px] px-[40px]"
+                              className="py-[18px] sm:py-[22px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px]"
                               style={{ border: "1px solid #22358114" }}
                             >
                               {job.tariff || "N/A"}
                             </td>
                             <td
-                              className="py-[30px] px-[40px]"
+                              className="py-[18px] sm:py-[22px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px]"
                               style={{ border: "1px solid #22358114" }}
                             >
                               {job.journey || "N/A"}
                             </td>
                             <td
-                              className="py-[30px] px-[40px]"
+                              className="py-[18px] sm:py-[22px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px]"
                               style={{ border: "1px solid #22358114" }}
                             >
                               {formatCurrency(job.driver_total)}
@@ -391,10 +384,14 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
 
                     <tfoot>
                       <tr className="bg-[#BF0000] text-white text-[26px] font-black">
-                        <td className="py-[30px] px-[50px]" colSpan="4" align="right">
+                        <td
+                          className="py-[20px] sm:py-[24px] lg:py-[30px] px-[20px] sm:px-[32px] lg:px-[50px]"
+                          colSpan="4"
+                          align="right"
+                        >
                           Carried Forward
                         </td>
-                        <td className="py-[30px] px-[40px] text-left">
+                        <td className="py-[20px] sm:py-[24px] lg:py-[30px] px-[16px] sm:px-[28px] lg:px-[40px] text-left">
                           {formatCurrency(invoice.docket_total)}
                         </td>
                       </tr>
@@ -404,14 +401,11 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
               </section>
 
               {/* ==================== PAY ADJUSTMENT SECTION ==================== */}
-              <section
-                className="mt-[60px] pb-[150px]"
-                style={{ padding: "0 40px 150px" }}
-              >
+              <section className="mt-[40px] sm:mt-[50px] lg:mt-[60px] pb-[100px] sm:pb-[120px] lg:pb-[150px] px-4 sm:px-6 lg:px-10 xl:px-[40px]">
                 <div className="w-full max-w-[1980px] mx-auto bg-white text-[#515151]">
                   {/* Summary Header */}
                   <div
-                    className="flex justify-between items-center py-[30px] px-[60px] text-[26px] font-semibold"
+                    className="flex flex-col sm:flex-row gap-3 sm:gap-0 justify-between items-start sm:items-center py-[20px] sm:py-[24px] lg:py-[30px] px-[20px] sm:px-[32px] lg:px-[60px] text-[20px] sm:text-[22px] lg:text-[26px] font-semibold"
                     style={{ backgroundColor: "#2235810A" }}
                   >
                     <div className="text-black">
@@ -429,17 +423,17 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
                   </div>
 
                   {/* Pay Adjustment Detail */}
-                  <div className="py-[30px] px-[60px] pr-[45px]">
-                    <h3 className="m-0 mb-[30px] text-[32px] font-bold text-black">
+                  <div className="py-[20px] sm:py-[24px] lg:py-[30px] px-[20px] sm:px-[32px] lg:px-[60px] lg:pr-[45px]">
+                    <h3 className="m-0 mb-[20px] sm:mb-[24px] lg:mb-[30px] text-[24px] sm:text-[28px] lg:text-[32px] font-bold text-black">
                       Pay Adjustment Detail
                     </h3>
 
-                    <div className="flex">
+                    <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
                       {/* Left - Adjustments Table */}
                       <div className="flex-1">
                         {/* Table Header */}
                         <div
-                          className="flex text-[20px] text-[#777] pb-[20px]"
+                          className="flex text-[16px] sm:text-[18px] lg:text-[20px] text-[#777] pb-[16px] sm:pb-[18px] lg:pb-[20px]"
                           style={{ borderBottom: "1px dashed #22358114" }}
                         >
                           <div className="w-[80%]">Description</div>
@@ -449,31 +443,31 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
 
                         {/* Admin Fee Row */}
                         <div
-                          className="flex text-[22px] py-[20px]"
+                          className="flex text-[18px] sm:text-[20px] lg:text-[22px] py-[16px] sm:py-[18px] lg:py-[20px]"
                           style={{ borderBottom: "1px dashed #22358114" }}
                         >
                           <div className="w-[80%]">Admin Fee</div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {Number(invoice.admin_fee) > 0
                               ? formatNegativeCurrency(invoice.admin_fee)
                               : ""}
                           </div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {Number(invoice.admin_fee) > 0 ? "+20.00%" : ""}
                           </div>
                         </div>
 
                         {/* Vehicle Hire Row */}
                         <div
-                          className="flex text-[22px] py-[20px]"
+                          className="flex text-[18px] sm:text-[20px] lg:text-[22px] py-[16px] sm:py-[18px] lg:py-[20px]"
                           style={{ borderBottom: "1px dashed #22358114" }}
                         >
                           <div className="w-[80%]">Vehicle Hire charges</div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {Number(invoice.vehicle_hire_charges) > 0
                               ? formatNegativeCurrency(
-                                  invoice.vehicle_hire_charges
-                                )
+                                invoice.vehicle_hire_charges
+                              )
                               : ""}
                           </div>
                           <div className="w-[10%] text-[20px] font-normal text-right">
@@ -483,63 +477,65 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
 
                         {/* Insurance Row */}
                         <div
-                          className="flex text-[22px] py-[20px]"
+                          className="flex text-[18px] sm:text-[20px] lg:text-[22px] py-[16px] sm:py-[18px] lg:py-[20px]"
                           style={{ borderBottom: "1px dashed #22358114" }}
                         >
                           <div className="w-[80%]">Insurance charge</div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {Number(invoice.insurance_charge) > 0
                               ? formatNegativeCurrency(invoice.insurance_charge)
                               : ""}
                           </div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             &nbsp;
                           </div>
                         </div>
 
                         {/* Fuel Row */}
                         <div
-                          className="flex text-[22px] py-[20px]"
+                          className="flex text-[18px] sm:text-[20px] lg:text-[22px] py-[16px] sm:py-[18px] lg:py-[20px]"
                           style={{ borderBottom: "1px dashed #22358114" }}
                         >
                           <div className="w-[80%]">Fuel charge</div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {Number(invoice.fuel_charge) > 0
                               ? formatNegativeCurrency(invoice.fuel_charge)
                               : ""}
                           </div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {Number(invoice.fuel_charge) > 0 ? "-" : ""}
                           </div>
                         </div>
 
                         {/* Additional Charges Row */}
                         <div
-                          className="flex text-[22px] py-[20px]"
+                          className="flex text-[18px] sm:text-[20px] lg:text-[22px] py-[16px] sm:py-[18px] lg:py-[20px]"
                           style={{ borderBottom: "1px dashed #22358114" }}
                         >
                           <div className="w-[80%]">Any additional charges</div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {Number(invoice.additional_charges) > 0
                               ? formatNegativeCurrency(
-                                  invoice.additional_charges
-                                )
+                                invoice.additional_charges
+                              )
                               : ""}
                           </div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             &nbsp;
                           </div>
                         </div>
 
                         {/* Total Row */}
-                        <div className="flex pt-[20px] font-semibold">
-                          <div className="w-[80%] text-[24px]">Total</div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                        <div className="flex pt-[16px] sm:pt-[18px] lg:pt-[20px] font-semibold">
+                          <div className="w-[80%] text-[20px] sm:text-[22px] lg:text-[24px]">
+                            Total
+                          </div>
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {calculateTotalDeductions() > 0
                               ? `-${formatCurrency(calculateTotalDeductions())}`
                               : ""}
                           </div>
-                          <div className="w-[10%] text-[20px] font-normal text-right">
+                          <div className="w-[10%] text-[18px] sm:text-[19px] lg:text-[20px] font-normal text-right">
                             {calculateVatAmount() > 0
                               ? `-${formatCurrency(calculateVatAmount())}`
                               : ""}
@@ -548,11 +544,11 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
                       </div>
 
                       {/* Right - Adjustment Total */}
-                      <div className="flex-1 flex">
-                        <div className="flex-1 flex items-end justify-end text-[24px] font-semibold">
+                      <div className="flex-1 flex mt-6 lg:mt-0">
+                        <div className="flex-1 flex items-end justify-end text-[22px] sm:text-[23px] lg:text-[24px] font-semibold">
                           Adjustment Total:
                         </div>
-                        <div className="flex-1 flex items-end justify-end text-[20px] font-normal">
+                        <div className="flex-1 flex items-end justify-end text-[18px] sm:text-[19px] lg:text-[20px] font-normal">
                           {calculateAdjustmentTotal() > 0
                             ? `-${formatCurrency(calculateAdjustmentTotal())}`
                             : "0.00"}
@@ -563,14 +559,14 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
 
                   {/* Total Footer */}
                   <div
-                    className="flex justify-between items-center py-[30px] px-[60px]"
+                    className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-between items-start sm:items-center py-[20px] sm:py-[24px] lg:py-[30px] px-[20px] sm:px-[32px] lg:px-[60px]"
                     style={{ backgroundColor: "#2235810A" }}
                   >
-                    <div className="text-[22px] text-[#223581] font-bold flex-1">
+                    <div className="text-[18px] sm:text-[20px] lg:text-[22px] text-[#223581] font-bold flex-1">
                       Please call 01753 336540 with any queries
                     </div>
 
-                    <div className="flex-1 flex text-[22px] font-bold text-[#223581]">
+                    <div className="flex-1 flex text-[18px] sm:text-[20px] lg:text-[22px] font-bold text-[#223581]">
                       <p className="flex-1 flex items-center justify-end m-0">
                         Total:
                       </p>
@@ -581,9 +577,9 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
                   </div>
 
                   {/* Payment Details */}
-                  <div className="flex justify-between items-end py-[30px] px-[60px] pr-[45px] text-black">
+                  <div className="flex flex-col md:flex-row gap-y-10 justify-between md:items-end py-[30px] px-3 xl:px-[60px] pr-[45px] text-black">
                     <div>
-                      <div className="text-[32px] font-bold mb-[6px] mb-[15px]">
+                      <div className="text-2xl lg:text-[32px] font-bold mb-[6px] mb-[15px]">
                         Payment Details
                       </div>
                       <div className="text-[22px] text-[#515151]">
@@ -607,7 +603,7 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
                     </div>
 
                     <div className="flex items-end h-full">
-                      <div className="text-[32px] font-bold mr-[12px]">
+                      <div className="text-2xl lg:text-[32px] font-bold mr-[12px]">
                         Signed:
                       </div>
                       <div
@@ -620,33 +616,15 @@ const InvoicePreviewModal = ({ isOpen, onClose, invoice, loading }) => {
               </section>
 
               {/* ==================== FOOTER SECTION ==================== */}
-              <section className="relative h-[450px] overflow-hidden bg-white">
-                {/* Red Shade Image */}
-                <img
-                  src="/img/red-shade2.png"
-                  alt=""
-                  className="absolute bottom-0 h-full z-[1]"
-                  style={{ right: "260px" }}
-                />
 
-                {/* Blue Shade Image */}
-                <img
-                  src="/img/blue-shade2.png"
-                  alt=""
-                  className="absolute bottom-0 right-0 h-full w-full z-[2] object-cover"
-                />
 
-                {/* Logo */}
-                <div
-                  className="absolute z-[3]"
-                  style={{
-                    top: "50%",
-                    right: "195px",
-                    transform: "translateY(-50%)",
-                  }}
-                >
-                  <img src="/img/logoi.png" alt="UCH Logistics" />
-                </div>
+              <section className="relative h-[150px] sm:h-[260px] md:h-[320px] lg:h-[380px] xl:h-[467px] overflow-hidden  bg-white">
+                <img src="/img/red-shade2.png" alt="shape" className="absolute -bottom-[24px] right-20  h-[150px] lg:h-auto  w-full rotate-[1deg]" />
+
+                <img src="/img/blue-shade2.png"
+                  alt="shape" className="absolute bottom-0 h-[150px] lg:h-auto  w-full  " />
+
+                <img src="/img/logoi.png" alt="UCH Logistics" className="absolute w-[150px]  md:w-[200px]  bottom-[40px] right-[10px] lg:bottom-[30px] lg:right-[30px] xl:w-[250px] xl:bottom-[50px] xl:right-[80px] " />
               </section>
             </div>
           ) : (
@@ -720,6 +698,8 @@ function Invoices() {
   const paginatedInvoices = useMemo(() => {
     return filteredInvoices.slice(startIndex, endIndex);
   }, [filteredInvoices, startIndex, endIndex]);
+
+
 
   const buildQueryString = useCallback(() => {
     const params = new URLSearchParams();
@@ -881,11 +861,11 @@ function Invoices() {
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
   };
 
   const handlePageChange = (page) => {
@@ -1068,14 +1048,14 @@ function Invoices() {
                         />
                       </svg>
                       <p className="text-gray-500 text-lg">No invoices found</p>
-                      {(searchTerm || fromDate || toDate) && (
+                      {/* {(searchTerm || fromDate || toDate) && (
                         <button
                           onClick={handleClearFilters}
                           className="text-secondary hover:underline"
                         >
                           Clear filters
                         </button>
-                      )}
+                      )} */}
                     </div>
                   </td>
                 </tr>
@@ -1116,11 +1096,10 @@ function Invoices() {
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]">
                       <span
-                        className={`text-sm font-medium ${
-                          invoice.status !== "DRAFT"
-                            ? "text-[#009249]"
-                            : "text-[#C00000]"
-                        }`}
+                        className={`text-sm font-medium ${invoice.status !== "DRAFT"
+                          ? "text-[#009249]"
+                          : "text-[#C00000]"
+                          }`}
                       >
                         {invoice.status}
                       </span>
@@ -1128,11 +1107,10 @@ function Invoices() {
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]">
                       <span
-                        className={`text-sm font-medium px-3 py-1 rounded-full ${
-                          invoice.is_paid === true
-                            ? "text-[#009249] bg-[#009249]/10"
-                            : "text-[#C00000] bg-[#C00000]/10"
-                        }`}
+                        className={`text-sm font-medium px-3 py-1 rounded-full ${invoice.is_paid === true
+                          ? "text-[#009249] bg-[#009249]/10"
+                          : "text-[#C00000] bg-[#C00000]/10"
+                          }`}
                       >
                         {invoice.is_paid ? "Paid" : "Unpaid"}
                       </span>
@@ -1197,11 +1175,10 @@ function Invoices() {
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`group px-3 border border-[#22358114] w-[40px] h-[40px] rounded-full text-sm duration-300 flex items-center justify-center ${
-                  currentPage === 1
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:border-secondary hover:bg-secondary"
-                }`}
+                className={`group px-3 border border-[#22358114] w-[40px] h-[40px] rounded-full text-sm duration-300 flex items-center justify-center ${currentPage === 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:border-secondary hover:bg-secondary"
+                  }`}
               >
                 <svg
                   width="7"
@@ -1212,11 +1189,10 @@ function Invoices() {
                 >
                   <path
                     d="M5.63267 10.8552C5.58042 10.9109 5.50943 10.9424 5.43524 10.9428C5.39842 10.9432 5.36191 10.9356 5.32796 10.9205C5.29401 10.9055 5.26333 10.8832 5.2378 10.8552L0.582305 5.93362C0.556159 5.90634 0.5354 5.87384 0.52123 5.83801C0.507061 5.80219 0.499764 5.76374 0.499764 5.7249C0.499764 5.68607 0.507061 5.64762 0.52123 5.61179C0.5354 5.57596 0.556159 5.54346 0.582305 5.51618L5.2378 0.593579C5.2634 0.564651 5.29424 0.541462 5.32849 0.525392C5.36274 0.509323 5.3997 0.500701 5.43716 0.500041C5.47463 0.499381 5.51184 0.506695 5.54658 0.521548C5.58131 0.536402 5.61287 0.558491 5.63937 0.586502C5.66586 0.614512 5.68676 0.647871 5.70081 0.684594C5.71486 0.721316 5.72178 0.760652 5.72115 0.800259C5.72053 0.839866 5.71237 0.878936 5.69717 0.915143C5.68197 0.951349 5.66004 0.983954 5.63267 1.01101L1.17461 5.7249L5.63267 10.4377C5.6587 10.4651 5.67935 10.4976 5.69345 10.5334C5.70754 10.5693 5.7148 10.6077 5.7148 10.6465C5.7148 10.6853 5.70754 10.7237 5.69345 10.7595C5.67935 10.7953 5.6587 10.8278 5.63267 10.8552Z"
-                    className={`${
-                      currentPage === 1
-                        ? "fill-gray-400 stroke-gray-400"
-                        : "fill-[#C00000] stroke-[#C00000] group-hover:fill-white group-hover:stroke-white"
-                    }`}
+                    className={`${currentPage === 1
+                      ? "fill-gray-400 stroke-gray-400"
+                      : "fill-[#C00000] stroke-[#C00000] group-hover:fill-white group-hover:stroke-white"
+                      }`}
                   />
                 </svg>
               </button>
@@ -1228,13 +1204,12 @@ function Invoices() {
                     typeof page === "number" && handlePageChange(page)
                   }
                   disabled={page === "..."}
-                  className={`px-3 border w-[40px] h-[40px] rounded-full text-sm duration-300 ${
-                    page === currentPage
-                      ? "border-secondary bg-secondary text-white"
-                      : page === "..."
+                  className={`px-3 border w-[40px] h-[40px] rounded-full text-sm duration-300 ${page === currentPage
+                    ? "border-secondary bg-secondary text-white"
+                    : page === "..."
                       ? "border-transparent cursor-default"
                       : "border-[#22358114] text-[#515151] hover:border-secondary hover:text-secondary"
-                  }`}
+                    }`}
                 >
                   {page}
                 </button>
@@ -1243,11 +1218,10 @@ function Invoices() {
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={`group px-3 border border-[#22358114] w-[40px] h-[40px] rounded-full text-sm duration-300 flex items-center justify-center ${
-                  currentPage === totalPages
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:border-secondary hover:bg-secondary"
-                }`}
+                className={`group px-3 border border-[#22358114] w-[40px] h-[40px] rounded-full text-sm duration-300 flex items-center justify-center ${currentPage === totalPages
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:border-secondary hover:bg-secondary"
+                  }`}
               >
                 <svg
                   width="7"
@@ -1258,11 +1232,10 @@ function Invoices() {
                 >
                   <path
                     d="M0.58852 10.8552C0.640767 10.9109 0.711764 10.9424 0.785955 10.9428C0.822775 10.9432 0.859278 10.9356 0.893227 10.9205C0.927176 10.9055 0.957857 10.8832 0.983389 10.8552L5.63889 5.93362C5.66503 5.90634 5.68579 5.87384 5.69996 5.83801C5.71413 5.80219 5.72143 5.76374 5.72143 5.7249C5.72143 5.68607 5.71413 5.64762 5.69996 5.61179C5.68579 5.57596 5.66503 5.54346 5.63889 5.51618L0.983389 0.593579C0.957791 0.564651 0.926949 0.541462 0.892699 0.525392C0.85845 0.509323 0.821492 0.500701 0.784026 0.500041C0.74656 0.499381 0.709352 0.506695 0.674614 0.521548C0.639877 0.536402 0.608321 0.558491 0.581825 0.586502C0.555329 0.614512 0.534434 0.647871 0.520384 0.684594C0.506333 0.721316 0.499414 0.760652 0.500039 0.800259C0.500663 0.839866 0.508819 0.878936 0.52402 0.915143C0.53922 0.951349 0.561156 0.983954 0.58852 1.01101L5.04658 5.7249L0.58852 10.4377C0.562494 10.4651 0.541839 10.4976 0.527744 10.5334C0.51365 10.5693 0.506394 10.6077 0.506394 10.6465C0.506394 10.6853 0.51365 10.7237 0.527744 10.7595C0.541839 10.7953 0.562494 10.8278 0.58852 10.8552Z"
-                    className={`${
-                      currentPage === totalPages
-                        ? "fill-gray-400 stroke-gray-400"
-                        : "fill-[#C00000] stroke-[#C00000] group-hover:fill-white group-hover:stroke-white"
-                    }`}
+                    className={`${currentPage === totalPages
+                      ? "fill-gray-400 stroke-gray-400"
+                      : "fill-[#C00000] stroke-[#C00000] group-hover:fill-white group-hover:stroke-white"
+                      }`}
                   />
                 </svg>
               </button>

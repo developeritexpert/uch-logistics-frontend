@@ -105,6 +105,22 @@ function JobManagement() {
 
   const getPageNumbers = () => calculatePageNumbers(totalPages, currentPage);
 
+  const formatDateTimeWithAmPm = (dateTimeString) => {
+    if (!dateTimeString) return "N/A";
+
+    const [datePart, timePart] = dateTimeString.split(" ");
+    if (!timePart) return dateTimeString;
+
+    const [hoursStr, minutes, seconds] = timePart.split(":");
+    const hours24 = parseInt(hoursStr, 10);
+    if (isNaN(hours24)) return dateTimeString;
+
+    const period = hours24 >= 12 ? "PM" : "AM";
+    const hours12 = String(hours24 % 12 || 12).padStart(2, "0");
+
+    return `${datePart} ${hours12}:${minutes}:${seconds} ${period}`;
+  };
+
   return (
     <div>
       <section className="">
@@ -265,7 +281,7 @@ function JobManagement() {
                       {/* </Link> */}
                     </td>
                     <td className="px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap">
-                      {job.date_time}
+                      {formatDateTimeWithAmPm(job.date_time)}
                     </td>
                     <td className="px-[20px] py-[20px] border-y border-[#22358114] whitespace-nowrap">
                       {job.journey}
@@ -298,11 +314,11 @@ function JobManagement() {
         </div>
 
         {jobs.length > 0 ? (
-          <div className="flex items-center justify-between mt-8">
-            <div className="text-sm text-gray-600">
+          <div className="flex items-center justify-center mt-8">
+            {/* <div className="text-sm text-gray-600">
               Showing {(currentPage - 1) * limit + 1} to{" "}
               {Math.min(currentPage * limit, totalJobs)} of {totalJobs} jobs
-            </div>
+            </div> */}
             <div className="flex gap-2">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
@@ -335,7 +351,7 @@ function JobManagement() {
                     typeof page === "number" && handlePageChange(page)
                   }
                   disabled={page === "..."}
-                  className={`px-3 border w-[40px] h-[40px] rounded-[50%] text-sm duration-300 ${
+                  className={` inline-flex items-center justify-center px-3 border w-[40px] h-[40px] rounded-[50%] text-sm duration-300 ${
                     page === currentPage
                       ? "border-primary bg-primary text-white"
                       : page === "..."
