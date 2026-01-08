@@ -170,7 +170,7 @@ function DriverProfileDetail() {
   const getPageNumbers = () => calculatePageNumbers(totalPages, currentPage);
 
   const handleView = (driverId, driverName) => {
-    console.log(`View driver: ${driverName} (ID: ${driverId})`);
+    // console.log(`View driver: ${driverName} (ID: ${driverId})`);
     alert(`Viewing details for ${driverName}`);
   };
 
@@ -179,7 +179,7 @@ function DriverProfileDetail() {
   };
 
   const handleDelete = (driverId, driverName) => {
-    console.log(`Delete driver: ${driverName} (ID: ${driverId})`);
+    // console.log(`Delete driver: ${driverName} (ID: ${driverId})`);
     setSelectedDriver({ id: driverId, name: driverName });
     setShowDeleteModal(true);
   };

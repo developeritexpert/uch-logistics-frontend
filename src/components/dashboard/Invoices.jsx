@@ -819,9 +819,9 @@ function Invoices() {
   };
 
   const handleUpdatePaidStatus = async (invoiceId, isPaid) => {
-    console.log(
-      `Marking invoice ${invoiceId} as ${isPaid ? "Paid" : "Unpaid"}`
-    );
+    // console.log(
+    //   `Marking invoice ${invoiceId} as ${isPaid ? "Paid" : "Unpaid"}`
+    // );
 
     try {
       const response = await updateInvoice(invoiceId, { is_paid: isPaid });
@@ -881,7 +881,7 @@ function Invoices() {
 
       if (response?.data?.success && response?.data?.statusCode === 200) {
         const pdfUrl = response.data.data.url;
-        console.log("PDF URL:", pdfUrl);
+        // console.log("PDF URL:", pdfUrl);
 
         window.open(pdfUrl, "_blank");
 

@@ -8,8 +8,11 @@ import {
 import { toast } from "react-hot-toast"; // or your toast library
 import Loader from "./Loader";
 import useUserStore from "@/store/useUserStore";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 function Setting() {
+  const router = useRouter();
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -82,9 +85,9 @@ function Setting() {
 
   // Handle image click
   const handleImageClick = () => {
-    console.log("Image clicked");
-    console.log("isEditing:", isEditing);
-    console.log("fileInputRef.current:", fileInputRef.current);
+    // console.log("Image clicked");
+    // console.log("isEditing:", isEditing);
+    // console.log("fileInputRef.current:", fileInputRef.current);
     if (!isEditing) {
       setIsEditing(true);
     }
@@ -160,7 +163,7 @@ function Setting() {
       const response = await updateProfile(formData);
 
       if (response.status === 200 && response.data.success) {
-        console.log("response", response);
+        // console.log("response", response);
         toast.success(response.data.message || "Profile updated successfully");
 
         if (response.data.data?.image) {
@@ -276,6 +279,7 @@ function Setting() {
           confirm_password: "",
         });
         setPasswordErrors({});
+        
       } else {
         toast.error(response.data?.message || "Failed to change password");
       }
@@ -284,6 +288,10 @@ function Setting() {
       toast.error(error.response?.data?.message || "Failed to change password");
     } finally {
       setPasswordLoading(false);
+
+      Cookies.remove("auth_token", { path: "/" });
+      useUserStore.getState().clearUser();
+      router.replace("/login");
     }
   };
 

@@ -45,7 +45,7 @@ function JobManagement() {
       };
 
       const res = await fetchAllJobs(params);
-      console.log(res, "jobs data");
+      // console.log(res, "jobs data");
 
       if (!res.data.success) {
         toast.error(res.data.message);

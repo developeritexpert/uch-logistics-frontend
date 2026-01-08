@@ -84,7 +84,7 @@ function EditJob() {
 
       if (response.data?.success) {
         const jobData = response.data?.data;
-        console.log("Job data:", jobData.date_time);
+        // console.log("Job data:", jobData.date_time);
         
         // Parse date_time to separate date and time
         let date = "";
@@ -161,7 +161,7 @@ function EditJob() {
 
   // Handler for CustomSelect
   const handleDriverChange = (selectedOption) => {
-    console.log("Selected option:", selectedOption);
+    // console.log("Selected option:", selectedOption);
 
     if (!selectedOption) {
       setFormData((prev) => ({
@@ -178,7 +178,7 @@ function EditJob() {
         `${driver.name || ""} (${driver.call_sign || "N/A"})` === selectedOption
     );
 
-    console.log("Found driver:", selectedDriver);
+    // console.log("Found driver:", selectedDriver);
 
     if (selectedDriver) {
       setFormData((prev) => ({
@@ -288,7 +288,7 @@ function EditJob() {
       setSubmitting(true);
 
       const payload = formatDataForSubmission();
-      console.log("Updating payload:", payload);
+      // console.log("Updating payload:", payload);
 
       const response = await updateJob(jobId, payload);
 
@@ -336,8 +336,7 @@ function EditJob() {
         />
         <div className="mx-auto bg-white rounded-lg shadow py-[20px] px-[10px] sm:p-[25px] md:p-[40px] md:pt-[28px] mt-[30px]">
           <div className="flex items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
-            <span className="ml-3 text-gray-600">Loading job details...</span>
+            <span className="ml-3 text-gray-600"><Loader text="Loading job details..." /></span>
           </div>
         </div>
       </div>
@@ -448,6 +447,7 @@ function EditJob() {
               label="Pickup Location"
               value={formData.pickup}
               placeholder="Enter pickup location"
+              maxLength={30}
               onChange={(e) => handleInputChange("pickup", e.target.value)}
             />
             {errors.pickup && (
@@ -463,6 +463,7 @@ function EditJob() {
               label="Drop-off Location"
               value={formData.dropoff}
               placeholder="Enter drop-off location"
+              maxLength={50}
               onChange={(e) => handleInputChange("dropoff", e.target.value)}
             />
             {errors.dropoff && (

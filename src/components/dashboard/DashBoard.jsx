@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 function Page() {
   const router = useRouter();
   const { search } = useSelector((state) => state.search);
-  console.log(search);
+  // console.log(search);
 
   const [selectedDrivers, setSelectedDrivers] = useState([]);
   const [loading, setLoading] = useState(true);

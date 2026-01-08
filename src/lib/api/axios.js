@@ -33,7 +33,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      console.log("401 error - removing token and redirecting"); 
+      // console.log("401 error - removing token and redirecting"); 
       Cookies.remove("auth_token");
       
       if (typeof window !== "undefined") {

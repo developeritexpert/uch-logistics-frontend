@@ -40,7 +40,7 @@ function Header({ collapsed, setcollapsed }) {
 
           try {
             const response = await fetchSingleDriver(driverId); 
-            console.log("Header");
+            // console.log("Header");
             
             if (response.data.success && response.data.statusCode === 200) {
               const data = response.data.data;

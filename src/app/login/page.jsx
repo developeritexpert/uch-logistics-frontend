@@ -36,7 +36,7 @@ function LoginPage() {
         const token = response.data.data.token;
         const user = response.data.data;
         Cookies.set("auth_token", token, {
-          expires: 1, // 1 day
+          expires: 30, // 1 day
           secure: process.env.NODE_ENV === "production",
           sameSite: "strict",
           path: "/",

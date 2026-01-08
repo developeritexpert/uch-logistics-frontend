@@ -78,6 +78,7 @@ function AddJob() {
   };
 
   const handleInputChange = (field, value) => {
+
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -92,7 +93,7 @@ function AddJob() {
   };
 
   const handleDriverChange = (selectedOption) => {
-    console.log("Selected option:", selectedOption);
+    // console.log("Selected option:", selectedOption);
 
     if (!selectedOption) {
       setFormData((prev) => ({
@@ -109,7 +110,7 @@ function AddJob() {
         `${driver.name || ""} (${driver.call_sign || "N/A"})` === selectedOption
     );
 
-    console.log("Found driver:", selectedDriver);
+    // console.log("Found driver:", selectedDriver);
 
     if (selectedDriver) {
       setFormData((prev) => ({
@@ -219,7 +220,7 @@ function AddJob() {
       setSubmitting(true);
 
       const payload = formatDataForSubmission();
-      console.log("Submitting payload:", payload);
+      // console.log("Submitting payload:", payload);
 
       const response = await addJob(payload);
 
@@ -288,7 +289,9 @@ function AddJob() {
             options={driverOptions}
             value={getSelectedDriverDisplay()}
             onChange={handleDriverChange}
-            placeholder={loadingDrivers ? "Loading drivers..." : "Select a driver"}
+            placeholder={
+              loadingDrivers ? "Loading drivers..." : "Select a driver"
+            }
             disabled={loadingDrivers}
             error={errors.driver_id}
           />
@@ -369,6 +372,7 @@ function AddJob() {
               label="Pickup Location"
               value={formData.pickup}
               placeholder="Enter pickup location"
+              maxLength={50}
               onChange={(e) => handleInputChange("pickup", e.target.value)}
             />
             {errors.pickup && (
@@ -384,6 +388,7 @@ function AddJob() {
               label="Drop-off Location"
               value={formData.dropoff}
               placeholder="Enter drop-off location"
+              maxLength={50}
               onChange={(e) => handleInputChange("dropoff", e.target.value)}
             />
             {errors.dropoff && (
