@@ -131,43 +131,49 @@ function Invoices() {
     setCurrentPage(1);
   }, [invoices, searchTerm, fromDate, toDate]);
 
-// Handle Bank Remittance Generation
-const handleGenerateBankRemittance = async (startDate, endDate) => {
-  try {
-    setGeneratingRemittance(true);
+  // Handle Bank Remittance Generation
+  const handleGenerateBankRemittance = async (startDate, endDate) => {
+    try {
+      setGeneratingRemittance(true);
 
-    const response = await generateBankRemittance({
-      start_date: startDate,
-      end_date: endDate,
-    });
+      const response = await generateBankRemittance({
+        start_date: startDate,
+        end_date: endDate,
+      });
 
-    if (response?.data?.success) {
-      const downloadUrl = response.data.data.url;
+        console.log(response , "response");
+      if (response?.data?.success) {
+        
+        const downloadUrl = response.data.data.url || response.data.data;
 
-      if (!downloadUrl) {
-        throw new Error("Download URL not found");
+        // Create a temporary link and trigger download
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.setAttribute(
+          "download",
+          `bank-remittance-${startDate}-to-${endDate}.pdf`
+        );
+        link.setAttribute("target", "_blank");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        toast.success("Bank Remittance downloaded successfully");
+        setIsBankRemittanceModalOpen(false);
+      } else {
+        toast.error(
+          response?.data?.message || "Failed to generate Bank Remittance"
+        );
       }
-
-      // Open CSV in new tab (browser will download it)
-      window.open(downloadUrl, "_blank", "noopener,noreferrer");
-
-      toast.success("Bank Remittance downloaded successfully");
-      setIsBankRemittanceModalOpen(false);
-    } else {
+    } catch (error) {
+      console.error("Error generating bank remittance:", error);
       toast.error(
-        response?.data?.message || "Failed to generate Bank Remittance"
+        error?.response?.data?.message || "Failed to generate Bank Remittance"
       );
+    } finally {
+      setGeneratingRemittance(false);
     }
-  } catch (error) {
-    console.error("Error generating bank remittance:", error);
-    toast.error(
-      error?.response?.data?.message || "Failed to generate Bank Remittance"
-    );
-  } finally {
-    setGeneratingRemittance(false);
-  }
-};
-
+  };
 
   // Handle Invoice Summary Generation
   const handleGenerateInvoiceSummary = async (startDate, endDate) => {
@@ -358,7 +364,7 @@ const handleGenerateBankRemittance = async (startDate, endDate) => {
       {/* Bank Remittance Date Range Modal */}
       <DateRangeModal
         isOpen={isBankRemittanceModalOpen}
-        onClose={() => setIsBankRemittanceModalOpen(false) }
+        onClose={() => setIsBankRemittanceModalOpen(false)}
         title="Bank Remittance"
         onGenerate={handleGenerateBankRemittance}
         loading={generatingRemittance}
