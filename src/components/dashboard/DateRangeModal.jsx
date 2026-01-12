@@ -1,5 +1,5 @@
-import { useState } from "react";
-
+import { useState , useEffect } from "react";
+import { toast } from "react-hot-toast";
 export const DateRangeModal = ({
   isOpen,
   onClose,
@@ -9,6 +9,13 @@ export const DateRangeModal = ({
 }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+
+    useEffect(() => {
+    if (isOpen) {
+      setStartDate("");
+      setEndDate("");
+    }
+  }, [isOpen]);
 
   const handleSubmit = () => {
     if (!startDate || !endDate) {

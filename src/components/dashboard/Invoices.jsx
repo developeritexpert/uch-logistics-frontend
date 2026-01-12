@@ -141,7 +141,6 @@ function Invoices() {
         end_date: endDate,
       });
 
-        console.log(response , "response");
       if (response?.data?.success) {
         
         const downloadUrl = response.data.data.url || response.data.data;
