@@ -179,7 +179,7 @@ export default function PaidCustomDropdown({
             </label>
           </div>
 
-          <button
+          {/* <button
             className="
               w-full
               bg-[#223581]
@@ -200,7 +200,7 @@ export default function PaidCustomDropdown({
             disabled={isUpdating || isDownloading}
           >
             Generate Bank Remittance
-          </button>
+          </button> */}
 
           <button
             onClick={handleDownload}

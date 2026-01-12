@@ -20,3 +20,9 @@ export const generateFinalInvoice = (data) =>
 
 export const getInvoicePdfUrl = (invoiceId) =>
   api.get(`/invoice/pdf/${invoiceId}`);
+
+export const generateBankRemittance = (data) =>
+  api.post("/invoice/generate-bank-remittance", data);
+
+export const generateInvoiceSummary = (data) =>
+  api.post("/invoice/generate-invoice-summary", data);  
