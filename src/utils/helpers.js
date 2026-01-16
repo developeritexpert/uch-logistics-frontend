@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 
 export const formatDriverRate = (driver) => {
   if (driver?.per_hour_rate) {
-    return `$${driver.per_hour_rate} for ${
+    return `£${driver.per_hour_rate} for ${
       driver.total_hours ?? 0
     } hours / week`;
   }

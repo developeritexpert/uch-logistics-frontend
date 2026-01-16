@@ -596,7 +596,7 @@ function Invoices() {
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114] whitespace-nowrap">
-                      ${Number(invoice.final_total).toFixed(2)}
+                     £{Number(invoice.final_total).toFixed(2)}
                     </td>
 
                     <td className="px-[20px] py-[20px] 2xl:text-[18px] border-y border-[#22358114]">

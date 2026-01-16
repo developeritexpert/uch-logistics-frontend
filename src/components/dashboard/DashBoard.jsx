@@ -144,7 +144,7 @@ function Page() {
               title={`$${dashboard?.total_revenue?.toLocaleString()}`}
               className="block text-primary text-[22px]  md:text-[24px] lg:text-[30px] xl:text-[35px] 2xl:text-[50px] font-black cursor-pointer"
             >
-              ${formatRevenue(dashboard?.total_revenue)}
+              £{formatRevenue(dashboard?.total_revenue)}
             </span>
           </div>
         </div>

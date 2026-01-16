@@ -537,7 +537,7 @@ function AddNewDriver() {
             <>
               <div className="flex flex-col gap-1">
                 <Input
-                  label="Weekly Fixed Rate ($)"
+                  label="Weekly Fixed Rate (£)"
                   type="number"
                   placeholder="Enter weekly rate"
                   value={formData.weekly_fixed_rate}
