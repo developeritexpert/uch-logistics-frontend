@@ -495,33 +495,33 @@ function Invoices() {
         {/* Table */}
         <div className="w-full overflow-x-auto">
           <table className="w-full border-separate border-spacing-y-3 min-w-[1000px]">
-            <thead className="text-[16px] md:text-[18px] lg:text-[20px] font-bold">
+            <thead className="text-[16px] sm:text-[18px] 2xl:text-[20px] font-bold">
               <tr className="bg-gray-50">
-                <th className="text-center px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap rounded-l-[15px]">
+                <th className="text-center px-[20px] py-[15px]  whitespace-nowrap rounded-l-[15px]">
                   #
                 </th>
-                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                <th className="text-left px-[20px] py-[15px]  whitespace-nowrap">
                   Invoice ID
                 </th>
-                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                <th className="text-left px-[20px] py-[15px]  whitespace-nowrap">
                   Driver
                 </th>
-                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                <th className="text-left px-[20px] py-[15px]  whitespace-nowrap">
                   Callsign
                 </th>
-                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                <th className="text-left px-[20px] py-[15px]  whitespace-nowrap">
                   Date Range
                 </th>
-                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                <th className="text-left px-[20px] py-[15px]  whitespace-nowrap">
                   Final Total
                 </th>
-                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                <th className="text-left px-[20px] py-[15px]  whitespace-nowrap">
                   Invoice Status
                 </th>
-                <th className="text-left px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap">
+                <th className="text-left px-[20px] py-[15px]  whitespace-nowrap">
                   Payment Status
                 </th>
-                <th className="text-center px-[20px] py-[15px] 2xl:text-[20px] whitespace-nowrap rounded-r-[15px]">
+                <th className="text-center px-[20px] py-[15px]  whitespace-nowrap rounded-r-[15px]">
                   Actions
                 </th>
               </tr>

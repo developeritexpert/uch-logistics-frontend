@@ -155,24 +155,24 @@ function DriverProfilesPage() {
 
       <div className="w-full overflow-x-scroll">
         <table className="w-full border-separate border-spacing-y-3">
-          <thead className="">
+          <thead className="text-[16px] sm:text-[18px] 2xl:text-[20px] font-bold">
             <tr>
-              <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
+              <th className="text-left px-[20px] py-[10px] ">
                 #ID
               </th>
-              <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
+              <th className="text-left px-[20px] py-[10px] ">
                 Driver Name
               </th>
-              <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
+              <th className="text-left px-[20px] py-[10px] ">
                 Callsign
               </th>
-              <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
+              <th className="text-left px-[20px] py-[10px] ">
                 Position
               </th>
-              <th className="text-left px-[20px] py-[10px] 2xl:text-[20px]">
+              <th className="text-left px-[20px] py-[10px] ">
                 Status
               </th>
-              <th className="text-left px-[20px] py-[10px] 2xl:text-[20px] !text-center">
+              <th className="text-left px-[20px] py-[10px]  !text-center">
                 Actions
               </th>
             </tr>

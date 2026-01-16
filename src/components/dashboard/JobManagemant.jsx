@@ -230,7 +230,7 @@ function JobManagement() {
 
         <div className="w-full overflow-x-scroll">
           <table className="w-full border-separate border-spacing-y-3">
-            <thead className="text-[16px] sm:text-[18px] lg:text-[20px] font-bold">
+            <thead className="text-[16px] sm:text-[18px] 2xl:text-[20px] font-bold">
               <tr>
                 <th>#ID</th>
                 <th className="text-center px-[20px] py-[5px] whitespace-nowrap">
@@ -413,3 +413,4 @@ function JobManagement() {
 }
 
 export default JobManagement;
+

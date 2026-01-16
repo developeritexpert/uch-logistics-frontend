@@ -144,8 +144,8 @@ function AddNewDriver() {
 
     if (!formData.bank_account_no.trim())
       newErrors.bank_account_no = "Bank account number is required";
-    if (!formData.iban_no.trim())
-      newErrors.iban_no = "IBAN / Sort code is required";
+    // if (!formData.iban_no.trim())
+    //   newErrors.iban_no = "IBAN / Sort code is required";
     if (!formData.payroll_id.trim())
       newErrors.payroll_id = "Payroll ID is required";
 
@@ -283,7 +283,7 @@ function AddNewDriver() {
             <CustomSelect
               label="Position"
               placeholder="Choose Position"
-              options={["Van Driver", "Truck Driver"]}
+              options={["Van Driver", "Truck Driver","Class 1","Class 2 "]}
               value={formData.position}
               onChange={(value) => handleSelectChange("position", value)}
             />
@@ -423,7 +423,7 @@ function AddNewDriver() {
           </div>
           <div className="flex flex-col gap-1">
             <Input
-              label="Sort Code / IBAN"
+              label="Sort Code"
               value={formData.iban_no}
               onChange={(e) => handleInputChange("iban_no", e.target.value)}
             />
@@ -496,7 +496,7 @@ function AddNewDriver() {
             <>
               <div className="flex flex-col gap-1">
                 <Input
-                  label="Per Hour Rate ($)"
+                  label="Per Hour Rate (£)"
                   type="number"
                   placeholder="Enter hourly rate"
                   value={formData.per_hour_rate}
